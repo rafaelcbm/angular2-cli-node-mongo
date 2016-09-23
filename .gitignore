@@ -1,8 +1,9 @@
 node_modules
 .idea
 typings
+dist
 server/**/*.js
 server/**/*.js.map
-client/**/*.js
-client/**/*.js.map
+src/**/*.js
+src/**/*.js.map
 /npm-debug.log
