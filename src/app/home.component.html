@@ -11,10 +11,10 @@
             <a class="nav-link" href="#">Contact</a>
         </li>
     </ul>
-    <form class="form-inline pull-xs-right">
-        <button class="btn btn-outline-success" (click)="gotoRegister()">Register</button>
-        <button class="btn btn-outline-primary" (click)="gotoLogin()">Login</button>
-    </form>
+    <div class="form-inline pull-xs-right">
+        <button class="btn btn-outline-success" [routerLink]="['/register']">Register</button>
+        <button class="btn btn-outline-primary" [routerLink]="['/login']">Login</button>        
+    </div>
 </nav>
 <div class="container">
     <div class="row">
@@ -23,4 +23,3 @@
         </div>
     </div>
 </div>
-

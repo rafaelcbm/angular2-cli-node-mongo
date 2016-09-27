@@ -7,6 +7,7 @@ import { loginRouter } from "./routes/login";
 import { protectedRouter } from "./routes/protected";
 
 const app: express.Application = express();
+
 app.disable("x-powered-by");
 
 app.use(favicon(join(__dirname, "../../src", "favicon.ico")));
@@ -36,12 +37,11 @@ if (app.get("env") === "development") {
     });
 }
 
-function redirectUnRouter(request: express.Request, response: express.Response){
+app.use('/*', function (request: express.Request, response: express.Response){
     // response.redirect(join(__dirname, '../../public/index.html'));
-    response.sendFile("index.html", {root:join(__dirname, "../../src")});
-}
-
-app.use(redirectUnRouter);
+    //response.sendFile("index.html", {root:join(__dirname, "../../src")});
+    response.sendFile(join(__dirname, '../../dist','index.html'));
+});
 
 // catch 404 and forward to error handler
 // app.use(function(req: express.Request, res: express.Response, next) {

@@ -18,7 +18,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
-                                <button type="button" class="btn btn-primary p-x-2">Login</button>
+                                <button type="button" (click)="login()" class="btn btn-primary p-x-2">Login</button>
                             </div>
                             <div class="col-xs-6 text-xs-right">
                                 <button type="button" class="btn btn-link p-x-0">Forgot password?</button>
@@ -34,6 +34,19 @@
                             <button type="button" (click)="gotoRegister()" class="btn btn-primary active m-t-1">Register Now!</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div vamiddle class="col-md-8 m-x-auto pull-xs-none">
+            <div class="card">
+                <div class="card-header">
+                    Response
+                </div>
+                <div class="card-block">
+                    {{ response | json}}
                 </div>
             </div>
         </div>
