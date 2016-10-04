@@ -22,12 +22,7 @@ export class LoginComponent {
     error: string;
 
     constructor(
-        private router: Router, private http: Http) {}
-
-    gotoRegister() {
-        let link = ['/register'];
-        this.router.navigate(link);
-    }
+        private router: Router, private http: Http, private authHttp:AuthHttp) {}
 
     login() {
         this.http.post("/login", JSON.stringify({ password: this.user.password }), new RequestOptions({
@@ -67,18 +62,19 @@ export class LoginComponent {
             );
         }
 
-
-        this.http
+        this.authHttp
             .get("/api")
             .map((res: Response) => res.json())
             .subscribe(
                 (data) => {
+                    console.log(data);
                     this.response = data;
                 },
-                (error: Error) => {
-                    console.log(error);
-                    this.error = error.message;
-                    setTimeout(() => this.error = null, 4000)
+                (resError) => {
+                    console.log(resError);
+                    console.log(resError.message);
+                    this.error = resError._body;
+                    //setTimeout(() => this.error = null, 4000)
                 });
     }
 

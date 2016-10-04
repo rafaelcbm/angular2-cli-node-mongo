@@ -9,17 +9,25 @@ import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
 import { routing } from './app.routing';
 
+import { provideAuth } from "angular2-jwt";
+
 @NgModule({
-  declarations: [
-    AppComponent, HomeComponent, RegisterComponent, LoginComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    routing
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent, HomeComponent, RegisterComponent, LoginComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        routing
+    ],
+    providers: [
+        provideAuth({
+            globalHeaders: [{ "Content-type": "application/json" }],
+            newJwtError: true,
+            noTokenScheme: true
+        })
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

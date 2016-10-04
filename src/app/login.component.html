@@ -17,8 +17,11 @@
                             <input type="password" class="form-control" placeholder="Password">
                         </div>
                         <div class="row">
-                            <div class="col-xs-6">
+                            <div class="col-xs-3">
                                 <button type="button" (click)="login()" class="btn btn-primary p-x-2">Login</button>
+                            </div>
+                            <div class="col-xs-3">
+                                <button type="button" (click)="protected()" class="btn btn-secondary p-x-2">Protected</button>
                             </div>
                             <div class="col-xs-6 text-xs-right">
                                 <button type="button" class="btn btn-link p-x-0">Forgot password?</button>
@@ -31,7 +34,7 @@
                         <div>
                             <h2>Sign up</h2>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                            <button type="button" (click)="gotoRegister()" class="btn btn-primary active m-t-1">Register Now!</button>
+                            <button type="button" [routerLink]="['/register']" class="btn btn-primary active m-t-1">Register Now!</button>
                         </div>
                     </div>
                 </div>
@@ -47,6 +50,18 @@
                 </div>
                 <div class="card-block">
                     {{ response | json}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div vamiddle class="col-md-8 m-x-auto pull-xs-none">
+            <div class="card">
+                <div class="card-header">
+                    Error
+                </div>
+                <div class="card-block">
+                    {{ error | json}}
                 </div>
             </div>
         </div>
