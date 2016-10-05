@@ -3,6 +3,8 @@ import { randomBytes, pbkdf2 } from "crypto";
 import { sign } from "jsonwebtoken";
 import { secret, length, digest } from "../config";
 
+import abstractDAO = require('../dal/abstractDAO');
+
 const loginRouter: Router = Router();
 
 const user = {
@@ -29,8 +31,28 @@ loginRouter.post("/signup", function (request: Request, response: Response, next
     });
 });
 
-// login method
+
 loginRouter.post("/", function (request: Request, response: Response, next: NextFunction) {
+
+    console.log("**Chegou no login router!");
+    console.log("** Resquest body", request.body);
+
+    var dataAccess = new abstractDAO.DataAccess();
+    dataAccess.openDbConnection();
+
+    dataAccess.insertUser({name:request.body.userName}).then((result) => {
+        console.log("** result mongo - user=", result);
+                            response.sendStatus(201);
+                        }).catch((e) => {
+                            console.log("** result mongo - error=",e);
+                            return response.status(403).json({
+                                message: "Erro ao inserir user no mongodb"
+                            });
+                        });
+
+
+
+    dataAccess.closeDbConnection();
 
     pbkdf2(request.body.password, user.salt, 10000, length, digest, function (err, hash) {
         if (err) {
@@ -50,5 +72,27 @@ loginRouter.post("/", function (request: Request, response: Response, next: Next
 
     });
 });
+
+// login method (bkp)
+// loginRouter.post("/", function (request: Request, response: Response, next: NextFunction) {
+
+//     pbkdf2(request.body.password, user.salt, 10000, length, digest, function (err, hash) {
+//         if (err) {
+//             console.log(err);
+//         }
+
+//         // check if password is active
+//         if (hash.toString("hex") === user.hashedPassword) {
+
+//             const token = sign({"user": user.username, permissions: []}, secret, { expiresIn: "7d" });
+
+//             response.json({"jwt": token});
+
+//         } else {
+//             response.json({message: "Wrong password"});
+//         }
+
+//     });
+// });
 
 export {loginRouter}

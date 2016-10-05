@@ -25,7 +25,7 @@ export class LoginComponent {
         private router: Router, private http: Http, private authHttp:AuthHttp) {}
 
     login() {
-        this.http.post("/login", JSON.stringify({ password: this.user.password }), new RequestOptions({
+        this.http.post("/login", JSON.stringify({ userName: this.user.username, password: this.user.password }), new RequestOptions({
                 headers: new Headers({ "Content-Type": "application/json" })
             }))
             .map((res: Response) => res.json())
