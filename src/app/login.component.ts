@@ -21,8 +21,11 @@ export class LoginComponent {
     response: string;
     error: string;
 
+    nome: string;
+    password: string;
+
     constructor(
-        private router: Router, private http: Http, private authHttp:AuthHttp) {}
+        private router: Router, private http: Http, private authHttp: AuthHttp) {}
 
     login() {
         this.http.post("/login", JSON.stringify({ userName: this.user.username, password: this.user.password }), new RequestOptions({
@@ -33,6 +36,26 @@ export class LoginComponent {
                 (data: any) => {
                     this.response = data;
                     localStorage.setItem("id_token", data.jwt);
+                    // this.myPopup.hide();
+                    // this.isLogged = true;
+                    // location.reload();
+                },
+                (error: Error) => { console.log(error); }
+            );
+    }
+
+    signup(formValue) {
+        if (formValue) { console.log(formValue); }
+
+        this.http.post("/login/signup", JSON.stringify(formValue), new RequestOptions({
+                headers: new Headers({ "Content-Type": "application/json" })
+            }))
+            .map((res: Response) => res.json())
+            .subscribe(
+                (data: any) => {
+                    this.response = data;
+
+                    //localStorage.setItem("id_token", data.jwt);
                     // this.myPopup.hide();
                     // this.isLogged = true;
                     // location.reload();

@@ -5,26 +5,19 @@ import { json, urlencoded } from "body-parser";
 
 import { loginRouter } from "./routes/login";
 import { protectedRouter } from "./routes/protected";
-
-//import mongodb = require('mongodb');
-
-// var MongoClient = require('mongodb').MongoClient;
-// var assert = require('assert');
-
-// // Connection URL
-// var url = 'mongodb://localhost:27017/test';
-
-// // Use connect method to connect to the server
-// MongoClient.connect(url, function(err, db) {
-//   assert.equal(null, err);
-//   console.log("** Connected successfully to server **");
-
-//   console.log("** db = **", db);
-
-//   //db.close();
-// });
+import {DataAccess} from "./dal/abstractDAO";
 
 const app: express.Application = express();
+
+//Inicializa conexão
+var dataAccess = new DataAccess();
+dataAccess.openDbConnection();
+
+//Log config - express-logging
+var expressLogging = require('express-logging');
+var logger = require('logops');
+app.use(expressLogging(logger));
+logger.info("** LOGGER INICIALIZADO");
 
 app.disable("x-powered-by");
 
@@ -33,18 +26,6 @@ app.use(express.static(join(__dirname, '../../dist')));
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
-
-
-/*mongodb.MongoClient.connect('mongodb://127.0.0.1/test', (err, db) => {
-                
-                console.log("Connected correctly to MongoDB server.");
-                console.log(db);
-                this.dbConnection = db;
-            });*/
-
-/*var server = new mongodb.Server('localhost', 27017);
-var db = new mongodb.Db('test', server, { w: 1 });
-db.open(function() {console.log("** Conexao estabelecida no MongoDB! **")});*/
 
 // api routes
 app.use("/api", protectedRouter);
@@ -89,4 +70,6 @@ app.use('/*', function (request: express.Request, response: express.Response){
 //     });
 // });
 
-export { app }
+export { app };
+export { logger };
+export { dataAccess };

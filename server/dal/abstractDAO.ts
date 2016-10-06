@@ -1,6 +1,9 @@
+import { logger } from "../app";
+
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var Q = require("q");
+
 
 // Create a class to manage the data manipulation.
 export class DataAccess {
@@ -12,7 +15,7 @@ export class DataAccess {
         if (this.dbConnection == null) {
             MongoClient.connect(DataAccess.shareItUrl, (err, db) => {
                 assert.equal(null, err);
-                console.log("Connected correctly to MongoDB server.");
+                logger.info("** Connected correctly to MongoDB server.");
                 this.dbConnection = db;
             });
         }
@@ -26,6 +29,8 @@ export class DataAccess {
         }
     }
 
+
+
     // public insertStudent(user: any): any {
     //     return this.insertDocument(student, 'Students');
     // }
@@ -35,19 +40,50 @@ export class DataAccess {
     //     return this.getDocumentCount('Students');
     // }
 
+     // Get a new Student based on the user name.
+    public getUser(userName: string): any {
+        logger.info("** DAL :getUser - userName=%s", userName);
+
+        var deferred = Q.defer();
+        if (this.dbConnection) {
+            var cursor = this.dbConnection.collection('users').find();
+            cursor.each((err, document) => {
+                assert.equal(err, null);
+                if (err) {
+                    deferred.reject(new Error(JSON.stringify(err)));
+                }
+                else if (document !== null && document['nome'] === userName) {
+                    return deferred.resolve(document);
+                }
+                else if (document === null) {
+                    return deferred.resolve(document);
+                }
+            });
+        }
+
+        return deferred.promise;
+    }
+
     // Insert a new User.
     public insertUser(user: any): any {
+        logger.info("** DAL - insertUser");
+
         return this.insertDocument(user, 'users');
     }
 
      // Insert a new document in the collection.
     private insertDocument(document: any, collectionName: string): any {
+        logger.info("** DAL - insertDocument: %j, %j", document, collectionName);
+        //logger.info("** DAL - this.dbConnection: %j, %j", this.dbConnection);
+
         var deferred = Q.defer();
         this.dbConnection.collection(collectionName).insertOne(document, (err, result) => {
             assert.equal(err, null);
             if (err) {
                 deferred.reject(new Error(JSON.stringify(err)));
             }
+
+            logger.info("** DAL - insertDocument: result = , %j", result);
             deferred.resolve(result);
         });
 

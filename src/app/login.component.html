@@ -4,29 +4,36 @@
             <div class="card-group">
                 <div class="card p-a-2">
                     <div class="card-block">
-                        <h1>Login</h1>
-                        <p class="text-muted">Sign In to your account</p>
-                        <div class="input-group m-b-1">
-                            <span class="input-group-addon"><i class="icon-user"></i>
+                        <form #formRef="ngForm" (ngSubmit)="signup(formRef.value)">
+                            <h1>Login</h1>
+                            <p class="text-muted">Sign In to your account</p>
+                            <div class="input-group m-b-1">
+                                <span class="input-group-addon"><i class="icon-user"></i>
                             </span>
-                            <input type="text" class="form-control" placeholder="Username">
-                        </div>
-                        <div class="input-group m-b-2">
-                            <span class="input-group-addon"><i class="icon-lock"></i>
+                                <input type="text" name="username" [(ngModel)]="nome" class="form-control" placeholder="Username">
+                            </div>
+                            <div class="input-group m-b-2">
+                                <span class="input-group-addon"><i class="icon-lock"></i>
                             </span>
-                            <input type="password" class="form-control" placeholder="Password">
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <button type="button" (click)="login()" class="btn btn-primary p-x-2">Login</button>
+                                <input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="Password">
                             </div>
-                            <div class="col-xs-3">
-                                <button type="button" (click)="protected()" class="btn btn-secondary p-x-2">Protected</button>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <button type="button" (click)="login()" class="btn btn-primary p-x-2">Login</button>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button type="submit" class="btn btn-secondary p-x-2">Signup</button>
+                                </div>
+                                <div class="col-xs-6 text-xs-right">
+                                    <button type="button" class="btn btn-link p-x-0">Forgot password?</button>
+                                </div>
                             </div>
-                            <div class="col-xs-6 text-xs-right">
-                                <button type="button" class="btn btn-link p-x-0">Forgot password?</button>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <button type="button" (click)="protected()" class="btn btn-secondary p-x-2">Protected</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="card card-inverse card-primary p-y-3" style="width:44%">
