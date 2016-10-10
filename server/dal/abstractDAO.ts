@@ -64,10 +64,31 @@ export class DataAccess {
         return deferred.promise;
     }
 
+    public getUseByPassword(userName: string): any {
+        logger.info("** DAL :getUser - userName=%s", userName);
+
+        var deferred = Q.defer();
+        if (this.dbConnection) {
+            var cursor = this.dbConnection.collection('users').find();
+            cursor.each((err, document) => {
+                assert.equal(err, null);
+                if (err) {
+                    deferred.reject(new Error(JSON.stringify(err)));
+                }
+                else if (document !== null && document['nome'] === userName) {
+                    return deferred.resolve(document);
+                }
+                else if (document === null) {
+                    return deferred.resolve(document);
+                }
+            });
+        }
+
+        return deferred.promise;
+    }
+
     // Insert a new User.
     public insertUser(user: any): any {
-        logger.info("** DAL - insertUser");
-
         return this.insertDocument(user, 'users');
     }
 

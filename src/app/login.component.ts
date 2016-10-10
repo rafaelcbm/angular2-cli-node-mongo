@@ -13,22 +13,25 @@ import "rxjs/add/operator/map";
 })
 export class LoginComponent {
 
-    user: any = {
-        password: "angualr2express",
-        username: "john"
-    };
+    // user: any = {
+    //     password: "angualr2express",
+    //     username: "john"
+    // };
 
     response: string;
     error: string;
 
-    nome: string;
+    username: string;
     password: string;
 
     constructor(
         private router: Router, private http: Http, private authHttp: AuthHttp) {}
 
     login() {
-        this.http.post("/login", JSON.stringify({ userName: this.user.username, password: this.user.password }), new RequestOptions({
+
+        console.log({ username: this.username, password: this.password });
+
+        this.http.post("/login", JSON.stringify({ username: this.username, password: this.password }), new RequestOptions({
                 headers: new Headers({ "Content-Type": "application/json" })
             }))
             .map((res: Response) => res.json())
@@ -40,14 +43,17 @@ export class LoginComponent {
                     // this.isLogged = true;
                     // location.reload();
                 },
-                (error: Error) => { console.log(error); }
+                (error: Error) => {
+                    console.log(error);
+                    this.error = JSON.stringify(error);
+                }
             );
     }
 
     signup(formValue) {
         if (formValue) { console.log(formValue); }
 
-        this.http.post("/login/signup", JSON.stringify(formValue), new RequestOptions({
+        this.http.post("/signup", JSON.stringify(formValue), new RequestOptions({
                 headers: new Headers({ "Content-Type": "application/json" })
             }))
             .map((res: Response) => res.json())
@@ -60,7 +66,10 @@ export class LoginComponent {
                     // this.isLogged = true;
                     // location.reload();
                 },
-                (error: Error) => { console.log(error); }
+                (error: Error) => {
+                    console.log(error);
+                    this.error = JSON.stringify(error);
+                }
             );
     }
 
@@ -71,6 +80,7 @@ export class LoginComponent {
     }
 
     protected() {
+        console.log("* Chamou protected:");
 
         let jwtHelper: JwtHelper = new JwtHelper();
 
@@ -95,8 +105,6 @@ export class LoginComponent {
                 },
                 (resError) => {
                     console.log(resError);
-                    console.log(resError.message);
-                    this.error = resError._body;
                     //setTimeout(() => this.error = null, 4000)
                 });
     }

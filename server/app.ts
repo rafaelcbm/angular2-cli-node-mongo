@@ -29,7 +29,7 @@ app.use(urlencoded({ extended: true }));
 
 // api routes
 app.use("/api", protectedRouter);
-app.use("/login", loginRouter);
+app.use("/", loginRouter);
 
 // error handlers
 // development error handler
