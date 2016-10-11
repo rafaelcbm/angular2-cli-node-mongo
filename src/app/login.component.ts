@@ -39,6 +39,10 @@ export class LoginComponent {
                 (data: any) => {
                     this.response = data;
                     localStorage.setItem("id_token", data.jwt);
+
+                    //TODO: redirect to dashboard
+                    this.router.navigate(['/main']);
+
                     // this.myPopup.hide();
                     // this.isLogged = true;
                     // location.reload();
