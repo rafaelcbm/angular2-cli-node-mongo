@@ -3,9 +3,9 @@ import { Router }                       from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
-    templateUrl: './main.component.html'
+    templateUrl: 'full-layout.component.html'
 })
-export class MainComponent implements OnInit {
+export class FullLayoutComponent implements OnInit {
 
     constructor( private router: Router ) { }
 
