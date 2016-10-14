@@ -25,32 +25,34 @@ export class LoginComponent {
     password: string;
 
     constructor(
-        private router: Router, private http: Http, private authHttp: AuthHttp) {}
+        private router: Router, private http: Http, private authHttp: AuthHttp) { }
 
     login() {
 
         console.log({ username: this.username, password: this.password });
 
         this.http.post("/login", JSON.stringify({ username: this.username, password: this.password }), new RequestOptions({
-                headers: new Headers({ "Content-Type": "application/json" })
-            }))
+            headers: new Headers({ "Content-Type": "application/json" })
+        }))
             .map((res: Response) => res.json())
             .subscribe(
-                (data: any) => {
+            (data: any) => {
+                console.log("Resposta login:", data);
+
+                if (data.status === "erro") {
+                    this.error = data.msg;
+                    this.response = "";
+                } else {
+                    this.error = "";
                     this.response = data;
                     localStorage.setItem("id_token", data.jwt);
-
-                    //TODO: redirect to dashboard
                     this.router.navigate(['/main']);
-
-                    // this.myPopup.hide();
-                    // this.isLogged = true;
-                    // location.reload();
-                },
-                (error: Error) => {
-                    console.log(error);
-                    this.error = JSON.stringify(error);
                 }
+            },
+            (error: Error) => {
+                console.log(error);
+                this.error = JSON.stringify(error);
+            }
             );
     }
 
@@ -58,22 +60,20 @@ export class LoginComponent {
         if (formValue) { console.log(formValue); }
 
         this.http.post("/signup", JSON.stringify(formValue), new RequestOptions({
-                headers: new Headers({ "Content-Type": "application/json" })
-            }))
+            headers: new Headers({ "Content-Type": "application/json" })
+        }))
             .map((res: Response) => res.json())
             .subscribe(
-                (data: any) => {
-                    this.response = data;
+            (data: any) => {
+                console.log("Resposta signup:", data);
+                this.response = data;
 
-                    //localStorage.setItem("id_token", data.jwt);
-                    // this.myPopup.hide();
-                    // this.isLogged = true;
-                    // location.reload();
-                },
-                (error: Error) => {
-                    console.log(error);
-                    this.error = JSON.stringify(error);
-                }
+                //localStorage.setItem("id_token", data.jwt);                    
+            },
+            (error: Error) => {
+                console.log(error);
+                this.error = JSON.stringify(error);
+            }
             );
     }
 
@@ -103,14 +103,13 @@ export class LoginComponent {
             .get("/api")
             .map((res: Response) => res.json())
             .subscribe(
-                (data) => {
-                    console.log(data);
-                    this.response = data;
-                },
-                (resError) => {
-                    console.log(resError);
-                    //setTimeout(() => this.error = null, 4000)
-                });
+            (data) => {
+                console.log(data);
+                this.response = data;
+            },
+            (resError) => {
+                console.log(resError);
+                //setTimeout(() => this.error = null, 4000)
+            });
     }
-
 }

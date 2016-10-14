@@ -8,9 +8,9 @@ const loginRouter: Router = Router();
 
 const user2 = {
     hashedPassword: "6fb3a68cb5fe34d0c2c9fc3807c8fa9bc0e7dd10023065ea4233d40a2d6bb4a7e336a82f48bcb5a7cc95b8a590cf03a4a07615a226d09a89420a342584a" +
-        "a28748336aa0feb7ac3a12200d13641c8f8e26398cfdaf268dd68746982bcf59415670655edf4e9ac30f6310bd2248cb9bc185db8059fe979294dd3611fdf28c2b731",
+    "a28748336aa0feb7ac3a12200d13641c8f8e26398cfdaf268dd68746982bcf59415670655edf4e9ac30f6310bd2248cb9bc185db8059fe979294dd3611fdf28c2b731",
     salt: "OxDZYpi9BBJUZTTaC/yuuF3Y634YZ90KjpNa+Km4qGgZXGI6vhSWW0T91rharcQWIjG2uPZEPXiKGnSAQ73s352aom56AIYpYCfk7uNsd+7AzaQ6dxTnd9AzCCdIc/J" +
-        "62JohpHPJ5eGHUJJy3PAgHYcfVzvBHnIQlTJCQdQAonQ=",
+    "62JohpHPJ5eGHUJJy3PAgHYcfVzvBHnIQlTJCQdQAonQ=",
     username: "john"
 };
 
@@ -76,17 +76,29 @@ loginRouter.post("/login", function(request: Request, response: Response, next: 
         logger.info("** login - user.salt = %j", user.salt);
         logger.info("** login - request.body.password = %j", request.body.password);
 
+        logger.info("** request.body.password = %j", request.body.password);
+        logger.info("** user.password = %j", user.password);
+
         pbkdf2(request.body.password, user.salt, 10000, length, digest, function(err, hash) {
             if (err) {
                 logger.info(err);
             }
 
+            logger.info("** hash gerado = %j", hash.toString("hex"));
+            logger.info("** hash igual ?? %s", (hash.toString("hex") === user.hash));
+
             // check if password is active
             if (hash.toString("hex") === user.hash) {
                 const token = sign({ "user": user.nome, permissions: [] }, secret, { expiresIn: "7d" });
-                response.json({ "jwt": token });
+                response.json({
+                    "status": "sucesso",
+                    "jwt": token
+                });
             } else {
-                response.json({ message: "Wrong password" });
+                response.json({
+                    "status": "erro",
+                    "msg": "Password incorreto."
+                });
             }
         });
     }).catch((e) => {
@@ -96,8 +108,6 @@ loginRouter.post("/login", function(request: Request, response: Response, next: 
             message: "Erro ao autenticar usuário!"
         });
     });
-
-
 });
 
 export { loginRouter }
