@@ -4,11 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home.component';
-import { RegisterComponent } from './register.component';
-import { LoginComponent } from './login.component';
-import { MainComponent } from './main.component';
+import { HomeComponent } from './common-pages/home.component';
+import { RegisterComponent } from './common-pages/register.component';
+import { LoginComponent } from './common-pages/login.component';
+import { MainComponent } from './common-pages/main.component';
 import { routing } from './app.routing';
+
+import { ManageContasComponent } from './contas/manage-contas.component';
+import { DashboardComponent } from './contas/dashboard.component';
+
 
 import { provideAuth } from "angular2-jwt";
 
@@ -58,6 +62,8 @@ import { BreadcrumbsComponent } from './template/shared/breadcrumb.component';
 @NgModule({
     declarations: [
         AppComponent, HomeComponent, RegisterComponent, LoginComponent, MainComponent,
+        ManageContasComponent, DashboardComponent,
+
 
         // FullLayoutComponent,
         // SimpleLayoutComponent,

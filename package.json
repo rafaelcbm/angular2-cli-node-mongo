@@ -11,7 +11,7 @@
         "pree2e": "webdriver-manager update",
         "e2e": "protractor",
         "client": "ng build",
-        "preserver": "npm run client",
+        "preserver2": "npm run client",
         "server": "concurrently \"npm run tsc:server:w\" \"nodemon ./server/bin/www\" ",
         "tsc:server:w": "tsc -w -p ./server",
         "tsc:client:w": "tsc -w -p ./src",
