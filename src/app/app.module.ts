@@ -1,32 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+// import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './common-pages/home.component';
-import { RegisterComponent } from './common-pages/register.component';
-import { LoginComponent } from './common-pages/login.component';
-import { MainComponent } from './common-pages/main.component';
-import { routing } from './app.routing';
+import { AppRoutingModule } from './app.routing';
+import { AuthenticationModule } from './authentication/authentication.module';
+import { CommonPagesModule } from './common-pages/common-pages.module';
 
-import { ManageContasComponent } from './contas/manage-contas.component';
-import { DashboardComponent } from './contas/dashboard.component';
+// import { ManageContasComponent } from './contas/manage-contas.component';
+// import { DashboardComponent } from './contas/dashboard.component';
 
 
-import { provideAuth } from "angular2-jwt";
+//import { provideAuth } from "angular2-jwt";
 
 
 /**** Inicio imports componentes do template ****/
 
-import { Ng2BootstrapModule } from 'ng2-bootstrap/ng2-bootstrap';
+// import { Ng2BootstrapModule } from 'ng2-bootstrap/ng2-bootstrap';
 // import { ChartsModule } from 'ng2-charts/ng2-charts';
 
-import { NAV_DROPDOWN_DIRECTIVES } from './template/shared/nav-dropdown.directive';
+// import { NAV_DROPDOWN_DIRECTIVES } from './template/shared/nav-dropdown.directive';
 
-import { SIDEBAR_TOGGLE_DIRECTIVES } from './template/shared/sidebar.directive';
-import { AsideToggleDirective } from './template/shared/aside.directive';
-import { BreadcrumbsComponent } from './template/shared/breadcrumb.component';
+// import { SIDEBAR_TOGGLE_DIRECTIVES } from './template/shared/sidebar.directive';
+// import { AsideToggleDirective } from './template/shared/aside.directive';
+// import { BreadcrumbsComponent } from './template/shared/breadcrumb.component';
 
 //Layouts
 // import { FullLayoutComponent } from './template/layouts/full-layout.component';
@@ -61,10 +59,13 @@ import { BreadcrumbsComponent } from './template/shared/breadcrumb.component';
 
 @NgModule({
     declarations: [
-        AppComponent, HomeComponent, RegisterComponent, LoginComponent, MainComponent,
-        ManageContasComponent, DashboardComponent,
+        AppComponent
 
-
+        /* Imports do template */
+        // NAV_DROPDOWN_DIRECTIVES,
+        // BreadcrumbsComponent,
+        // SIDEBAR_TOGGLE_DIRECTIVES,
+        // AsideToggleDirective
         // FullLayoutComponent,
         // SimpleLayoutComponent,
         // DashboardComponent,
@@ -79,29 +80,20 @@ import { BreadcrumbsComponent } from './template/shared/breadcrumb.component';
         // WidgetsComponent,
         // ChartsComponent,
         // p404Component,
-        // p500Component,
-        NAV_DROPDOWN_DIRECTIVES,
-        BreadcrumbsComponent,
-        SIDEBAR_TOGGLE_DIRECTIVES,
-        AsideToggleDirective
+        // p500Component,        
     ],
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule,
-        routing,
+        AppRoutingModule,
+        AuthenticationModule,
+        CommonPagesModule,
 
         /* Imports do template */
-        Ng2BootstrapModule,
+        //Ng2BootstrapModule,
         // ChartsModule
     ],
-    providers: [
-        provideAuth({
-            globalHeaders: [{ "Content-type": "application/json" }],
-            newJwtError: true,
-            noTokenScheme: true
-        })
-    ],
+    providers: [ ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
