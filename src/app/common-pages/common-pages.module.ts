@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { CommonPagesRoutingModule } from './common-pages.routing';
+import { ContasModule } from '../contas/contas.module';
 
 import { HomeComponent } from './home.component';
 import { MainComponent } from './main.component';
@@ -89,6 +90,7 @@ import { BreadcrumbsComponent } from '../template/shared/breadcrumb.component';
         CommonModule,
         FormsModule,
         CommonPagesRoutingModule,
+        ContasModule,
          /* Imports do template */
         Ng2BootstrapModule,
         // ChartsModule
