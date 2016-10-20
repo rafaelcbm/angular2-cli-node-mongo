@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -15,7 +15,7 @@ import { provideAuth } from "angular2-jwt";
         RegisterComponent, LoginComponent
     ],
     imports: [
-        BrowserModule,
+        CommonModule,
         FormsModule,
         HttpModule,
         AuthenticationRoutingModule

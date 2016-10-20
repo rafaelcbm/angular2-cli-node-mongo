@@ -7,6 +7,10 @@ import { RouterModule } from '@angular/router';
             path: '',
             redirectTo: 'home',
             pathMatch: 'full'
+        },
+        {
+            path: '**',
+            redirectTo: 'home'
         }
             
             // {
