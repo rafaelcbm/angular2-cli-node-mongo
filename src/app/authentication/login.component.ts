@@ -46,7 +46,7 @@ export class LoginComponent {
                     this.error = "";
                     this.response = data;
                     localStorage.setItem("id_token", data.jwt);
-                    this.router.navigate(['/contas/main']);
+                    this.router.navigate(['/main/contas']);
                 }
             },
             (error: Error) => {

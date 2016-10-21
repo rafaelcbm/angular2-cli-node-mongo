@@ -8,11 +8,8 @@ import { DashboardComponent } from './dashboard.component';
     imports: [
         RouterModule.forChild([
             {
-                path: '',                
-                children:
-                [
-                     { path: 'main', component: ManageContasComponent }
-                ]
+                path: 'contas',
+                component: ManageContasComponent                 
             }
         ])
     ],

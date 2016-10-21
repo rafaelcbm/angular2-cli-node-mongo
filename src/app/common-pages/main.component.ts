@@ -19,8 +19,4 @@ export class MainComponent implements OnInit {
     }
 
     ngOnInit(): void { }
-
-    login() {
-        this.router.navigate(['/contas/main']);
-    }
 }

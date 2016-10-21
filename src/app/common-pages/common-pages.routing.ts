@@ -14,10 +14,7 @@ import { MainComponent } from './main.component';
             },
             {
                 path: 'main',
-                component: MainComponent
-            },
-            {
-                path: 'contas',
+                component: MainComponent,
                 loadChildren: 'app/contas/contas.module#ContasModule',
             }
         ])
