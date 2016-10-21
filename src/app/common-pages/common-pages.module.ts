@@ -90,7 +90,6 @@ import { BreadcrumbsComponent } from '../template/shared/breadcrumb.component';
         CommonModule,
         FormsModule,
         CommonPagesRoutingModule,
-        ContasModule,
          /* Imports do template */
         Ng2BootstrapModule,
         // ChartsModule

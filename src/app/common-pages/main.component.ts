@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class MainComponent implements OnInit {
 
-    constructor(private router: Router) {}
+    constructor(private router: Router) { }
 
     public status: { isopen: boolean } = { isopen: false };
     public addToggleClass: boolean = false;
@@ -18,5 +18,9 @@ export class MainComponent implements OnInit {
         this.status.isopen = !this.status.isopen;
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void { }
+
+    login() {
+        this.router.navigate(['/contas/main']);
+    }
 }
