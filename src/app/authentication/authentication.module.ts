@@ -23,7 +23,7 @@ import { provideAuth } from "angular2-jwt";
     providers: [
         provideAuth({
             globalHeaders: [{ "Content-type": "application/json" }],
-            newJwtError: true,
+            noJwtError: true,
             noTokenScheme: true
         })
     ]
