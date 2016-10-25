@@ -6,9 +6,9 @@ import { DashboardComponent } from './dashboard.component';
 
 @NgModule({
     imports: [
-        RouterModule.forChild([
+        RouterModule.forChild([            
             {
-                path: 'contas',
+                path: '',
                 component: ManageContasComponent                 
             }
         ])

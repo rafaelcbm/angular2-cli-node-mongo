@@ -4,6 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { MainComponent } from './main.component';
 
+import { AuthGuard } from '../authentication/auth-guard.service';
+
+
 
 @NgModule({
     imports: [
@@ -14,8 +17,19 @@ import { MainComponent } from './main.component';
             },
             {
                 path: 'main',
-                component: MainComponent,
-                loadChildren: 'app/contas/contas.module#ContasModule',
+                component: MainComponent,                
+                canActivate: [AuthGuard],
+                children:
+                [
+                    {
+                        path: '',
+                        redirectTo: 'contas',
+                    },
+                    {
+                        path: 'contas',
+                        loadChildren: 'app/contas/contas.module#ContasModule',
+                    }
+                ]
             }
         ])
     ],

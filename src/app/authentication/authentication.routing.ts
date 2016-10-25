@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
 
+import { AuthGuard }      from './auth-guard.service';
+import { AuthService }    from './auth.service';
 
 @NgModule({
     imports: [
@@ -20,6 +22,10 @@ import { LoginComponent } from './login.component';
     ],
     exports: [
         RouterModule
+    ],
+    providers: [
+        AuthGuard,
+        AuthService
     ]
 })
 export class AuthenticationRoutingModule { }

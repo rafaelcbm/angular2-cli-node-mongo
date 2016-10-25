@@ -20,7 +20,7 @@ import { provideAuth } from "angular2-jwt";
         HttpModule,
         AuthenticationRoutingModule
     ],
-    providers: [
+    providers: [        
         provideAuth({
             globalHeaders: [{ "Content-type": "application/json" }],
             noJwtError: true,
