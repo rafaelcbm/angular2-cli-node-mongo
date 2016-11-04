@@ -37,19 +37,19 @@ export class LoginComponent implements OnInit {
         private router: Router, private http: Http, private authHttp: AuthHttp) { 
         this.setMessage();
 
-        console.log("**constructor this.authService.isLoggedIn=", this.authService.isLoggedIn);
+        console.log("**constructor this.authService.isLoggedIn=", this.authService.isLoggedIn());
     }
 
     ngOnInit() {
 
-        console.log("**ngOnInit this.authService.isLoggedIn=", this.authService.isLoggedIn);
+        console.log("**ngOnInit this.authService.isLoggedIn=", this.authService.isLoggedIn());
         // subscribe to the observable
         this.loginObservable$ = this.authService.loginObservable$;      
     }
 
 
     setMessage() {
-        this.message = 'Logged ' + (this.authService.isLoggedIn ? 'in' : 'out');
+        this.message = 'Logged ' + (this.authService.isLoggedIn() ? 'in' : 'out');
     }
 
     login() {
@@ -69,11 +69,11 @@ export class LoginComponent implements OnInit {
 
         this.loginObservable$.subscribe((data) => {
             console.log("Resposta no login.component, data=", data);
-            console.log("this.authService.isLoggedIn=", this.authService.isLoggedIn);
+            console.log("this.authService.isLoggedIn=", this.authService.isLoggedIn());
             console.log("this.authService.redirectUrl=", this.authService.redirectUrl);
             
             this.setMessage();
-            if (this.authService.isLoggedIn) {
+            if (this.authService.isLoggedIn()) {
                 // Get the redirect URL from our auth service
                 // If no redirect has been set, use the default
                 let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'main/contas';
