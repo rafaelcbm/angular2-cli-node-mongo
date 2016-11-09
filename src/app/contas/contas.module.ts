@@ -7,10 +7,15 @@ import { ContasRoutingModule } from './contas.routing';
 
 import { ManageContasComponent } from './manage-contas.component';
 import { DashboardComponent } from './dashboard.component';
+import { ContasListComponent } from './contas-list.component';
+import { ContasDetailComponent } from './contas-detail.component';
 
 @NgModule({
     declarations: [
-        ManageContasComponent, DashboardComponent
+        ManageContasComponent,
+        DashboardComponent,
+        ContasListComponent,
+        ContasDetailComponent
     ],
     imports: [
         CommonModule,
@@ -20,4 +25,4 @@ import { DashboardComponent } from './dashboard.component';
     ],
     providers: []
 })
-export class ContasModule { }
+export class ContasModule {}

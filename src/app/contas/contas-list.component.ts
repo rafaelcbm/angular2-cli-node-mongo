@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-    templateUrl: './manage-contas.component.html'
+    selector: 'contas-list',
+    templateUrl: './contas-list.component.html'
 })
-export class ManageContasComponent {
+export class ContasListComponent {
     constructor() {}
 }

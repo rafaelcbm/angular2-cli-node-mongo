@@ -10,31 +10,24 @@ import { AuthGuard } from '../authentication/auth-guard.service';
 
 @NgModule({
     imports: [
-        RouterModule.forChild([
-            {
-                path: 'home',
-                component: HomeComponent
-            },
-            {
-                path: 'main',
-                component: MainComponent,                
-                canActivate: [AuthGuard],
-                children:
-                [
-                    {
-                        path: '',
-                        redirectTo: 'contas',
-                    },
-                    {
-                        path: 'contas',
-                        loadChildren: 'app/contas/contas.module#ContasModule',
-                    }
-                ]
-            }
-        ])
+        RouterModule.forChild([{
+            path: 'home',
+            component: HomeComponent
+        }, {
+            path: 'main',
+            component: MainComponent,
+            canActivate: [AuthGuard],
+            children: [{
+                path: '',
+                redirectTo: 'contas',
+            }, {
+                path: 'contas',
+                loadChildren: 'app/contas/contas.module#ContasModule',
+            }]
+        }])
     ],
     exports: [
         RouterModule
     ]
 })
-export class CommonPagesRoutingModule { }
+export class CommonPagesRoutingModule {}
