@@ -31,11 +31,11 @@ export class AuthService {
         return tokenNotExpired();
     }
 
-    login() {
+    login(userCredential) {
         //return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
         //this.isLoggedIn = true;
 
-        this.http.post("/login", JSON.stringify({ username: "rafa", password: "qwer" }), new RequestOptions({
+        this.http.post("/login", JSON.stringify(userCredential), new RequestOptions({
             headers: new Headers({ "Content-Type": "application/json" })
         }))
             .map((res: Response) => res.json())
@@ -49,15 +49,13 @@ export class AuthService {
                         jwt: data.msg,
                         status: data.status
                     });
-                } else {
-                    console.log("*Antes this.authService.isLoggedIn=", this.isLoggedIn());
+                } else {                    
                     localStorage.setItem("id_token", data.jwt);
-                    console.log("*Depois this.authService.isLoggedIn=", this.isLoggedIn());
 
                     // put data into observavle 
                     this.observer.next({
-                        jwt: data.jwt,
-                        status: data.status
+                        status: data.status,
+                        jwt: data.jwt
                     });
                 }
             },

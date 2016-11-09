@@ -23,7 +23,7 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
         return next(err);
     }
 
-    var user = {
+    var user:any = {
         nome: request.body.username,
         password: request.body.password
     }

@@ -19,60 +19,24 @@ export class LoginComponent implements OnInit {
 
     loginObservable$: Observable<any>;
 
-    // user: any = {
-    //     password: "angualr2express",
-    //     username: "john"
-    // };
-
     response: string;
     error: string;
 
     username: string;
     password: string;
 
-    message: string;
-
-
     constructor(public authService: AuthService,
-        private router: Router, private http: Http, private authHttp: AuthHttp) { 
-        this.setMessage();
-
-        console.log("**constructor this.authService.isLoggedIn=", this.authService.isLoggedIn());
-    }
+        private router: Router, private http: Http, private authHttp: AuthHttp) { }
 
     ngOnInit() {
-
-        console.log("**ngOnInit this.authService.isLoggedIn=", this.authService.isLoggedIn());
         // subscribe to the observable
-        this.loginObservable$ = this.authService.loginObservable$;      
-    }
-
-
-    setMessage() {
-        this.message = 'Logged ' + (this.authService.isLoggedIn() ? 'in' : 'out');
-    }
-
-    login() {
-        this.message = 'Trying to log in ...';
-
-        /* Exemplo angular.io
-        this.authService.login().subscribe(() => {
-            this.setMessage();
-            if (this.authService.isLoggedIn) {
-                // Get the redirect URL from our auth service
-                // If no redirect has been set, use the default
-                let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'main/contas';
-                // Redirect the user
-                this.router.navigate([redirect]);
-            }
-        });*/
+        this.loginObservable$ = this.authService.loginObservable$;
 
         this.loginObservable$.subscribe((data) => {
             console.log("Resposta no login.component, data=", data);
             console.log("this.authService.isLoggedIn=", this.authService.isLoggedIn());
             console.log("this.authService.redirectUrl=", this.authService.redirectUrl);
-            
-            this.setMessage();
+
             if (this.authService.isLoggedIn()) {
                 // Get the redirect URL from our auth service
                 // If no redirect has been set, use the default
@@ -81,8 +45,11 @@ export class LoginComponent implements OnInit {
                 this.router.navigate([redirect]);
             }
         })
+    }
 
-        this.authService.login();
+    login(formValue) {
+
+        this.authService.login(formValue);
     }
 
     signup(formValue) {
@@ -107,11 +74,7 @@ export class LoginComponent implements OnInit {
     }
 
     logout(): void {
-        
         this.authService.logout();
-        this.setMessage();        
-        //location.reload();
-        // this.isLogged = false;
     }
 
     protected() {

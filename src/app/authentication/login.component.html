@@ -4,13 +4,7 @@
             <div class="card-group">
                 <div class="card p-a-2">
                     <div class="card-block">
-                        <form #formRef="ngForm" (ngSubmit)="signup(formRef.value)">
-                            <h2>LOGIN</h2>
-                            <p>{{message}}</p>
-                            <p>
-                                <button (click)="login()" *ngIf="!authService.isLoggedIn()">Login</button>
-                                <button (click)="logout()" *ngIf="authService.isLoggedIn()">Logout</button>
-                            </p>
+                        <form #formRef="ngForm" (ngSubmit)="signup(formRef.value)">                            
                             <h1>Login</h1>
                             <p class="text-muted">Sign In to your account</p>
                             username: {{username|json}} password: {{password|json}}
@@ -26,7 +20,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <button type="button" (click)="login()" class="btn btn-primary p-x-2">Login</button>
+                                    <button type="button" (click)="login(formRef.value)" class="btn btn-primary p-x-2">Login</button>
                                 </div>
                                 <div class="col-xs-3">
                                     <button type="submit" class="btn btn-secondary p-x-2">Signup</button>
