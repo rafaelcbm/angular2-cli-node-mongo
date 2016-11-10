@@ -17,17 +17,20 @@ import { AuthGuard } from '../authentication/auth-guard.service';
             path: 'main',
             component: MainComponent,
             canActivate: [AuthGuard],
-            children: [{
-                path: '',
-                redirectTo: 'contas',
-            }, {
-                path: 'contas',
-                loadChildren: 'app/contas/contas.module#ContasModule',
-            }]
+            children: [
+                {
+                    path: 'contas',
+                    loadChildren: 'app/contas/contas.module#ContasModule',
+                },
+                {
+                    path: '',
+                    redirectTo: 'contas',
+                },
+            ]
         }])
     ],
     exports: [
         RouterModule
     ]
 })
-export class CommonPagesRoutingModule {}
+export class CommonPagesRoutingModule { }

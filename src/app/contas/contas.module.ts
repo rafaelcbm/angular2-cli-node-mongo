@@ -9,6 +9,7 @@ import { ManageContasComponent } from './manage-contas.component';
 import { DashboardComponent } from './dashboard.component';
 import { ContasListComponent } from './contas-list.component';
 import { ContasDetailComponent } from './contas-detail.component';
+import { ContasService } from './contas-service';
 
 @NgModule({
     declarations: [
@@ -23,6 +24,8 @@ import { ContasDetailComponent } from './contas-detail.component';
         HttpModule,
         ContasRoutingModule
     ],
-    providers: []
+    providers: [
+        ContasService
+    ]
 })
 export class ContasModule {}

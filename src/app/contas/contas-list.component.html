@@ -1,2 +1,48 @@
-<h3>Lista de Contas Aqui</h3>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Contas
+            </div>
+            <div class="card-block">
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Conta</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let conta of contas" (click)="onSelect(conta)">
+                            <td>{{conta.id}}</td>
+                            <td>{{conta.name}}</td>
+                            <td>
+                                <span class="tag tag-success">Active</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Prev</a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">4</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!--/col-->
+</div>
 <router-outlet></router-outlet>

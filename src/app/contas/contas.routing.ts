@@ -15,7 +15,7 @@ import { ContasDetailComponent } from './contas-detail.component';
                 path: '',
                 component: ContasListComponent,
                 children: [{
-                    path: 'detail',
+                    path: ':id',
                     component: ContasDetailComponent
                 }, {
                     path: ''
