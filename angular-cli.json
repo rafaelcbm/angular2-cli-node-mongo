@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.15",
+    "version": "1.0.0",
     "name": "angular2-cli-test"
   },
   "apps": [{
@@ -14,13 +14,9 @@
     "prefix": "app",
     "mobile": false,
     "styles": [
-      "../node_modules/bootstrap/dist/css/bootstrap.css"
+      "scss/style.scss"
     ],
     "scripts": [
-      "../node_modules/jquery/dist/jquery.js",
-      "../node_modules/tether/dist/js/tether.js",
-      "../node_modules/bootstrap/dist/js/bootstrap.js",
-
       "../node_modules/chart.js/dist/Chart.bundle.min.js",
       "../node_modules/chart.js/dist/Chart.min.js"
     ],
@@ -43,7 +39,7 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
+    "styleExt": "scss",
     "prefixInterfaces": false
   }
 }
