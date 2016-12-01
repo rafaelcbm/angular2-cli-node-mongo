@@ -3,12 +3,14 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { RegisterComponent } from './register.component';
-import { LoginComponent } from './login.component';
+import { provideAuth } from "angular2-jwt";
+// Notifications
+import { ToasterModule,
+         ToasterService}            from 'angular2-toaster/angular2-toaster';
 
 import { AuthenticationRoutingModule } from './authentication.routing';
-import { provideAuth } from "angular2-jwt";
-
+import { RegisterComponent } from './register.component';
+import { LoginComponent } from './login.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +20,8 @@ import { provideAuth } from "angular2-jwt";
         CommonModule,
         FormsModule,
         HttpModule,
-        AuthenticationRoutingModule
+        AuthenticationRoutingModule,
+        ToasterModule
     ],
     providers: [        
         provideAuth({

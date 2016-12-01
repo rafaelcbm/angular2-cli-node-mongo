@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'home',
+    //selector: 'home', // Também não necessita, já que é acessado pelo router.
     templateUrl: './home.component.html',
 })
 export class HomeComponent {

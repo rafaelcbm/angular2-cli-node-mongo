@@ -8,28 +8,29 @@ import "rxjs/add/operator/map";
 })
 export class RegisterComponent {
 
+    response: string;
+    error: string;
+
     constructor(private http: Http, private router: Router) { }
 
     signup(formValue) {
         if (formValue) { console.log(formValue); }
 
         this.http.post("/signup", JSON.stringify(formValue), new RequestOptions({
-                headers: new Headers({ "Content-Type": "application/json" })
-            }))
+            headers: new Headers({ "Content-Type": "application/json" })
+        }))
             .map((res: Response) => res.json())
             .subscribe(
-                (data: any) => {
-                    console.log(data);
+            (data: any) => {
+                console.log("Resposta signup:", data);
+                this.response = data;
 
-                    //localStorage.setItem("id_token", data.jwt);
-                    // this.myPopup.hide();
-                    // this.isLogged = true;
-                    // location.reload();
-                },
-                (error: Error) => {
-                    console.log(error);
-                    //this.error = JSON.stringify(error);
-                }
+                //localStorage.setItem("id_token", data.jwt);                    
+            },
+            (error: Error) => {
+                console.log(error);
+                this.error = JSON.stringify(error);
+            }
             );
     }
 

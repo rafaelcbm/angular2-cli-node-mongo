@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
     //Nao precisa de selector, já que é acessado pelo router.
@@ -7,12 +6,16 @@ import { Router } from '@angular/router';
 })
 export class MainComponent implements OnInit {
 
-    constructor(private router: Router) {}
+    constructor() { }
 
-    public status: { isopen: boolean } = { isopen: false };
-    public addToggleClass: boolean = false;
+    public disabled:boolean = false;
+    public status:{isopen:boolean} = {isopen: false};
 
-    public toggleDropdown($event: MouseEvent): void {
+    public toggled(open:boolean):void {
+        console.log('Dropdown is now: ', open);
+    }
+
+    public toggleDropdown($event:MouseEvent):void {
         $event.preventDefault();
         $event.stopPropagation();
         this.status.isopen = !this.status.isopen;
