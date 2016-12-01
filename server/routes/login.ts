@@ -49,10 +49,15 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
             user.hash = hash.toString("hex");
 
             dataAccess.insertUser(user).then((result) => {
-                dataAccess.getUser(user.nome).then((document) => {
-                    logger.info("** result mongo - user document=%j", document);
+                dataAccess.getUser(user.nome).then((savedUser) => {
 
-                    response.json(document);
+                    logger.info("** savedUser = %j", savedUser);
+
+                    const token = sign({ "user": savedUser.nome, permissions: [] }, secret, { expiresIn: "7d" });
+                    response.json({
+                        "status": "sucesso",
+                        "jwt": token
+                    });
                     response.sendStatus(201);
                 })
             });

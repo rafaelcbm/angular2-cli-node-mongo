@@ -23,6 +23,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class LoginComponent implements OnInit {
 
+    private toasterService:ToasterService;
+
     public toasterconfig: ToasterConfig =
         new ToasterConfig({
             tapToDismiss: true,
@@ -31,21 +33,18 @@ export class LoginComponent implements OnInit {
 
     loginObservable$: Observable < any > ;
 
-    response: string;
-    error: string;
-
     username: string;
     password: string;
 
-    constructor(private authService: AuthService, private toasterService: ToasterService,
-        private router: Router, private http: Http, private authHttp: AuthHttp) {}
+    constructor(private authService: AuthService, toasterService: ToasterService,
+        private router: Router, private http: Http, private authHttp: AuthHttp) {
+
+        this.toasterService = toasterService;
+    }
 
     ngOnInit() {
-        console.log("login.component.ngOnInit.authService", this.authService);
-
         // subscribe to the observable
         this.loginObservable$ = this.authService.loginObservable$;
-
         this.loginObservable$.subscribe((data) => this.loginHandler(data));
     }
 
@@ -69,27 +68,6 @@ export class LoginComponent implements OnInit {
             // Redirect the user
             this.router.navigate([redirect]);
         }
-    }
-
-    signup(formValue) {
-        if (formValue) { console.log(formValue); }
-
-        this.http.post("/signup", JSON.stringify(formValue), new RequestOptions({
-                headers: new Headers({ "Content-Type": "application/json" })
-            }))
-            .map((res: Response) => res.json())
-            .subscribe(
-                (data: any) => {
-                    console.log("Resposta signup:", data);
-                    this.response = data;
-
-                    //localStorage.setItem("id_token", data.jwt);                    
-                },
-                (error: Error) => {
-                    console.log(error);
-                    this.error = JSON.stringify(error);
-                }
-            );
     }
 
     logout(): void {
@@ -118,7 +96,6 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 (data) => {
                     console.log(data);
-                    this.response = data;
                 },
                 (resError) => {
                     console.log(resError);

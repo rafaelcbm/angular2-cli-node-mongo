@@ -5,10 +5,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { CommonPagesModule } from './common-pages/common-pages.module';
+import { AuthService }    from './authentication/auth.service';
 
 @NgModule({
     declarations: [
-        AppComponent        
+        AppComponent
     ],
     imports: [
         BrowserModule,
@@ -17,7 +18,9 @@ import { CommonPagesModule } from './common-pages/common-pages.module';
         //O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
         AppRoutingModule
     ],
-    providers: [ ],
+     providers: [
+        AuthService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,37 +1,69 @@
-import { Component }        from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
+
+import { AuthHttp, JwtHelper } from "angular2-jwt";
+
+//import { ApiService } from "../shared/api.service";
 import "rxjs/add/operator/map";
 
+import {
+    ToasterModule,
+    ToasterService,
+    ToasterConfig
+} from 'angular2-toaster/angular2-toaster';
+
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs/Observable';
+
+
 @Component({
-	    templateUrl: './register.component.html'
+    templateUrl: './register.component.html'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
 
-    response: string;
-    error: string;
+    private toasterService: ToasterService;
 
-    constructor(private http: Http, private router: Router) { }
+    public toasterconfig: ToasterConfig =
+        new ToasterConfig({
+            tapToDismiss: true,
+            timeout: 5000
+        });
 
-    signup(formValue) {
-        if (formValue) { console.log(formValue); }
 
-        this.http.post("/signup", JSON.stringify(formValue), new RequestOptions({
-            headers: new Headers({ "Content-Type": "application/json" })
-        }))
-            .map((res: Response) => res.json())
-            .subscribe(
-            (data: any) => {
-                console.log("Resposta signup:", data);
-                this.response = data;
+    registerObservable$: Observable < any > ;
 
-                //localStorage.setItem("id_token", data.jwt);                    
-            },
-            (error: Error) => {
-                console.log(error);
-                this.error = JSON.stringify(error);
-            }
-            );
+    constructor(private authService: AuthService, toasterService: ToasterService,
+        private router: Router, private http: Http, private authHttp: AuthHttp) {
+
+        this.toasterService = toasterService;
+    }
+
+    ngOnInit() {
+        // subscribe to the observable
+        this.registerObservable$ = this.authService.registerObservable$;
+        this.registerObservable$.subscribe((data) => this.signupHandler(data));
+    }
+
+    signup(formValue) {        
+        this.authService.signup(formValue);
+    }
+
+    signupHandler(data) {
+        if (data.status === "erro") {
+            console.log("Mensagem de erro =", data.errorMsg);
+            //TODO: Encapsular mensagens em novo componente shared
+            this.toasterService.pop('error', 'Erro', data.errorMsg);
+            return;
+        }
+
+        if (this.authService.isLoggedIn()) {
+            // Get the redirect URL from our auth service
+            // If no redirect has been set, use the default
+            let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'main/contas';
+            // Redirect the user
+            this.router.navigate([redirect]);
+        }
     }
 
 }

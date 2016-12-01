@@ -17,14 +17,18 @@ export class AuthService {
 
     // expose to component
     loginObservable$: Observable < any > ;
-    private observer: Observer < any > ;
+    registerObservable$: Observable < any > ;
+
+    private loginObserver: Observer < any > ;
+    private registerObserver: Observer < any > ;
 
 
     // store the URL so we can redirect after logging in
     redirectUrl: string;
 
     constructor(private http: Http) {
-        this.loginObservable$ = new Observable(observer => this.observer = observer).share();
+        this.loginObservable$ = new Observable(observer => this.loginObserver = observer).share();
+        this.registerObservable$ = new Observable(observer => this.registerObserver = observer).share();
     }
 
     isLoggedIn() {
@@ -45,7 +49,7 @@ export class AuthService {
 
                     if (data.status === "erro") {
                         // put data into observavle 
-                        this.observer.next({
+                        this.loginObserver.next({
                             errorMsg: data.msg,
                             status: data.status
                         });
@@ -53,7 +57,7 @@ export class AuthService {
                         localStorage.setItem("id_token", data.jwt);
 
                         // put data into observavle 
-                        this.observer.next({
+                        this.loginObserver.next({
                             status: data.status,
                             jwt: data.jwt
                         });
@@ -62,8 +66,47 @@ export class AuthService {
                 (error: Error) => {
                     console.log(error);
                     // put data into observavle  
-                    this.observer.next({
+                    this.loginObserver.next({
                         errorMsg: 'Erro ao logar!',
+                        status: 'erro'
+                    })
+                }
+            );
+    }
+
+    signup(userCredential) {
+        //return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
+        //this.isLoggedIn = true;
+
+        this.http.post("/signup", JSON.stringify(userCredential), new RequestOptions({
+                headers: new Headers({ "Content-Type": "application/json" })
+            }))
+            .map((res: Response) => res.json())
+            .subscribe(
+                (data: any) => {
+                    console.log("Resposta / register:", data);
+
+                    if (data.status === "erro") {
+                        // put data into observavle 
+                        this.registerObserver.next({
+                            errorMsg: data.msg,
+                            status: data.status
+                        });
+                    } else {
+                        localStorage.setItem("id_token", data.jwt);
+
+                        // put data into observavle 
+                        this.registerObserver.next({
+                            status: data.status,
+                            jwt: data.jwt
+                        });
+                    }
+                },
+                (error: Error) => {
+                    console.log(error);
+                    // put data into observavle  
+                    this.registerObserver.next({
+                        errorMsg: 'Erro ao registrar novo usuário!',
                         status: 'erro'
                     })
                 }
