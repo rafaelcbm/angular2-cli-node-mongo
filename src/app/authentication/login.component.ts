@@ -55,9 +55,9 @@ export class LoginComponent implements OnInit {
 
     loginHandler(data) {
         if (data.status === "erro") {
-            console.log("Mensagem de erro =", data.errorMsg);
+            console.log("Mensagem de erro =", data.message);
             //TODO: Encapsular mensagens em novo componente shared
-            this.toasterService.pop('error', 'Erro', data.errorMsg);
+            this.toasterService.pop('error', 'Erro', data.message);
             return;
         }
 

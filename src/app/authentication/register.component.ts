@@ -45,15 +45,15 @@ export class RegisterComponent implements OnInit {
         this.registerObservable$.subscribe((data) => this.signupHandler(data));
     }
 
-    signup(formValue) {        
+    signup(formValue) {
         this.authService.signup(formValue);
     }
 
     signupHandler(data) {
         if (data.status === "erro") {
-            console.log("Mensagem de erro =", data.errorMsg);
+            console.log("Mensagem de erro =", data.message);
             //TODO: Encapsular mensagens em novo componente shared
-            this.toasterService.pop('error', 'Erro', data.errorMsg);
+            this.toasterService.pop('error', 'Erro', data.message);
             return;
         }
 

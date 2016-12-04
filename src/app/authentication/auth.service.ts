@@ -50,8 +50,8 @@ export class AuthService {
                     if (data.status === "erro") {
                         // put data into observavle 
                         this.loginObserver.next({
-                            errorMsg: data.msg,
-                            status: data.status
+                            status: data.status,
+                            message: data.msg,
                         });
                     } else {
                         localStorage.setItem("id_token", data.jwt);
@@ -67,8 +67,8 @@ export class AuthService {
                     console.log(error);
                     // put data into observavle  
                     this.loginObserver.next({
-                        errorMsg: 'Erro ao logar!',
-                        status: 'erro'
+                        status: 'erro',
+                        message: 'Erro ao autenticar usuário!',
                     })
                 }
             );
@@ -89,8 +89,8 @@ export class AuthService {
                     if (data.status === "erro") {
                         // put data into observavle 
                         this.registerObserver.next({
-                            errorMsg: data.msg,
-                            status: data.status
+                            status: data.status,
+                            message: data.message,
                         });
                     } else {
                         localStorage.setItem("id_token", data.jwt);
@@ -106,8 +106,8 @@ export class AuthService {
                     console.log(error);
                     // put data into observavle  
                     this.registerObserver.next({
-                        errorMsg: 'Erro ao registrar novo usuário!',
-                        status: 'erro'
+                        status: 'erro',
+                        message: 'Erro ao registrar novo usuário!',
                     })
                 }
             );
