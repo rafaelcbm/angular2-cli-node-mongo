@@ -2,9 +2,12 @@ import { Router, Request, Response, NextFunction } from "express";
 import { randomBytes, pbkdf2 } from "crypto";
 import { sign } from "jsonwebtoken";
 import { secret, length, digest } from "../config";
-import { app, logger, dataAccess } from "../app";
+import { app, logger } from "../app";
+import { UserDAO } from "../dal/userDAO";
 
 const loginRouter: Router = Router();
+
+var userDAO = new UserDAO();
 
 loginRouter.post("/signup", function(request: Request, response: Response, next: NextFunction) {
     logger.info("** Login Router:signup");
@@ -20,7 +23,7 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
         password: request.body.password
     }
 
-    dataAccess.getUser(user.nome).then((document) => {
+    userDAO.getUser(user.nome).then((document) => {
         logger.info("** result mongo - user document=%j", document);
 
         // Se o document existir, entao envia msg de erro de usuario existente.
@@ -43,8 +46,8 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
 
             user.hash = hash.toString("hex");
 
-            dataAccess.insertUser(user).then((result) => {
-                dataAccess.getUser(user.nome).then((savedUser) => {
+            userDAO.insertUser(user).then((result) => {
+                userDAO.getUser(user.nome).then((savedUser) => {
 
                     logger.info("** savedUser = %j", savedUser);
 
@@ -72,7 +75,7 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
 loginRouter.post("/login", function(request: Request, response: Response, next: NextFunction) {
     logger.info("** Login - Resquest body %j", request.body);
 
-    dataAccess.getUser(request.body.username).then((user) => {
+    userDAO.getUser(request.body.username).then((user) => {
         logger.info("** result mongo - user = %j", user);
 
         pbkdf2(request.body.password, user.salt, 10000, length, digest, function(err, hash) {
