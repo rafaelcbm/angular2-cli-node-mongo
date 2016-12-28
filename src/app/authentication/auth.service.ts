@@ -51,7 +51,7 @@ export class AuthService {
                         // put data into observavle 
                         this.loginObserver.next({
                             status: data.status,
-                            message: data.msg,
+                            message: data.message,
                         });
                     } else {
                         localStorage.setItem("id_token", data.jwt);

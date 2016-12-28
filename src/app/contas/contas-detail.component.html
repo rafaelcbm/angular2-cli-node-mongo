@@ -1,1 +1,12 @@
-<h3>Detalhe de uma Conta Aqui</h3>
+<h3>Conta:</h3>
+ <div *ngIf="conta">
+    <div>
+      <label>Id: </label>{{ conta.id }}</div>
+    <div>
+      <label>Nome: </label>
+      <input [(ngModel)]="conta.name" placeholder="Nome"/>
+    </div>
+    <p>
+      <button (click)="gotoContas()">Voltar</button>
+    </p>
+  </div>
