@@ -63,7 +63,7 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
     }).catch((e) => {
         logger.info("** Error = %j", e);
 
-          return response.json({
+        return response.json({
             "status": "erro",
             "message": "Erro ao autenticar usuário!"
         });
@@ -106,5 +106,28 @@ loginRouter.post("/login", function(request: Request, response: Response, next: 
         });
     });
 });
+
+loginRouter.get("/getAllUsers", function(request: Request, response: Response, next: NextFunction) {
+    logger.info("** Router - getAllUsers - request: %j", request.body);
+
+    userDAO.getAllUsersJS6().then((user) => {
+        logger.info("** result mongo - user = %j", user);
+
+        return response.json({
+            "status": "sucesso",
+            "user": user
+        });
+
+    }).catch((e) => {
+        logger.info("** Error = %j", e);
+
+        return response.json({
+            "status": "erro",
+            "message": "Usuário não encontrado!"
+        });
+    });
+});
+
+
 
 export { loginRouter }

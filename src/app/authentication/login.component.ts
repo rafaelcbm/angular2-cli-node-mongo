@@ -23,15 +23,15 @@ import { Observable } from 'rxjs/Observable';
 })
 export class LoginComponent implements OnInit {
 
-    private toasterService:ToasterService;
+    private toasterService: ToasterService;
 
     public toasterconfig: ToasterConfig =
-        new ToasterConfig({
-            tapToDismiss: true,
-            timeout: 5000
-        });
+    new ToasterConfig({
+        tapToDismiss: true,
+        timeout: 5000
+    });
 
-    loginObservable$: Observable < any > ;
+    loginObservable$: Observable<any>;
 
     username: string;
     password: string;
@@ -74,6 +74,22 @@ export class LoginComponent implements OnInit {
         this.authService.logout();
     }
 
+    getAllUsersTest() {
+        console.log("* Chamou getAllUsersTest:");
+     
+        this.authHttp
+            .get("/getAllUsers")
+            .map((res: Response) => res.json())
+            .subscribe(
+            (data) => {
+                console.log(data);
+            },
+            (resError) => {
+                console.log(resError);
+                //setTimeout(() => this.error = null, 4000)
+            });
+    }
+
     protected() {
         console.log("* Chamou protected:");
 
@@ -94,12 +110,12 @@ export class LoginComponent implements OnInit {
             .get("/api")
             .map((res: Response) => res.json())
             .subscribe(
-                (data) => {
-                    console.log(data);
-                },
-                (resError) => {
-                    console.log(resError);
-                    //setTimeout(() => this.error = null, 4000)
-                });
+            (data) => {
+                console.log(data);
+            },
+            (resError) => {
+                console.log(resError);
+                //setTimeout(() => this.error = null, 4000)
+            });
     }
 }

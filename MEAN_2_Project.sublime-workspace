@@ -1,0 +1,1872 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"contas",
+				"ContasService\talias"
+			],
+			[
+				"Contasde",
+				"ContasDetailComponent\tclass"
+			],
+			[
+				"nu",
+				"number\tkeyword"
+			],
+			[
+				"man",
+				"ManageContasComponent\tclass"
+			],
+			[
+				"main",
+				"MainComponent\talias"
+			],
+			[
+				"hom",
+				"HomeComponent\talias"
+			],
+			[
+				"fun",
+				"function\tkeyword"
+			],
+			[
+				"navbar",
+				"navbar-nav"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/app/contas/contas-list.component.ts",
+			"settings":
+			{
+				"buffer_size": 730,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nCSS3\n----\n\n  VERSION 2.1.0 CHANGES\n  \n  The highlighter now fully supports PostCSS-cssnext. This is a CSS preprocessor\n  that converts next-gen CSS into browser-supported CSS. It lets you write wacky\n  things like this:\n  \n      /* BEFORE NESTING */\n      table.colortable td {\n        text-align:center;\n      }\n      table.colortable td.c {\n        text-transform:uppercase;\n      }\n      table.colortable td:first-child, table.colortable td:first-child+td {\n        border:1px solid black;\n      }\n  \n      /* AFTER NESTING */\n      table.colortable {\n        & td {\n          text-align:center;\n          &.c {\n            text-transform:uppercase;\n          }\n          &:first-child, &:first-child + td {\n            border:1px solid black;\n          }\n        }\n      }\n  \n  Check out cssnext.io for the full list of features.\n  \n  To be clear, CSS3 *does not* install cssnext. It's just supported by the\n  highlighter if you want to use it.\n  \n  Thank you to ihodev and nirfse for helping me test this!\n\n\nMaterial Theme\n--------------\n\n  #### Material Theme for Sublime Text 3\n  \n  ## Version 4.0.3\n  \n  📣 **BUGFIXES**:\n    * Fix accent-teal missing assets ([d959813](https://github.com/equinusocio/material-theme/commit/d959813))\n    * Improve Theme Info dialog.\n  \n  \n  ** Check the official changelog ( https://github.com/equinusocio/material-theme/blob/master/CHANGELOG.md  ) **\n",
+			"settings":
+			{
+				"buffer_size": 1442,
+				"line_ending": "Windows",
+				"name": "Package Control Messages",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"file": "src/app/contas/contas-detail.component.ts",
+			"settings":
+			{
+				"buffer_size": 960,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/app/contas/contas-detail.component.html",
+			"settings":
+			{
+				"buffer_size": 279,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/app/contas/contas-list.component.html",
+			"settings":
+			{
+				"buffer_size": 1933,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server/dal/userDAO.ts",
+			"settings":
+			{
+				"buffer_size": 1961,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server/routes/login.ts",
+			"settings":
+			{
+				"buffer_size": 3608,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server/tsconfig.json",
+			"settings":
+			{
+				"buffer_size": 444,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "angular-cli.json",
+			"settings":
+			{
+				"buffer_size": 921,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "package.json",
+			"settings":
+			{
+				"buffer_size": 2748,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server/app.ts",
+			"settings":
+			{
+				"buffer_size": 2221,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 137.0,
+		"last_filter": "Snippet: ng",
+		"selected_items":
+		[
+			[
+				"Snippet: ng",
+				"Snippet: ng-component"
+			],
+			[
+				"Snippet: ",
+				"Snippet: class …"
+			],
+			[
+				"new ",
+				"File: New File Relative to Current View"
+			],
+			[
+				"new file",
+				"File: New File Relative to Current View"
+			],
+			[
+				"new",
+				"File: New File Relative to Current View"
+			],
+			[
+				"newfile",
+				"File: New File Relative to Current View"
+			],
+			[
+				"comm",
+				"Toggle Comment"
+			],
+			[
+				"commm",
+				"Set Syntax: Git Commit Message"
+			],
+			[
+				"goto",
+				"TypeScript: GoTo Definition"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"status",
+				"Git: Status"
+			],
+			[
+				"pull",
+				"Git: Pull"
+			],
+			[
+				"psuh",
+				"Git: Push"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git stat",
+				"Git: Status"
+			],
+			[
+				"install pa",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"git status",
+				"Git: Status"
+			],
+			[
+				"ts ",
+				"Build With: TypeScript"
+			],
+			[
+				"tsc",
+				"TypeScript: Show Error List"
+			],
+			[
+				"find",
+				"TypeScript: Find References"
+			],
+			[
+				"new fu",
+				"File: New File Relative to Current View"
+			],
+			[
+				"forma",
+				"TypeScript: Format Document"
+			],
+			[
+				"tyoes",
+				"TypeScript: Format Selection"
+			],
+			[
+				"rename",
+				"File: Rename"
+			],
+			[
+				"comme",
+				"Toggle Comment"
+			],
+			[
+				"git pull",
+				"Git: Pull"
+			],
+			[
+				"git",
+				"Git: Fetch"
+			],
+			[
+				"remove pa",
+				"Package Control: Remove Package"
+			],
+			[
+				"isntall",
+				"Package Control: Install Package"
+			],
+			[
+				"delete",
+				"File: Delete"
+			],
+			[
+				"newf",
+				"File: New File Relative to Current View"
+			],
+			[
+				"diff",
+				"GitGutter: Show Diff Popup"
+			],
+			[
+				"gutter",
+				"GitGutter: Show Diff Popup"
+			],
+			[
+				"install a",
+				"Package Control: Install Package"
+			],
+			[
+				"mater",
+				"Material Theme: Configuration"
+			],
+			[
+				"isnta",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 446.0
+	},
+	"console":
+	{
+		"height": 127.0,
+		"history":
+		[
+			"git --v",
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/projetos/angular2-cli-node-mongo",
+		"/C/projetos/angular2-cli-node-mongo/server",
+		"/C/projetos/angular2-cli-node-mongo/server/dal",
+		"/C/projetos/angular2-cli-node-mongo/server/routes",
+		"/C/projetos/angular2-cli-node-mongo/src/app",
+		"/C/projetos/angular2-cli-node-mongo/src/app/authentication",
+		"/C/projetos/angular2-cli-node-mongo/src/app/contas"
+	],
+	"file_history":
+	[
+		"/C/projetos/Angular 2_v2-1-7/Angular2_CLI_Full_Project/src/app/components/buttons.component.html",
+		"/C/projetos/Angular 2_v2-1-7/Angular2_CLI_Full_Project/src/app/components/cards.component.html",
+		"/C/projetos/Angular 2_v2-1-7/Angular2_CLI_Full_Project/src/scss/bootstrap_custom/_card.scss",
+		"/C/projetos/Angular 2_v2-1-7/Angular2_CLI_Full_Project/src/scss/core/_mixins.scss",
+		"/C/projetos/Angular 2_v2-1-7/Angular2_CLI_Full_Project/src/app/widgets/widgets.component.html",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/npm-cache/node-sass/3.13.0/package/package.json",
+		"/C/projetos/angular2-cli-node-mongo/node_modules/node-sass/README.md",
+		"/C/projetos/angular2-cli-node-mongo/src/app/contas/contas-list.component.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/contas/contas-detail.component.html",
+		"/C/projetos/angular2-cli-node-mongo/dist/main.bundle.js",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/HTML-CSS-JS Prettify/.jsbeautifyrc",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/HTML-CSS-JS Prettify/HTMLPrettify.sublime-settings",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/SideBarEnhancements/Default (Windows).sublime-keymap",
+		"/C/projetos/angular2-cli-node-mongo/src/app/contas/contas-home.component.html",
+		"/C/projetos/angular2-cli-node-mongo/src/app/contas/contas-home.component.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/contas/contas.routing.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/index.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/authentication/login.component.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/authentication/auth-guard.service.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/authentication/auth.service.ts",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/Git/Git.sublime-settings",
+		"/C/projetos/angular2-cli-node-mongo/src/app/authentication/login.component.html",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/User/Git.sublime-settings",
+		"/C/projetos/angular2-cli-node-mongo/src/app/app.module.ts",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/projetos/angular2-cli-node-mongo/src/app/authentication/auth.service.js",
+		"/C/projetos/angular2-cli-node-mongo/server/tsconfig.json",
+		"/C/projetos/angular2-cli-node-mongo/package.json",
+		"/C/projetos/angular2-cli-node-mongo/src/tsconfig.json",
+		"/C/projetos/angular2-cli-node-mongo/src/app/authentication/authentication.routing.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/common-pages/common-pages.routing.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/authentication/authentication.module.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/common-pages/main.component.html",
+		"/C/projetos/angular2-cli-node-mongo/angular-cli.json",
+		"/C/projetos/angular2-cli-node-mongo/src/app/common-pages/main.component.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/contas/contas.module.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/common-pages/common-pages.module.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/index.html",
+		"/C/projetos/angular2-cli-node-mongo/src/app/app.routing.ts",
+		"/C/projetos/angular2-cli-node-mongo/server/routes/login.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/common-pages/home.component.html",
+		"/C/projetos/angular2-cli-node-mongo/server/routes/protected.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/template/shared/nav-dropdown.directive.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/login.component.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/app/main.component.html",
+		"/C/projetos/angular2-cli-node-mongo/src/app/main.component.ts",
+		"/C/projetos/angular2-cli-node-mongo/server/app.ts",
+		"/C/projetos/angular2-cli-node-mongo/server/bin/www",
+		"/C/projetos/angular2-cli-node-mongo/src/app/home.component.html",
+		"/C/projetos/angular2-cli-node-mongo/src/app/home.component.ts",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/TypeScript/Preferences.sublime-settings",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/User/GitGutter.sublime-settings",
+		"/C/projetos/angular2-cli-node-mongo/src/app/teste.ts",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/GitGutter/GitGutter.sublime-settings",
+		"/C/projetos/angular2-cli-node-mongo/src/app/teste",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/TypeScript/TypeScript.sublime-settings",
+		"/C/projetos/angular2-cli-node-mongo/src/app/login.component.html",
+		"/C/projetos/angular2-cli-node-mongo/README.md",
+		"/C/Users/rafael.bmenezes/AppData/Roaming/Sublime Text 3/Packages/User/TypeScript.sublime-settings",
+		"/C/projetos/angular2-cli-node-mongo/src/app/app.component.ts",
+		"/C/projetos/angular2-cli-node-mongo/dist/index.html",
+		"/C/projetos/angular2-cli-node-mongo/src/assets/css/style.css",
+		"/C/projetos/angular2-cli-node-mongo/src/main.ts",
+		"/C/projetos/angular2-cli-node-mongo/src/assets/css/font-awesome.css",
+		"/C/projetos/angular2-cli-node-mongo/node_modules/connect/index.js"
+	],
+	"find":
+	{
+		"height": 70.0
+	},
+	"find_in_files":
+	{
+		"height": 158.0,
+		"where_history":
+		[
+			"*.scss",
+			"C:\\projetos\\angular2-cli-node-mongo\\src,*.scss",
+			"C:\\projetos\\angular2-cli-node-mongo\\src"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"mongo",
+			"dataAccess",
+			"dashboard",
+			"favico",
+			"date-fns",
+			"progress-variant",
+			"card-accent-primary",
+			"Card with accent",
+			"card-danger",
+			"card-info",
+			"card-inverse",
+			"card-primary",
+			"out",
+			".card-block",
+			"block",
+			"card",
+			"scss",
+			"sass",
+			"node",
+			"ndoe",
+			"crisis",
+			"Crisis",
+			"crisis",
+			"save",
+			"crisis",
+			"crises",
+			"getCrises",
+			"contasPromise",
+			"crisesPromise",
+			"CRISES",
+			"toggleDropdown",
+			"save",
+			"isLoggedIn",
+			"canActivate",
+			"ngModule",
+			"NgModule",
+			"globalHeaders",
+			"not",
+			"loginObservable$",
+			"notification$",
+			"localStorage",
+			"core",
+			"node",
+			"core-js",
+			"chart.js",
+			"-",
+			"IN_ACAO_ACORDO_ESPECIAL",
+			"judici",
+			"provideAuth",
+			"AppRoutingModule",
+			"client",
+			"dev",
+			"dropdownToggle",
+			"addToggleClass",
+			"status",
+			"\"status\"",
+			" status ",
+			"status",
+			"status.isopen",
+			"\n  ",
+			"import"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"_"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 9,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/app/contas/contas-list.component.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 730,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								660,
+								633
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										726,
+										727
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										596,
+										597
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": false,
+								"indentSize": 4,
+								"tabSize": 4
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1442,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1442,
+								1442
+							]
+						],
+						"settings":
+						{
+							"auto_indent": false,
+							"bracket_highlighter.busy": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"tab_width": 2,
+							"translate_tabs_to_spaces": true,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": false,
+								"indentSize": 4,
+								"tabSize": 4
+							},
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/app/contas/contas-detail.component.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 960,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": false,
+								"indentSize": 4,
+								"tabSize": 4
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/app/contas/contas-detail.component.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 279,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										12,
+										14
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/tag.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										1,
+										3
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"color_scheme": "Packages/Material Theme/schemes/Material-Theme-Darker.tmTheme",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/app/contas/contas-list.component.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1933,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1154,
+								1154
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										1152,
+										1153
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/tag.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										1117,
+										1118
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"color_scheme": "Packages/Material Theme/schemes/Material-Theme-Darker.tmTheme",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": true,
+								"indentSize": 4,
+								"tabSize": 4
+							}
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "server/dal/userDAO.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1961,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								551,
+								551
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										970,
+										971
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										530,
+										531
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": true,
+								"indentSize": 4,
+								"tabSize": 4
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "server/routes/login.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3608,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2147,
+								2147
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										2186,
+										2187
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										1799,
+										1800
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": true,
+								"indentSize": 4,
+								"tabSize": 4
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 315.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "server/tsconfig.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 444,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								49,
+								49
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										49,
+										50
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/double_quote.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										45,
+										46
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content"
+							],
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JSON (JavaScriptNext).tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "angular-cli.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 921,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										920,
+										921
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										0,
+										1
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JSON (JavaScriptNext).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "package.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2748,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1066,
+								1068
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										1068,
+										1069
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/double_quote.png",
+										"brackethighlighter.default"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										1060,
+										1061
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/Theme - Lanzhou/icons/Langs/npm JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "server/app.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2221,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								770,
+								770
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": true,
+								"indentSize": 4,
+								"tabSize": 4
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 405.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 63.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.doc":
+	{
+		"height": 100.0
+	},
+	"output.errorlist":
+	{
+		"height": 120.0
+	},
+	"output.exec":
+	{
+		"height": 120.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 120.0
+	},
+	"pinned_build_system": "",
+	"project": "MEAN_2_Project.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"packa",
+				"package.json"
+			],
+			[
+				"angular-cli",
+				"angular-cli.json"
+			],
+			[
+				"logincom",
+				"src\\app\\authentication\\login.component.html"
+			],
+			[
+				"package",
+				"package.json"
+			],
+			[
+				"login",
+				"src\\app\\authentication\\login.component.ts"
+			],
+			[
+				"homecompo",
+				"src\\app\\home.component.ts"
+			],
+			[
+				"packas",
+				"package.json"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 337.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
