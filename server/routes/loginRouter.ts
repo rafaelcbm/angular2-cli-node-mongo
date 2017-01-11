@@ -19,11 +19,11 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
     }
 
     var user: any = {
-        nome: request.body.username,
+        userName: request.body.username,
         password: request.body.password
     }
 
-    userDAO.getUser(user.nome).then((document) => {
+    userDAO.getUser(user.userName).then((document) => {
         logger.info("** result mongo - user document=%j", document);
 
         // Se o document existir, entao envia msg de erro de usuario existente.
@@ -47,11 +47,11 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
             user.hash = hash.toString("hex");
 
             userDAO.insertUser(user).then((result) => {
-                userDAO.getUser(user.nome).then((savedUser) => {
+                userDAO.getUser(user.userName).then((savedUser) => {
 
                     logger.info("** savedUser = %j", savedUser);
 
-                    const token = sign({ "user": savedUser.nome, permissions: [] }, secret, { expiresIn: "7d" });
+                    const token = sign({ "userName": savedUser.userName, permissions: [] }, secret, { expiresIn: "7d" });
                     response.json({
                         "status": "sucesso",
                         "jwt": token
@@ -74,6 +74,8 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
 
 loginRouter.post("/login", function(request: Request, response: Response, next: NextFunction) {
     logger.info("** Login - Resquest body %j", request.body);
+    logger.info("** Login - Resquest.userName %j", request.userName);
+
 
     userDAO.getUser(request.body.username).then((user) => {
         logger.info("** result mongo - user = %j", user);
@@ -85,7 +87,7 @@ loginRouter.post("/login", function(request: Request, response: Response, next: 
 
             // check if password is active
             if (hash.toString("hex") === user.hash) {
-                const token = sign({ "user": user.nome, permissions: [] }, secret, { expiresIn: "7d" });
+                const token = sign({ "userName": user.userName, permissions: [] }, secret, { expiresIn: "7d" });
                 response.json({
                     "status": "sucesso",
                     "jwt": token
@@ -106,28 +108,5 @@ loginRouter.post("/login", function(request: Request, response: Response, next: 
         });
     });
 });
-
-loginRouter.get("/getAllUsers", function(request: Request, response: Response, next: NextFunction) {
-    logger.info("** Router - getAllUsers - request: %j", request.body);
-
-    userDAO.getAllUsersJS6().then((user) => {
-        logger.info("** result mongo - user = %j", user);
-
-        return response.json({
-            "status": "sucesso",
-            "user": user
-        });
-
-    }).catch((e) => {
-        logger.info("** Error = %j", e);
-
-        return response.json({
-            "status": "erro",
-            "message": "Usuário não encontrado!"
-        });
-    });
-});
-
-
 
 export { loginRouter }

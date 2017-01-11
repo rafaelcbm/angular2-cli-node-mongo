@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
         console.log("* Chamou getAllUsersTest:");
      
         this.authHttp
-            .get("/getAllUsers")
+            .get("/api/users/all")
             .map((res: Response) => res.json())
             .subscribe(
             (data) => {

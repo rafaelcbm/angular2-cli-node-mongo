@@ -29,7 +29,7 @@ export class DataAccess {
         }
     }
 
-     // Insert a new document in the collection.
+    // Insert a new document in the collection.
     public insertDocument(document: any, collectionName: string): any {
         logger.info("** DAL - insertDocument: %j, %j", document, collectionName);
         //logger.info("** DAL - this.dbConnection: %j, %j", this.dbConnection);
@@ -44,6 +44,33 @@ export class DataAccess {
             logger.info("** DAL - insertDocument: result = , %j", result);
             deferred.resolve(result);
         });
+
+        return deferred.promise;
+    }
+
+    // Return a Promise of an array od documents
+    public getAllDocuments(collectionName: string): any {
+        logger.info("** DAL.getAllDocuments:%s", collectionName);
+
+        var allDocuments = [];
+
+        var deferred = Q.defer();
+
+        if (this.dbConnection) {
+            var cursor = this.dbConnection.collection(collectionName).find();
+            cursor.each((err, document) => {
+                logger.info("** document = %j", document);
+
+                if (err) {
+                    deferred.reject(new Error(JSON.stringify(err)));
+                }
+                if (document) {
+                    allDocuments.push(document);
+                }
+
+                deferred.resolve(allDocuments);
+            });
+        }
 
         return deferred.promise;
     }
