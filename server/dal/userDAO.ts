@@ -2,6 +2,7 @@ import { logger, dataAccess } from "../app";
 var assert = require('assert');
 var Q = require("q");
 var co = require('co');
+var ObjectID = require('mongodb').ObjectID;
 
 // Create a class to manage the data manipulation.
 export class UserDAO {
@@ -49,15 +50,22 @@ export class UserDAO {
         return deferred.promise;
     }
 
-    // Insert a new User.
     public insertUser(user: any): any {
         return dataAccess.insertDocument(user, 'users');
     }
 
     // Return a promise of an array of users
     public getAllUsers(): any {
-        logger.info("** DAL.getAllUsers");
+        return dataAccess.getAllDocuments('users');
+    }
 
-        return dataAccess.getAllDocuments('users');        
+    public addConta(idUser: string, idConta: string): any {
+
+        logger.info("** DAL.addConta idUser = %j , idConta = %j", idUser, idConta);
+        
+        if (dataAccess.dbConnection) {            
+            
+            return dataAccess.dbConnection.collection('users').update({ _id: idUser }, { $push: { contas: idConta } });
+        }
     }
 }

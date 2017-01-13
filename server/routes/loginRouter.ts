@@ -73,9 +73,8 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
 
 
 loginRouter.post("/login", function(request: Request, response: Response, next: NextFunction) {
+    
     logger.info("** Login - Resquest body %j", request.body);
-    logger.info("** Login - Resquest.userName %j", request.userName);
-
 
     userDAO.getUser(request.body.username).then((user) => {
         logger.info("** result mongo - user = %j", user);

@@ -1,7 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { app, logger } from "../app";
 import { UserDAO } from "../dal/userDAO";
-import { co } from "co";
 
 var userDAO = new UserDAO();
 

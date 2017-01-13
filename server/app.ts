@@ -6,7 +6,7 @@ import { json, urlencoded } from "body-parser";
 import { loginRouter } from "./routes/loginRouter";
 import { protectedRouter } from "./routes/protectedRouter";
 import { userRouter } from "./routes/userRouter";
-import { contaRouter } from "./routes/contasRouter";
+import { contaRouter } from "./routes/contaRouter";
 import {DataAccess} from "./dal/abstractDAO";
 
 const app: express.Application = express();

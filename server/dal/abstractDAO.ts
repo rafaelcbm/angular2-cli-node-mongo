@@ -3,6 +3,7 @@ import { logger } from "../app";
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var Q = require("q");
+var ObjectID = require('mongodb').ObjectID;
 
 
 // Create a class to manage the data manipulation.
@@ -73,6 +74,18 @@ export class DataAccess {
         }
 
         return deferred.promise;
+    }
+
+    //Obter um documento pelo atributo _id passado como parâmetro
+    //A funcao findOne retorna uma Promise, entao eh soh retorna-la
+    public getDocumentById(collectionName: string, id: string): any {
+        logger.info("** getDocumentById on: %s , id: %s", collectionName, id);
+
+        let idAsObjectID = ObjectID.createFromHexString(id);
+
+        if (this.dbConnection) {
+            return this.dbConnection.collection(collectionName).findOne({ _id: idAsObjectID });
+        }
     }
 
     // Get the count of all documents in the collection.
