@@ -1,19 +1,18 @@
 import { logger, dataAccess } from "../app";
-var assert = require('assert');
-var Q = require("q");
-var co = require('co');
-var ObjectID = require('mongodb').ObjectID;
+let assert = require('assert');
+let Q = require("q");
+let co = require('co');
+let ObjectID = require('mongodb').ObjectID;
 
 // Create a class to manage the data manipulation.
 export class UserDAO {
 
     // Get a new Student based on the user name.
     public getUser(userName: string): any {
-        logger.info("** DAL :getUser - userName=%s", userName);
 
-        var deferred = Q.defer();
+        let deferred = Q.defer();
         if (dataAccess.dbConnection) {
-            var cursor = dataAccess.dbConnection.collection('users').find();
+            let cursor = dataAccess.dbConnection.collection('users').find();
             cursor.each((err, document) => {
                 assert.equal(err, null);
                 if (err) {
@@ -30,11 +29,10 @@ export class UserDAO {
     }
 
     public getUseByPassword(userName: string): any {
-        logger.info("** DAL :getUser - userName=%s", userName);
 
-        var deferred = Q.defer();
+        let deferred = Q.defer();
         if (dataAccess.dbConnection) {
-            var cursor = dataAccess.dbConnection.collection('users').find();
+            let cursor = dataAccess.dbConnection.collection('users').find();
             cursor.each((err, document) => {
                 assert.equal(err, null);
                 if (err) {
@@ -61,11 +59,17 @@ export class UserDAO {
 
     public addConta(idUser: string, idConta: string): any {
 
-        logger.info("** DAL.addConta idUser = %j , idConta = %j", idUser, idConta);
-        
-        if (dataAccess.dbConnection) {            
-            
+        if (dataAccess.dbConnection) {
+
             return dataAccess.dbConnection.collection('users').update({ _id: idUser }, { $push: { contas: idConta } });
+        }
+    }
+
+    public removeConta(idUser: string, idConta: string): any {
+
+        if (dataAccess.dbConnection) {
+
+            return dataAccess.dbConnection.collection('users').update({ _id: idUser }, { $pull: { contas: { $in: [idConta] } } }, { multi: true });
         }
     }
 }

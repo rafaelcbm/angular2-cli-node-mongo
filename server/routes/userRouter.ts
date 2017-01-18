@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import { app, logger } from "../app";
 import { UserDAO } from "../dal/userDAO";
 
-var userDAO = new UserDAO();
+let userDAO = new UserDAO();
 
 
 export const userRouter: Router = Router();

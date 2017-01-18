@@ -7,7 +7,7 @@ import { UserDAO } from "../dal/userDAO";
 
 const loginRouter: Router = Router();
 
-var userDAO = new UserDAO();
+let userDAO = new UserDAO();
 
 loginRouter.post("/signup", function(request: Request, response: Response, next: NextFunction) {
     logger.info("** Login Router:signup");
@@ -18,7 +18,7 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
         return next(err);
     }
 
-    var user: any = {
+    let user: any = {
         userName: request.body.username,
         password: request.body.password
     }

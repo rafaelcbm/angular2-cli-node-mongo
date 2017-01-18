@@ -23,15 +23,20 @@ import { Observable } from 'rxjs/Observable';
 })
 export class LoginComponent implements OnInit {
 
+    campoId: string;
+    campoNome: string;
+
+    result: any;
+
     private toasterService: ToasterService;
 
     public toasterconfig: ToasterConfig =
-        new ToasterConfig({
-            tapToDismiss: true,
-            timeout: 5000
-        });
+    new ToasterConfig({
+        tapToDismiss: true,
+        timeout: 5000
+    });
 
-    loginObservable$: Observable < any > ;
+    loginObservable$: Observable<any>;
 
     username: string;
     password: string;
@@ -74,59 +79,94 @@ export class LoginComponent implements OnInit {
         this.authService.logout();
     }
 
-    getAllUsersTest() {
+    getAllUsersTest(): void {
         console.log("* Chamou getAllUsersTest:");
 
         this.authHttp
             .get("/api/users/all")
             .map((res: Response) => res.json())
             .subscribe(
-                (data) => {
-                    console.log(data);
-                },
-                (resError) => {
-                    console.log(resError);
-                    //setTimeout(() => this.error = null, 4000)
-                });
+            (data) => {
+                console.log(data);
+                this.result = data;
+            },
+            (resError) => {
+                console.log(resError);
+                this.result = resError;
+                //setTimeout(() => this.error = null, 4000)
+            });
     }
 
     getAllContasByUser() {
-        console.log("* Chamou getAllContasByUser:");
 
         this.authHttp
-            .get("/api/contas/allByUser")
+            .get("/api/contas/")
             .map((res: Response) => res.json())
             .subscribe(
-                (data) => {
-                    console.log(data);
-                },
-                (resError) => {
-                    console.log(resError);
-                    //setTimeout(() => this.error = null, 4000)
-                });
+            (data) => {
+                console.log(data);
+                this.result = data;
+            },
+            (resError) => {
+                console.log(resError);
+                this.result = resError;
+                //setTimeout(() => this.error = null, 4000)
+            });
     }
 
     inserirConta() {
-        console.log("* Chamou inserirConta:");
 
         let nomeConta = "Conta From Angular";
 
         this.authHttp
-            .post("/api/contas/inserir/", JSON.stringify({ nomeConta:nomeConta }))
+            .post("/api/contas/", JSON.stringify({ nomeConta: this.campoNome }))
             .map((res: Response) => res.json())
             .subscribe(
-                (data) => {
-                    console.log(data);
-                },
-                (resError) => {
-                    console.log(resError);
-                    //setTimeout(() => this.error = null, 4000)
-                });
+            (data) => {
+                console.log(data);
+                this.result = data;
+            },
+            (resError) => {
+                console.log(resError);
+                this.result = resError;
+                //setTimeout(() => this.error = null, 4000)
+            });
+    }
+
+    removerConta() {
+
+        this.authHttp
+            .delete(`/api/contas/${this.campoId}`)
+            .map((res: Response) => res.json())
+            .subscribe(
+            (data) => {
+                console.log(data);
+                this.result = data;
+            },
+            (resError) => {
+                console.log(resError);
+                this.result = resError;
+            });
+    }
+
+    alterarConta() {
+
+        this.authHttp
+            .put(`/api/contas/${this.campoId}`, JSON.stringify({ nomeNovaConta: this.campoNome }))
+            .map((res: Response) => res.json())
+            .subscribe(
+            (data) => {
+                console.log(data);
+                this.result = data;
+            },
+            (resError) => {
+                console.log(resError);
+                this.result = resError;
+                //setTimeout(() => this.error = null, 4000)
+            });
     }
 
     protected() {
-        console.log("* Chamou protected:");
-
         let jwtHelper: JwtHelper = new JwtHelper();
 
         var token = localStorage.getItem('id_token');
@@ -144,12 +184,11 @@ export class LoginComponent implements OnInit {
             .get("/api")
             .map((res: Response) => res.json())
             .subscribe(
-                (data) => {
-                    console.log(data);
-                },
-                (resError) => {
-                    console.log(resError);
-                    //setTimeout(() => this.error = null, 4000)
-                });
+            (data) => {
+                console.log(data);
+            },
+            (resError) => {
+                console.log(resError);
+            });
     }
 }
