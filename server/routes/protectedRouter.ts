@@ -11,7 +11,8 @@ protectedRouter.use((request: Request & { headers: { authorization: string }, us
     verify(token, secret, function(tokenError, decodedToken) {
         if (tokenError) {
             return response.status(403).json({
-                message: "Invalid token, please Log in first"
+                status: "erro",
+                message: "Token inválido! Faça o login primeiro."
             });
         }
 
@@ -27,7 +28,8 @@ protectedRouter.use((request: Request & { headers: { authorization: string }, us
 protectedRouter.get("/", (request: Request, response: Response) => {
 
     response.json({
-        text: "Greetings, you have valid token.",
+        status: "sucesso",
+        message: "Parabéns, você possui um token válido.",
         title: "Protected call"
     });
 });

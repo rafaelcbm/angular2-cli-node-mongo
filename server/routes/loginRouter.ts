@@ -49,16 +49,16 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
                 userDAO.getUser(user.userName).then((savedUser) => {
 
                     const token = sign({ "userName": savedUser.userName, permissions: [] }, secret, { expiresIn: "7d" });
-                    response.json({
+                    
+                    response.status(201).json({
                         "status": "sucesso",
                         "jwt": token
                     });
-                    response.sendStatus(201);
                 })
             });
         });
     }).catch((e) => {
-        logger.info("** Error = %j", e);
+        logger.info("** Error = ", e);
 
         return response.json({
             "status": "erro",
@@ -82,7 +82,9 @@ loginRouter.post("/login", function(request: Request, response: Response, next: 
 
             // check if password is active
             if (hash.toString("hex") === user.hash) {
+                
                 const token = sign({ "userName": user.userName, permissions: [] }, secret, { expiresIn: "7d" });
+                
                 response.json({
                     "status": "sucesso",
                     "jwt": token
@@ -95,7 +97,7 @@ loginRouter.post("/login", function(request: Request, response: Response, next: 
             }
         });
     }).catch((e) => {
-        logger.info("** Error = %j", e);
+        logger.info("** Error = ", e);
 
         return response.json({
             "status": "erro",

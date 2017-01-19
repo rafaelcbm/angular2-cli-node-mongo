@@ -21,16 +21,21 @@ contaRouter.get("/", function(request: Request & { userName: string }, response:
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
 
-        if (user.contas) {
-            let contas = yield contaDAO.getContaByIds(user.contas);
-            logger.info("** CONTAS: %j", contas);
-
-            //Nao necessario o "status(200)", pois a funcao json() ja retorna 200, soh pra lebrar da possibilidade
-            response.status(200).json({
+        if (!user.contas) {
+            return response.json({
                 "status": "sucesso",
-                "contas": contas
+                "contas": []
             });
         }
+
+        let contas = yield contaDAO.getContaByIds(user.contas);
+        logger.info("** CONTAS: %j", contas);
+
+        response.json({
+            "status": "sucesso",
+            "contas": contas
+        });
+
     }).catch((e) => {
         logger.info("** Error = ", e);
 
@@ -87,13 +92,30 @@ contaRouter.delete("/:idConta", function(request: Request & { userName: string }
 
     co(function* () {
 
-        //TODO: Futuramente, validar se a conta a ser removida, pertence ao usuário.
+        let contaObtida = yield contaDAO.getContaById(idConta);
+        logger.info("** Remover Contas - contaObtida = %j", contaObtida);
+        if (!contaObtida) {
+            return response.json({
+                "status": "erro",
+                "message": "Conta não encontrada!"
+            });
+        }
 
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
 
-        let contaObtida = yield contaDAO.getContaById(idConta);
-        logger.info("** Remover Contas - contaObtida = %j", contaObtida);
+        if (user.contas) {
+            let contasUsuario = user.contas.filter(conta => conta == idConta);
+
+            logger.info("** Remover Contas - filter contasUsuario = ", contasUsuario);
+
+            if (contasUsuario.length == 0) {
+                return response.json({
+                    "status": "erro",
+                    "message": `Conta (${contaObtida.nome}) não pertence ao usuário informado!`
+                });
+            }
+        }
 
         logger.info("** Remover Contas - idConta = %j", idConta);
         let daoReturn = yield contaDAO.removeContaById(idConta);
@@ -108,7 +130,7 @@ contaRouter.delete("/:idConta", function(request: Request & { userName: string }
         logger.info("** Remover Contas - user = %j", user);
         assert.ok(user);
 
-        response.status(201).json({
+        response.json({
             "status": "sucesso",
             "user": user
         });
@@ -124,25 +146,30 @@ contaRouter.delete("/:idConta", function(request: Request & { userName: string }
 
 contaRouter.put("/:idConta", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    logger.info("** Altarar Contas - request.body.nomeNovaConta = %j", request.body.nomeNovaConta);
-    logger.info("** Altarar Contas - request.params = %j", request.params);
-
     let userName = request.userName;
     let idConta = request.params.idConta;
     let nomeNovaConta = request.body.nomeNovaConta;
 
     co(function* () {
 
-        //TODO: Futuramente, validar se a conta a ser alterada, pertence ao usuário.
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
 
+        if (user.contas) {
+            let contasUsuario = user.contas.filter(conta => conta == idConta);
+
+            if (contasUsuario.length == 0) {
+                return response.json({
+                    "status": "erro",
+                    "message": `Conta informada não pertence ao usuário informado!`
+                });
+            }
+        }
+
         let daoReturn = yield contaDAO.updateConta(idConta, nomeNovaConta);
-        logger.info("** Altarar Contas - daoReturn = %j", daoReturn);
         assert.equal(daoReturn.result.n, 1);
 
         let contaAlterada = yield contaDAO.getContaByNome(nomeNovaConta);
-        logger.info("** Altarar Contas - contaAlterada = %j", contaAlterada);
         assert.ok(contaAlterada);
 
         response.status(201).json({
