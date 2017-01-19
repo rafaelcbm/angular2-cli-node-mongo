@@ -16,19 +16,21 @@ contaRouter.get("/", function(request: Request & { userName: string }, response:
 
     let userName = request.userName;
 
-    co(function*() {
+    co(function* () {
 
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
 
-        let contas = yield contaDAO.getContaByIds(user.contas);
-        logger.info("** CONTAS: %j", contas);
+        if (user.contas) {
+            let contas = yield contaDAO.getContaByIds(user.contas);
+            logger.info("** CONTAS: %j", contas);
 
-        //Nao necessario o "status(200)", pois a funcao json() ja retorna 200, soh pra lebrar da possibilidade
-        response.status(200).json({
-            "status": "sucesso",
-            "contas": contas
-        });
+            //Nao necessario o "status(200)", pois a funcao json() ja retorna 200, soh pra lebrar da possibilidade
+            response.status(200).json({
+                "status": "sucesso",
+                "contas": contas
+            });
+        }
     }).catch((e) => {
         logger.info("** Error = ", e);
 
@@ -45,7 +47,7 @@ contaRouter.post("/", function(request: Request & { userName: string }, response
     let userName = request.userName;
     let nomeConta = request.body.nomeConta;
 
-    co(function*() {
+    co(function* () {
 
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
@@ -83,7 +85,7 @@ contaRouter.delete("/:idConta", function(request: Request & { userName: string }
     let userName = request.userName;
     let idConta = request.params.idConta;
 
-    co(function*() {
+    co(function* () {
 
         //TODO: Futuramente, validar se a conta a ser removida, pertence ao usuário.
 
@@ -110,7 +112,7 @@ contaRouter.delete("/:idConta", function(request: Request & { userName: string }
             "status": "sucesso",
             "user": user
         });
-    }).catch((e) => {        
+    }).catch((e) => {
         logger.info("** Error = ", e);
 
         return response.json({
@@ -129,16 +131,18 @@ contaRouter.put("/:idConta", function(request: Request & { userName: string }, r
     let idConta = request.params.idConta;
     let nomeNovaConta = request.body.nomeNovaConta;
 
-    co(function*() {
+    co(function* () {
 
         //TODO: Futuramente, validar se a conta a ser alterada, pertence ao usuário.
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
 
         let daoReturn = yield contaDAO.updateConta(idConta, nomeNovaConta);
+        logger.info("** Altarar Contas - daoReturn = %j", daoReturn);
         assert.equal(daoReturn.result.n, 1);
 
         let contaAlterada = yield contaDAO.getContaByNome(nomeNovaConta);
+        logger.info("** Altarar Contas - contaAlterada = %j", contaAlterada);
         assert.ok(contaAlterada);
 
         response.status(201).json({

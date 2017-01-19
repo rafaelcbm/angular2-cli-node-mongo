@@ -10,17 +10,16 @@ const loginRouter: Router = Router();
 let userDAO = new UserDAO();
 
 loginRouter.post("/signup", function(request: Request, response: Response, next: NextFunction) {
-    logger.info("** Login Router:signup");
-    logger.info("** Resquest body %j", request.body);
 
-    if (!request.body.password || !request.body.password.trim()) {
+    let password = request.body.password;
+
+    if (!password || !password.trim()) {
         let err = new Error("Password obrigatório!");
         return next(err);
     }
 
     let user: any = {
-        userName: request.body.username,
-        password: request.body.password
+        userName: request.body.userName
     }
 
     userDAO.getUser(user.userName).then((document) => {
@@ -42,14 +41,12 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
         const salt = randomBytes(128).toString("base64");
         user.salt = salt;
 
-        pbkdf2(user.password, user.salt, 10000, length, digest, function(err, hash) {
+        pbkdf2(password, user.salt, 10000, length, digest, function(err, hash) {
 
             user.hash = hash.toString("hex");
 
             userDAO.insertUser(user).then((result) => {
                 userDAO.getUser(user.userName).then((savedUser) => {
-
-                    logger.info("** savedUser = %j", savedUser);
 
                     const token = sign({ "userName": savedUser.userName, permissions: [] }, secret, { expiresIn: "7d" });
                     response.json({
@@ -73,11 +70,10 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
 
 
 loginRouter.post("/login", function(request: Request, response: Response, next: NextFunction) {
-    
+
     logger.info("** Login - Resquest body %j", request.body);
 
-    userDAO.getUser(request.body.username).then((user) => {
-        logger.info("** result mongo - user = %j", user);
+    userDAO.getUser(request.body.userName).then((user) => {
 
         pbkdf2(request.body.password, user.salt, 10000, length, digest, function(err, hash) {
             if (err) {
