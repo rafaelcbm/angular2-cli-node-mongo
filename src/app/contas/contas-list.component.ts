@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
-import { ContasService, Conta } from './contas-service';
+import { ContasService } from '../services/contas-service';
+import { Conta } from "../models/models.module";
+
 
 @Component({
 	selector: 'contas-list',
@@ -10,10 +12,9 @@ import { ContasService, Conta } from './contas-service';
 export class ContasListComponent implements OnInit {
 
 	contas: any[] = [];
-	public selectedId: number;
+	public selectedId: string;
 
-	constructor(private contasService: ContasService, private route: ActivatedRoute, private router: Router) {
-	}
+	constructor(private contasService: ContasService, private route: ActivatedRoute, private router: Router) {	}
 
 	ngOnInit() {
 		this.contasService.getContas()

@@ -148,7 +148,7 @@ contaRouter.put("/:idConta", function(request: Request & { userName: string }, r
 
     let userName = request.userName;
     let idConta = request.params.idConta;
-    let nomeNovaConta = request.body.nomeNovaConta;
+    let nomeConta = request.body.nomeConta;
 
     co(function* () {
 
@@ -166,10 +166,10 @@ contaRouter.put("/:idConta", function(request: Request & { userName: string }, r
             }
         }
 
-        let daoReturn = yield contaDAO.updateConta(idConta, nomeNovaConta);
+        let daoReturn = yield contaDAO.updateConta(idConta, nomeConta);
         assert.equal(daoReturn.result.n, 1);
 
-        let contaAlterada = yield contaDAO.getContaByNome(nomeNovaConta);
+        let contaAlterada = yield contaDAO.getContaByNome(nomeConta);
         assert.ok(contaAlterada);
 
         response.status(201).json({

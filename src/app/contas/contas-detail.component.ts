@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { ContasService, Conta } from './contas-service';
+import { Conta } from "../models/models.module";
+import { ContasService } from '../services/contas-service';
+
 
 @Component({
 	selector: 'contas-detail',
@@ -20,7 +22,7 @@ export class ContasDetailComponent implements OnInit {
 	ngOnInit() {
 		this.route.params
 			// (+) converts string 'id' to a number
-			.switchMap((params: Params) => this.contasService.getContasById(+params['id']))
+			.switchMap((params: Params) => this.contasService.getContasById(params['id']))
 			.subscribe((conta: any) => this.conta = conta);
 	}
 

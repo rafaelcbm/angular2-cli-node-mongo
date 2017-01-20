@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http, Headers, RequestOptions, Response } from "@angular/http";
+import { Headers, RequestOptions, Response } from "@angular/http";
 
 import { AuthHttp, JwtHelper } from "angular2-jwt";
 
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     password: string;
 
     constructor(private authService: AuthService, toasterService: ToasterService,
-        private router: Router, private http: Http, private authHttp: AuthHttp) {
+        private router: Router, private authHttp: AuthHttp) {
 
         this.toasterService = toasterService;
     }
