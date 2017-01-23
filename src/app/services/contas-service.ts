@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Headers, RequestOptions, Response } from "@angular/http";
 
 import { AuthHttp } from "angular2-jwt";
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/map';
 
 import { Conta } from "../models/models.module";
 
@@ -17,7 +20,32 @@ let contasPromise = Promise.resolve(CONTAS);
 @Injectable()
 export class ContasService {
 
-    constructor(private authHttp: AuthHttp) { }
+    contas: Observable<Conta[]>;
+    private _contas: BehaviorSubject<Conta[]>;
+    private contasStore: {
+        contas: Conta[]
+    };
+
+    constructor(private authHttp: AuthHttp) {
+        this.contasStore = { contas: [] };
+        this._contas = <BehaviorSubject<Conta[]>>new BehaviorSubject([]);
+        this.contas = this._contas.asObservable();
+    }
+
+    getAllContas() {
+        return this.authHttp
+            .get("/api/contas/")
+            .map((res: Response) => res.json())
+            .subscribe(
+            data => {
+                console.log("Data return on service:", data);
+                this.contasStore.contas = data.contas;
+                this._contas.next(Object.assign({}, this.contasStore).contas);
+            },
+            error => {
+                console.log(error);
+            });
+    }
 
     getAll() {
 
@@ -31,7 +59,7 @@ export class ContasService {
                 return error;
             });
     }
-    
+
     insert(nomeConta) {
 
         this.authHttp
@@ -70,7 +98,7 @@ export class ContasService {
                 return error;
             });
     }
-    
+
 
     getContas() {
         return contasPromise;

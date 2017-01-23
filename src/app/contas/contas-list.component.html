@@ -5,6 +5,12 @@
                 <i class="fa fa-align-justify"></i> Contas
             </div>
             <div class="card-block">
+
+<!-- Async pipe is used to bind an observable directly in our template -->
+<div *ngFor="let conta of contas$ | async">
+  {{ conta | json}} <button >x</button>
+</div>
+
                 <table class="table table-bordered table-striped table-condensed">
                     <thead>
                         <tr>
