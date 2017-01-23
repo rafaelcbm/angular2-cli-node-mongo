@@ -25,17 +25,25 @@ export class ContasDetailComponent implements OnInit {
 
 	ngOnInit() {
 		console.log("ContasDetailComponent.ngOnInit");
+
 		this.route.params
-			// (+) converts string 'id' to a number
-			.switchMap((params: Params) => {
-				console.log("ContasDetailComponent.ngOnInit params['id']", params['id']);
-				return this.contasService.contas.map(contas => {
-					console.log("ContasDetailComponent.ngOnInit contas",contas);
-					contas.find(conta => conta._id == params['id'])
-				})
-			})
+			.switchMap((params: Params) => this.contasService.contas.map(contas => contas.find(c => c._id === params['id'])))
 			.subscribe((conta: any) => this.conta = conta);
-		//this.contasService.getContasById(params['id'])
+
+		// NOTA: Sem o operador switchMap, necessários 2 subscribes
+		//
+		// this.route.params
+		// 	.map((params: Params) => {
+		// 		console.log("ContasDetailComponent.ngOnInit params['id']", params['id']);
+		// 		return this.contasService.contas.map(contas => contas.find(c => c._id === params['id']));
+		// 	})
+		// 	.subscribe((paramsObservableResult: any) => {
+		// 		console.log("CHEGOU NO subscribe do Observable params = ", paramsObservableResult);
+		// 		paramsObservableResult.subscribe(conta => {
+		// 			console.log("Valor realmente desejado no inner Observable:", conta)
+		// 			this.conta = conta;
+		// 		});
+		// 	});
 	}
 
 	gotoContas() {
