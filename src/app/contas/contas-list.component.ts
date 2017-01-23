@@ -22,23 +22,14 @@ export class ContasListComponent implements OnInit {
 
 	ngOnInit() {
 		this.contas$ = this.contasService.contas; // subscribe to entire collection
-		// this.singleTodo$ = this.todoService.todos
-		// 	.map(todos => todos.find(item => item.id === '1'));
-		// subscribe to only one todo 
 
-		this.contasService.getAllContas();    // load all todos
-		//this.todoService.load('1');    // load only todo with id of '1'
+		this.contasService.getAllContas();    // load all contas
 	}
 
-	// ngOnInit() {
-
-	// 	this.contasService.getContas()
-	// 		.then(contas => this.contas = contas);
-	// }
-
 	onSelect(conta: Conta) {
-		this.selectedId = conta.id;
+		this.selectedId = conta._id;
 		// Navigate with relative link
-		this.router.navigate([conta.id], { relativeTo: this.route });
+		console.log("conta",conta);
+		this.router.navigate([conta._id], { relativeTo: this.route });
 	}
 }

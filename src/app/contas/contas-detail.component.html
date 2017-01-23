@@ -1,10 +1,10 @@
 <h3>Conta:</h3>
  <div *ngIf="conta">
     <div>
-      <label>Id: </label>{{ conta.id }}</div>
+      <label>Id: </label>{{ conta._id }}</div>
     <div>
       <label>Nome: </label>
-      <input [(ngModel)]="conta.name" placeholder="Nome"/>
+      <input [(ngModel)]="conta.nome" placeholder="Nome"/>
     </div>
     <p>
       <button (click)="gotoContas()">Voltar</button>

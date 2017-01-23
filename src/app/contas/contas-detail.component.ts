@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
+import 'rxjs/add/operator/map';
+
 import { Conta } from "../models/models.module";
 import { ContasService } from '../services/contas-service';
 
@@ -17,13 +19,23 @@ export class ContasDetailComponent implements OnInit {
 		private route: ActivatedRoute,
 		private router: Router,
 		private contasService: ContasService
-	) { }
+	) {
+		console.log("ContasDetailComponent.constructor");
+	}
 
 	ngOnInit() {
+		console.log("ContasDetailComponent.ngOnInit");
 		this.route.params
 			// (+) converts string 'id' to a number
-			.switchMap((params: Params) => this.contasService.getContasById(params['id']))
+			.switchMap((params: Params) => {
+				console.log("ContasDetailComponent.ngOnInit params['id']", params['id']);
+				return this.contasService.contas.map(contas => {
+					console.log("ContasDetailComponent.ngOnInit contas",contas);
+					contas.find(conta => conta._id == params['id'])
+				})
+			})
 			.subscribe((conta: any) => this.conta = conta);
+		//this.contasService.getContasById(params['id'])
 	}
 
 	gotoContas() {

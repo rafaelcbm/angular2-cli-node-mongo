@@ -5,12 +5,6 @@
                 <i class="fa fa-align-justify"></i> Contas
             </div>
             <div class="card-block">
-
-<!-- Async pipe is used to bind an observable directly in our template -->
-<div *ngFor="let conta of contas$ | async">
-  {{ conta | json}} <button >x</button>
-</div>
-
                 <table class="table table-bordered table-striped table-condensed">
                     <thead>
                         <tr>
@@ -20,9 +14,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let conta of contas" (click)="onSelect(conta)">
-                            <td>{{conta.id}}</td>
-                            <td>{{conta.name}}</td>
+                    <!-- Async pipe is used to bind an observable directly in our template -->
+                        <tr *ngFor="let conta of contas$ | async" (click)="onSelect(conta)">
+                            <td>{{conta._id}}</td>
+                            <td>{{conta.nome}}</td>
                             <td>
                                 <span class="tag tag-success">Active</span>
                             </td>

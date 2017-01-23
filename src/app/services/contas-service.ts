@@ -8,13 +8,13 @@ import 'rxjs/add/operator/map';
 
 import { Conta } from "../models/models.module";
 
-const CONTAS = [
-    new Conta("1", 'Conta Conjunta'),
-    new Conta("2", 'Cartão - Itaú'),
-    new Conta("3", 'Cartão - Santander'),
-];
+// const CONTAS = [
+//     new Conta("1", 'Conta Conjunta'),
+//     new Conta("2", 'Cartão - Itaú'),
+//     new Conta("3", 'Cartão - Santander'),
+// ];
 
-let contasPromise = Promise.resolve(CONTAS);
+// let contasPromise = Promise.resolve(CONTAS);
 
 
 @Injectable()
@@ -33,18 +33,27 @@ export class ContasService {
     }
 
     getAllContas() {
-        return this.authHttp
+        this.authHttp
             .get("/api/contas/")
             .map((res: Response) => res.json())
             .subscribe(
             data => {
                 console.log("Data return on service:", data);
-                this.contasStore.contas = data.contas;
-                this._contas.next(Object.assign({}, this.contasStore).contas);
+
+                if (data.status === "sucesso") {
+                    this.contasStore.contas = data.contas;
+                    this._contas.next(Object.assign({}, this.contasStore).contas);
+                }
             },
             error => {
                 console.log(error);
             });
+    }
+
+    getContasById(id: string) {
+        console.log("no service id=", id);
+        console.log("no service this.contasStore=", this.contasStore);
+        //TODO: tentar obtendo do observer do service com o find, sem ter q fezer outra chamada ao backend
     }
 
     getAll() {
@@ -100,12 +109,12 @@ export class ContasService {
     }
 
 
-    getContas() {
-        return contasPromise;
-    }
+    // getContas() {
+    //     return contasPromise;
+    // }
 
-    getContasById(id: string) {
-        return contasPromise
-            .then(contas => contas.find(conta => conta.id === id));
-    }
+    // getContasById(id: string) {
+    //     return contasPromise
+    //         .then(contas => contas.find(conta => conta.id === id));
+    // }
 }
