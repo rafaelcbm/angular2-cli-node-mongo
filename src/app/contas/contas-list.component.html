@@ -9,18 +9,14 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Conta</th>
-                            <th>Status</th>
+                            <th>Conta</th>                            
                         </tr>
                     </thead>
                     <tbody>
-                    <!-- Async pipe is used to bind an observable directly in our template -->
+                        <!-- Async pipe is used to bind an observable directly in our template -->
                         <tr *ngFor="let conta of contas$ | async" (click)="onSelect(conta)">
                             <td>{{conta._id}}</td>
-                            <td>{{conta.nome}}</td>
-                            <td>
-                                <span class="tag tag-success">Active</span>
-                            </td>
+                            <td>{{conta.nome}}</td>                            
                         </tr>
                     </tbody>
                 </table>

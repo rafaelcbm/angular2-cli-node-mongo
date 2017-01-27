@@ -28,8 +28,8 @@ export class ContasListComponent implements OnInit {
 
 	onSelect(conta: Conta) {
 		this.selectedId = conta._id;
+		
 		// Navigate with relative link
-		console.log("conta",conta);
 		this.router.navigate([conta._id], { relativeTo: this.route });
 	}
 }
