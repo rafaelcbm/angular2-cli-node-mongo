@@ -35,7 +35,7 @@ export class ContasDetailComponent implements OnInit {
 		// this.route.params
 		// 	.map((params: Params) => {
 		// 		console.log("ContasDetailComponent.ngOnInit params['id']", params['id']);
-		// 		return this.contasService.contas.map(contas => contas.find(c => c._id === params['id']));
+		// 		return this.contasService.contas.map(contas => contas.find(c => c._id === params['id']));		
 		// 	})
 		// 	.subscribe((paramsObservableResult: any) => {
 		// 		console.log("CHEGOU NO subscribe do Observable params = ", paramsObservableResult);
@@ -44,6 +44,13 @@ export class ContasDetailComponent implements OnInit {
 		// 			this.conta = conta;
 		// 		});
 		// 	});
+	}
+	
+	salvarConta(formValue) {
+		console.log("Update Conta ID:", this.conta._id);
+		console.log("Update Conta Nome:", formValue.nome);
+		
+		this.contasService.update(this.conta._id, formValue.nome);
 	}
 
 	gotoContas() {

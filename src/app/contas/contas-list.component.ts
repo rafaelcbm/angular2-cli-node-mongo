@@ -14,8 +14,6 @@ import { Conta } from "../models/models.module";
 export class ContasListComponent implements OnInit {
 
 	contas$: Observable<Conta[]>;
-
-	contas: any[] = [];
 	public selectedId: string;
 
 	constructor(private contasService: ContasService, private route: ActivatedRoute, private router: Router) { }

@@ -101,10 +101,19 @@ export class ContasService {
             .put(`/api/contas/${idConta}`, JSON.stringify({ nomeConta: nomeConta }))
             .map((res: Response) => res.json())
             .subscribe(
-            data => data,
+            data => {
+                console.log("DATA",data);
+                if (data.status === "sucesso") {
+                    this.contasStore.contas.forEach((c, i) => {
+                        if (c._id === data.conta._id) {                            
+                            this.contasStore.contas[i] = data.conta; }
+                    });
+                    
+                    this._contas.next(Object.assign({}, this.contasStore).contas);
+                }
+            },
             error => {
                 console.log(error);
-                return error;
             });
     }
 

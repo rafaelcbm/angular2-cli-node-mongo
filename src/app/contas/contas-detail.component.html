@@ -1,12 +1,26 @@
-<h3>Conta:</h3>
- <div *ngIf="conta">
-    <div>
-      <label>Id: </label>{{ conta._id }}</div>
-    <div>
-      <label>Nome: </label>
-      <input [(ngModel)]="conta.nome" placeholder="Nome"/>
+<div class="col-xs-6" *ngIf="conta">
+    <div class="card">
+        <div class="card-header">
+            <strong>Contas</strong>
+            <small>Details</small>
+        </div>
+        <form class="form-horizontal" (ngSubmit)="salvarConta(contaForm.value)" #contaForm="ngForm">
+            <div class="card-block">
+                <div class="form-group row">
+                    <label class="col-md-12 form-control-label" for="id">ID: {{conta._id}}</label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 form-control-label" for="nome">Nome</label>
+                    <div class="col-md-9">
+                        <input [ngModel]="conta.nome" #nome="ngModel" required id="nome" name="nome" placeholder="Nome Conta" class="form-control">
+                        <span [hidden]="nome.valid || nome.pristine" class="help-block text-danger">Por favor, digite o Nome da Conta.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button [disabled]="!contaForm.form.valid" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i>Salvar</button>
+                <button (click)="gotoContas(contaForm.value)" type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>Voltar</button>
+            </div>
+        </form>
     </div>
-    <p>
-      <button (click)="gotoContas()">Voltar</button>
-    </p>
-  </div>
+</div>
