@@ -14,10 +14,16 @@ import { ContasDetailComponent } from './contas-detail.component';
             children: [{
                 path: '',
                 component: ContasListComponent,
-                children: [{
+                children: [
+                {
+                    path: 'new',
+                    component: ContasDetailComponent
+                }, 
+                {
                     path: ':id',
                     component: ContasDetailComponent
-                }, {
+                }, 
+                {
                     path: ''
                 }]
             }]

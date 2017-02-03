@@ -20,15 +20,15 @@ import { Conta } from "../models/models.module";
 @Injectable()
 export class ContasService {
 
-    contas: Observable<Conta[]>;
-    private _contas: BehaviorSubject<Conta[]>;
+    contas: Observable < Conta[] > ;
+    private _contas: BehaviorSubject < Conta[] > ;
     private contasStore: {
         contas: Conta[]
     };
 
     constructor(private authHttp: AuthHttp) {
         this.contasStore = { contas: [] };
-        this._contas = <BehaviorSubject<Conta[]>>new BehaviorSubject([]);
+        this._contas = < BehaviorSubject < Conta[] >> new BehaviorSubject([]);
         this.contas = this._contas.asObservable();
     }
 
@@ -37,17 +37,17 @@ export class ContasService {
             .get("/api/contas/")
             .map((res: Response) => res.json())
             .subscribe(
-            data => {
-                console.log("Data return on service:", data);
+                data => {
+                    console.log("Data return on service:", data);
 
-                if (data.status === "sucesso") {
-                    this.contasStore.contas = data.contas;
-                    this._contas.next(Object.assign({}, this.contasStore).contas);
-                }
-            },
-            error => {
-                console.log(error);
-            });
+                    if (data.status === "sucesso") {
+                        this.contasStore.contas = data.contas;
+                        this._contas.next(Object.assign({}, this.contasStore).contas);
+                    }
+                },
+                error => {
+                    console.log(error);
+                });
     }
 
     getContasById(id: string) {
@@ -62,24 +62,28 @@ export class ContasService {
             .get("/api/contas/")
             .map((res: Response) => res.json())
             .subscribe(
-            data => data,
-            error => {
-                console.log(error);
-                return error;
-            });
+                data => data,
+                error => {
+                    console.log(error);
+                    return error;
+                });
     }
 
-    insert(nomeConta) {
+    create(nomeConta) {
 
         this.authHttp
             .post("/api/contas/", JSON.stringify({ nomeConta: nomeConta }))
             .map((res: Response) => res.json())
             .subscribe(
-            data => data,
-            error => {
-                console.log(error);
-                return error;
-            });
+                data => {
+                    if (data.status === "sucesso") {
+                        this.contasStore.contas.push(data.conta);
+                    }
+                    this._contas.next(Object.assign({}, this.contasStore).contas);
+                },
+                error => {
+                    console.log(error);
+                });
     }
 
     remove(idConta) {
@@ -88,11 +92,19 @@ export class ContasService {
             .delete(`/api/contas/${idConta}`)
             .map((res: Response) => res.json())
             .subscribe(
-            data => data,
-            error => {
-                console.log(error);
-                return error;
-            });
+                data => {
+                    if (data.status === "sucesso") {
+                        this.contasStore.contas.forEach((c, i) => {
+                            if (c._id === idConta) {
+                                this.contasStore.contas.splice(i, 1);
+                            }
+                        });
+                        this._contas.next(Object.assign({}, this.contasStore).contas);
+                    }
+                },
+                error => {
+                    console.log(error);
+                });
     }
 
     update(idConta, nomeConta) {
@@ -101,20 +113,19 @@ export class ContasService {
             .put(`/api/contas/${idConta}`, JSON.stringify({ nomeConta: nomeConta }))
             .map((res: Response) => res.json())
             .subscribe(
-            data => {
-                console.log("DATA",data);
-                if (data.status === "sucesso") {
-                    this.contasStore.contas.forEach((c, i) => {
-                        if (c._id === data.conta._id) {                            
-                            this.contasStore.contas[i] = data.conta; }
-                    });
-                    
-                    this._contas.next(Object.assign({}, this.contasStore).contas);
-                }
-            },
-            error => {
-                console.log(error);
-            });
+                data => {
+                    if (data.status === "sucesso") {
+                        this.contasStore.contas.forEach((c, i) => {
+                            if (c._id === data.conta._id) {
+                                this.contasStore.contas[i] = data.conta;
+                            }
+                        });
+                        this._contas.next(Object.assign({}, this.contasStore).contas);
+                    }
+                },
+                error => {
+                    console.log(error);
+                });
     }
 
 

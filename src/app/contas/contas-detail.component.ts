@@ -8,56 +8,84 @@ import { ContasService } from '../services/contas-service';
 
 
 @Component({
-	selector: 'contas-detail',
-	templateUrl: './contas-detail.component.html'
+    selector: 'contas-detail',
+    templateUrl: './contas-detail.component.html'
 })
 export class ContasDetailComponent implements OnInit {
 
-	conta: any;
 
-	constructor(
-		private route: ActivatedRoute,
-		private router: Router,
-		private contasService: ContasService
-	) {
-		console.log("ContasDetailComponent.constructor");
-	}
+    novaConta = false;
+    conta: any;
 
-	ngOnInit() {
-		console.log("ContasDetailComponent.ngOnInit");
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private contasService: ContasService
+    ) {
+        console.log("ContasDetailComponent.constructor");
+    }
 
-		this.route.params
-			.switchMap((params: Params) => this.contasService.contas.map(contas => contas.find(c => c._id === params['id'])))
-			.subscribe((conta: any) => this.conta = conta);
+    ngOnInit() {
+        console.log("ContasDetailComponent.ngOnInit");
 
-		// NOTA: Sem o operador switchMap, necessários 2 subscribes
-		//
-		// this.route.params
-		// 	.map((params: Params) => {
-		// 		console.log("ContasDetailComponent.ngOnInit params['id']", params['id']);
-		// 		return this.contasService.contas.map(contas => contas.find(c => c._id === params['id']));		
-		// 	})
-		// 	.subscribe((paramsObservableResult: any) => {
-		// 		console.log("CHEGOU NO subscribe do Observable params = ", paramsObservableResult);
-		// 		paramsObservableResult.subscribe(conta => {
-		// 			console.log("Valor realmente desejado no inner Observable:", conta)
-		// 			this.conta = conta;
-		// 		});
-		// 	});
-	}
-	
-	salvarConta(formValue) {
-		console.log("Update Conta ID:", this.conta._id);
-		console.log("Update Conta Nome:", formValue.nome);
-		
-		this.contasService.update(this.conta._id, formValue.nome);
-	}
+        this.route.params
+            .switchMap((params: Params) => this.contasService.contas.map(contas => contas.find(c => c._id === params['id'])))
+            .subscribe((conta: any) => {
+                this.conta = conta
 
-	gotoContas() {
-		let contaId = this.conta ? this.conta.id : null;
-		// Pass along the conta id if available
-		// so that the contaList component can select that conta
-		// Include a junk 'foo' property for fun.
-		this.router.navigate(['/main/contas', { id: contaId, foo: 'foo' }]);
-	}
+                //Se nova conta
+                if (!this.conta) {
+                    this.novaConta = true;
+                }
+            });
+
+        // NOTA: Sem o operador switchMap, necessários 2 subscribes
+        //
+        // this.route.params
+        // 	.map((params: Params) => {
+        // 		console.log("ContasDetailComponent.ngOnInit params['id']", params['id']);
+        // 		return this.contasService.contas.map(contas => contas.find(c => c._id === params['id']));		
+        // 	})
+        // 	.subscribe((paramsObservableResult: any) => {
+        // 		console.log("CHEGOU NO subscribe do Observable params = ", paramsObservableResult);
+        // 		paramsObservableResult.subscribe(conta => {
+        // 			console.log("Valor realmente desejado no inner Observable:", conta)
+        // 			this.conta = conta;
+        // 		});
+        // 	});
+    }
+
+    redirectToList() {
+        if (this.novaConta) {
+            this.router.navigate(['/main/contas']);
+        } else {
+            let contaId = this.conta._id;
+            // Pass along the conta id if available
+            // so that the contaList component can select that conta
+            // Include a junk 'foo' property for fun.
+            this.router.navigate(['/main/contas', { id: contaId, foo: 'foo' }]);
+        }
+    }
+
+    salvarConta(formValue) {
+        console.log("salvarConta Conta ", this.conta);
+        console.log("salvarConta Conta Nome:", formValue.nome);
+
+        if (this.novaConta) {
+            this.contasService.create(formValue.nome);
+        } else {
+            this.contasService.update(this.conta._id, formValue.nome);
+        }
+
+        this.redirectToList();
+    }
+
+
+    removerConta(conta) {
+        console.log("Remover Conta chamado", conta);
+
+        this.contasService.remove(this.conta._id);
+
+        this.redirectToList();
+    }
 }

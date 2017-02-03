@@ -30,4 +30,8 @@ export class ContasListComponent implements OnInit {
 		// Navigate with relative link
 		this.router.navigate([conta._id], { relativeTo: this.route });
 	}
+
+	novaConta(){
+		this.router.navigate(['new'], { relativeTo: this.route });
+	}
 }

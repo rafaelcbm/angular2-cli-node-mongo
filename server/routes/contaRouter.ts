@@ -68,12 +68,9 @@ contaRouter.post("/", function(request: Request & { userName: string }, response
         daoReturn = yield userDAO.addConta(user._id, contaObtida._id.toHexString());
         assert.equal(daoReturn.result.n, 1);
 
-        user = yield userDAO.getUser(userName);
-        assert.ok(user);
-
         response.status(201).json({
             "status": "sucesso",
-            "user": user
+            "conta": contaObtida
         });
     }).catch((e) => {
         logger.info("** Error = ", e);
