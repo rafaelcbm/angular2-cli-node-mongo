@@ -32,6 +32,7 @@
     "@angular/platform-browser-dynamic": "2.2.3",
     "@angular/router": "3.2.3",
     "@angular/upgrade": "2.2.3",
+    "@types/jquery": "^2.0.40",
     "@types/lodash": "4.14.40",
     "@types/mongodb": "^2.1.33",
     "angular-calendar": "0.4.0",
@@ -48,6 +49,7 @@
     "core-js": "^2.4.1",
     "date-fns": "1.10.0",
     "express": "^4.14.0",
+    "jquery": "^3.1.1",
     "lodash": "^4.16.6",
     "moment": "2.17.0",
     "mongodb": "^2.2.10",
@@ -57,6 +59,7 @@
     "ng2-charts": "^1.4.1",
     "ng2-select": "^1.1.2",
     "rxjs": "5.0.0-rc.4",
+    "toastr": "^2.1.2",
     "ts-helpers": "^1.1.2",
     "yargs": "^4.8.1",
     "zone.js": "0.7.2"

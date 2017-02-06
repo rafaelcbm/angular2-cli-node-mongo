@@ -2,10 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import 'rxjs/add/operator/map';
+//Possivel importar assim devido ao @types/jquery.
+import * as $ from 'jquery';
+// Não é possivel importar essã lib dessa forma, pois não é um modulo js. Tem q ser através do "declare".
+//import * as toastr from 'toastr';
 
 import { Conta } from "../models/models.module";
 import { ContasService } from '../services/contas-service';
 
+declare var toastr: any;
 
 @Component({
     selector: 'contas-detail',
@@ -23,6 +28,7 @@ export class ContasDetailComponent implements OnInit {
         private contasService: ContasService
     ) {
         console.log("ContasDetailComponent.constructor");
+        toastr.options = { positionClass: 'toast-bottom-right', };
     }
 
     ngOnInit() {
@@ -68,6 +74,7 @@ export class ContasDetailComponent implements OnInit {
     }
 
     salvarConta(formValue) {
+
         console.log("salvarConta Conta ", this.conta);
         console.log("salvarConta Conta Nome:", formValue.nome);
 
@@ -78,8 +85,11 @@ export class ContasDetailComponent implements OnInit {
         }
 
         this.redirectToList();
-    }
 
+        //Exemplo de utilização de libs externas:
+        $("#campoNome").addClass("text-danger");
+        toastr.success("Orders downloaded.");
+    }
 
     removerConta(conta) {
         console.log("Remover Conta chamado", conta);
