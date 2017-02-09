@@ -16,6 +16,15 @@ export class ContasListComponent implements OnInit {
 	contas$: Observable<Conta[]>;
 	public selectedId: string;
 
+	public options = {
+		position: ["bottom", "right"],
+		timeOut: 5000,		
+        showProgressBar: true,
+        pauseOnHover: true,
+        clickToClose: true,
+		lastOnBottom: true
+	};
+
 	constructor(private contasService: ContasService, private route: ActivatedRoute, private router: Router) { }
 
 	ngOnInit() {
@@ -26,12 +35,12 @@ export class ContasListComponent implements OnInit {
 
 	onSelect(conta: Conta) {
 		this.selectedId = conta._id;
-		
+
 		// Navigate with relative link
 		this.router.navigate([conta._id], { relativeTo: this.route });
 	}
 
-	novaConta(){
+	novaConta() {
 		this.router.navigate(['new'], { relativeTo: this.route });
 	}
 }
