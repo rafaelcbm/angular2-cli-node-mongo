@@ -7,12 +7,6 @@ import { AuthHttp, JwtHelper } from "angular2-jwt";
 //import { ApiService } from "../shared/api.service";
 import "rxjs/add/operator/map";
 
-import {
-    ToasterModule,
-    ToasterService,
-    ToasterConfig
-} from 'angular2-toaster/angular2-toaster';
-
 import { AuthService } from './auth.service';
 
 import { Observable } from 'rxjs/Observable';
@@ -23,29 +17,12 @@ import { Observable } from 'rxjs/Observable';
 })
 export class LoginComponent implements OnInit {
 
-    campoId: string;
-    campoNome: string;
-
-    result: any;
-
-    private toasterService: ToasterService;
-
-    public toasterconfig: ToasterConfig =
-    new ToasterConfig({
-        tapToDismiss: true,
-        timeout: 5000
-    });
-
     loginObservable$: Observable<any>;
 
     username: string;
     password: string;
 
-    constructor(private authService: AuthService, toasterService: ToasterService,
-        private router: Router, private authHttp: AuthHttp) {
-
-        this.toasterService = toasterService;
-    }
+    constructor(private authService: AuthService, private router: Router, private authHttp: AuthHttp) {  }
 
     ngOnInit() {
         // subscribe to the observable
@@ -60,9 +37,7 @@ export class LoginComponent implements OnInit {
 
     loginHandler(data) {
         if (data.status === "erro") {
-            console.log("Mensagem de erro =", data.message);
-            //TODO: Encapsular mensagens em novo componente shared
-            this.toasterService.pop('error', 'Erro', data.message);
+            console.log("Mensagem de erro =", data.message);            
             return;
         }
 
@@ -77,93 +52,6 @@ export class LoginComponent implements OnInit {
 
     logout(): void {
         this.authService.logout();
-    }
-
-    getAllUsersTest(): void {
-        console.log("* Chamou getAllUsersTest:");
-
-        this.authHttp
-            .get("/api/users/all")
-            .map((res: Response) => res.json())
-            .subscribe(
-            (data) => {
-                console.log(data);
-                this.result = data;
-            },
-            (resError) => {
-                console.log(resError);
-                this.result = resError;
-                //setTimeout(() => this.error = null, 4000)
-            });
-    }
-
-    getAllContasByUser() {
-
-        this.authHttp
-            .get("/api/contas/")
-            .map((res: Response) => res.json())
-            .subscribe(
-            (data) => {
-                console.log(data);
-                this.result = data;
-            },
-            (resError) => {
-                console.log(resError);
-                this.result = resError;
-                //setTimeout(() => this.error = null, 4000)
-            });
-    }
-
-    inserirConta() {
-
-        let nomeConta = "Conta From Angular";
-
-        this.authHttp
-            .post("/api/contas/", JSON.stringify({ nomeConta: this.campoNome }))
-            .map((res: Response) => res.json())
-            .subscribe(
-            (data) => {
-                console.log(data);
-                this.result = data;
-            },
-            (resError) => {
-                console.log(resError);
-                this.result = resError;
-                //setTimeout(() => this.error = null, 4000)
-            });
-    }
-
-    removerConta() {
-
-        this.authHttp
-            .delete(`/api/contas/${this.campoId}`)
-            .map((res: Response) => res.json())
-            .subscribe(
-            (data) => {
-                console.log(data);
-                this.result = data;
-            },
-            (resError) => {
-                console.log(resError);
-                this.result = resError;
-            });
-    }
-
-    alterarConta() {
-
-        this.authHttp
-            .put(`/api/contas/${this.campoId}`, JSON.stringify({ nomeNovaConta: this.campoNome }))
-            .map((res: Response) => res.json())
-            .subscribe(
-            (data) => {
-                console.log(data);
-                this.result = data;
-            },
-            (resError) => {
-                console.log(resError);
-                this.result = resError;
-                //setTimeout(() => this.error = null, 4000)
-            });
     }
 
     protected() {

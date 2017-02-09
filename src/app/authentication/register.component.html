@@ -4,7 +4,7 @@
             <div class="col-md-6 offset-md-3">
                 <div class="card mx-2">
                 <form #formRef="ngForm" (ngSubmit)="signup(formRef.value)">                    
-                    <p>{{formRef.value|json}}</p>
+                    <!-- <p>{{formRef.value|json}}</p> -->
                     <div class="card-block p-2">
                         <h1>Register</h1>
                         <p class="text-muted">Create your account</p>
@@ -41,5 +41,3 @@
             </div>
         </div>
     </div>
-</div>
-<toaster-container [toasterconfig]="toasterconfig"></toaster-container>

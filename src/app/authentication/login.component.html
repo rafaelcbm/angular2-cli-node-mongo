@@ -7,8 +7,7 @@
                         <div class="card-block">
                             <form #formRef="ngForm" (ngSubmit)="signup(formRef.value)">
                                 <h1>Login</h1>
-                                <p class="text-muted">Sign In to your account</p>
-                                <p>username: {{username|json}} password: {{password|json}}</p>
+                                <p class="text-muted">Sign In to your account</p>                                
                                 <div class="input-group mb-1">
                                     <span class="input-group-addon"><i class="icon-user"></i>
                                 </span>
@@ -22,31 +21,7 @@
                                 <div class="row">
                                     <div class="col-xs-3">
                                         <button type="button" (click)="login(formRef.value)" class="btn btn-primary p-x-2">Login</button>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <button type="button" (click)="protected()" class="btn btn-secondary p-x-2">Protected</button>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <button type="button" (click)="getAllUsersTest()" class="btn btn-secondary p-x-2">getAllUsersTest</button>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <button type="button" (click)="getAllContasByUser()" class="btn btn-secondary p-x-2">getAllContasByUser</button>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <button type="button" (click)="inserirConta()" class="btn btn-secondary p-x-2">inserirConta</button>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <button type="button" (click)="removerConta()" class="btn btn-secondary p-x-2">removerConta</button>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <button type="button" (click)="alterarConta()" class="btn btn-secondary p-x-2">alterarConta</button>
-                                    </div>
-                                    <div class="col-xs-6">Id
-                                        <input [(ngModel)]="campoId" placeholder="id" name="id">
-                                    </div>
-                                    <div class="col-xs-6">Nome
-                                        <input [(ngModel)]="campoNome" placeholder="Nome" name="nome">
-                                    </div>
+                                    </div>                                    
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-6 offset-xs-6 text-xs-right">
@@ -60,25 +35,12 @@
                         <div class="card-block text-xs-center">
                             <div>
                                 <h2>Sign up</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                <p>"Conhecereis a verdade, e a verdade os libertará"" - João 8:32.</p>
                                 <button type="button" class="btn btn-primary active mt-1" [routerLink]="['/register']">Register Now!</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card-group">
-                    <div class="card p-2">
-                        <div class="card-block" style="overflow: auto; height: 500px;">
-                            <h1>RESULT</h1>
-                            <p>{{result|json}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div>        
     </div>
-    <toaster-container [toasterconfig]="toasterconfig"></toaster-container>
