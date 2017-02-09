@@ -22,9 +22,6 @@ import { ContasDetailComponent } from './contas-detail.component';
                 {
                     path: ':id',
                     component: ContasDetailComponent
-                }, 
-                {
-                    path: ''
                 }]
             }]
         }])
