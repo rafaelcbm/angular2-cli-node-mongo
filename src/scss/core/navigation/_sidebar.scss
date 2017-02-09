@@ -162,7 +162,7 @@ body:not(.top-nav) {
                             width: ($font-size-base);
                             height: ($font-size-base);
                             padding: 0;
-                            font-size: ($font-size-base * 2);
+                            font-size: ($font-size-base);
                             line-height: ($font-size-base * 3 / 4);
                             text-align: center;
                             content: "\2039";
@@ -181,6 +181,7 @@ body:not(.top-nav) {
                         > ul, > ol {
                             // display: inline;
                             max-height: 1000px;
+                            padding-left: $padding-left-nav-dropdown-sub-itens;                            
                         }
 
                         a.nav-link {                            
@@ -188,13 +189,9 @@ body:not(.top-nav) {
                             border-left: 0 !important;
                         }
 
-                        > a.nav-link.nav-dropdown-toggle {
-                            background: $sidebar-bg;
-
-                            &::before {
-                                -webkit-transform: rotate(-90deg);
-                                transform: rotate(-90deg);
-                            }
+                        > a.nav-link.nav-dropdown-toggle::before {
+                             -webkit-transform: rotate(-90deg);
+                             transform: rotate(-90deg);
                         }
 
                         .nav-dropdown.open {

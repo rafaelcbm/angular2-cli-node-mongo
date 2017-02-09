@@ -48,7 +48,7 @@ $navbar-border: (
 );
 $navbar-brand-width:                200px;
 $navbar-brand-bg:                   #fff;
-$navbar-brand-logo:                 url('../img/logo.png');
+$navbar-brand-logo:                 url('../img/mean.png');
 $navbar-brand-logo-size:            80px auto;
 $navbar-brand-border: (
     bottom: (
@@ -101,7 +101,7 @@ $sidebar-nav-link-active-icon-color: $brand-primary;
 $sidebar-nav-link-active-borders:   0;
 
 $sidebar-nav-dropdown-color:        #fff;
-$sidebar-nav-dropdown-bg:           darken($sidebar-bg, 100%);
+$sidebar-nav-dropdown-bg:           darken($sidebar-bg, 3%);
 $sidebar-nav-dropdown-borders:      0;
 
 // Top Navigation

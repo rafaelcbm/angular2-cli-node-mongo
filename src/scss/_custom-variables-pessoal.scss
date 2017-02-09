@@ -1,1 +1,10 @@
 $sidebar-nav-link-color-pai: rgba(97, 165, 191, 0.9);
+$padding-left-nav-dropdown-sub-itens: 10%;
+
+
+/*
+* Variáveis redefinidas.
+*/
+$navbar-brand-logo:                 url('../img/mean.png');
+$navbar-brand-logo-size:            150px auto;
+$sidebar-nav-dropdown-bg:           darken($sidebar-bg, 100%);
