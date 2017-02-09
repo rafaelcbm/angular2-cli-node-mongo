@@ -180,11 +180,11 @@ body:not(.top-nav) {
                         }
                         > ul, > ol {
                             // display: inline;
-                            max-height: 1000px;
-                            padding-left: $padding-left-nav-dropdown-sub-itens;                            
+                            max-height: 1000px;                            
                         }
 
-                        a.nav-link {                            
+                        a.nav-link {
+                            padding-left: $padding-left-nav-dropdown-sub-itens;
                             color: $sidebar-nav-link-color-pai;
                             border-left: 0 !important;
                         }
