@@ -9,14 +9,14 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Conta</th>                            
+                            <th>Conta</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Async pipe is used to bind an observable directly in our template -->
                         <tr *ngFor="let conta of contas$ | async" (click)="onSelect(conta)">
                             <td>{{conta._id}}</td>
-                            <td>{{conta.nome}}</td>                            
+                            <td>{{conta.nome}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -38,14 +38,13 @@
                     </ul>
                 </nav>
             </div>
-            <div class="card-footer">                
-                <button (click)="novaConta()" type="button" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Nova Conta</button>                
+            <div class="card-footer">
+                <button (click)="novaConta()" type="button" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Nova Conta</button>
             </div>
         </div>
     </div>
-
-    <router-outlet></router-outlet>
+    <div class="col-md-6 col-xs-12">
+        <router-outlet></router-outlet>
+    </div>
 </div>
-
 <simple-notifications [options]="options"></simple-notifications>
-

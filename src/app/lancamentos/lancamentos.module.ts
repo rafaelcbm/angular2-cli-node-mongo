@@ -11,14 +11,13 @@ import { LancamentosDetailComponent } from './lancamentos-detail.component';
 import { LancamentosService } from '../services/lancamentos-service';
 
 import { SimpleNotificationsModule } from "angular2-notifications";
-import { TabsModule } from 'ng2-bootstrap/tabs';
+
 
 @NgModule({
     declarations: [
         ManageLancamentosComponent,
         LancamentosListComponent,
-        LancamentosDetailComponent,
-        TabsModule.forRoot(),
+        LancamentosDetailComponent
     ],
     imports: [
         CommonModule,

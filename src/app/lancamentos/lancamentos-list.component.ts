@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { LancamentosService } from '../services/lancamentos-service';
-import { Conta } from "../models/models.module";
+import { Lancamento } from "../models/models.module";
 
 
 @Component({

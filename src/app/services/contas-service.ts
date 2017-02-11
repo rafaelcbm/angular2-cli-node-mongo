@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions, Response } from "@angular/http";
+import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
-import { AuthHttp } from "angular2-jwt";
+import { AuthHttp,JwtHelper } from "angular2-jwt";
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 
 import { Conta } from "../models/models.module";
+import { AuthService }      from '../authentication/auth.service';
 
 // const CONTAS = [
 //     new Conta("1", 'Conta Conjunta'),
@@ -26,15 +27,33 @@ export class ContasService {
         contas: Conta[]
     };
 
-    constructor(private authHttp: AuthHttp) {
+    constructor(private authHttp: Http, private authService:AuthService) {
         this.contasStore = { contas: [] };
         this._contas = < BehaviorSubject < Conta[] >> new BehaviorSubject([]);
         this.contas = this._contas.asObservable();
     }
 
     getAllContas() {
+        console.log("authService.isLoggedIn() = ", this.authService.isLoggedIn());
+
+        let jwtHelper: JwtHelper = new JwtHelper();
+
+        var token = localStorage.getItem('id_token');
+
+        if (token) {
+            console.log("* Token utils:");
+            console.log(
+                jwtHelper.decodeToken(token),
+                jwtHelper.getTokenExpirationDate(token),
+                jwtHelper.isTokenExpired(token)
+            );
+        }
+
+
         this.authHttp
-            .get("/api/contas/")
+            .get("/api/contas/", new RequestOptions({
+                headers: new Headers({ "Content-Type": "application/json", "authorization": token })
+            }))
             .map((res: Response) => res.json())
             .subscribe(
                 data => {

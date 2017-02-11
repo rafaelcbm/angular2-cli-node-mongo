@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions, Response } from "@angular/http";
+import {Http, Headers, RequestOptions, Response } from "@angular/http";
 
-import { AuthHttp } from "angular2-jwt";
+//import { AuthHttp } from "angular2-jwt";
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
@@ -19,7 +19,7 @@ export class LancamentosService {
         lancamentos: Lancamento[]
     };
 
-    constructor(private authHttp: AuthHttp) {
+    constructor(private authHttp: Http) {
         this.lancamentosStore = { lancamentos: [] };
         this._lancamentos = < BehaviorSubject < Lancamento[] >> new BehaviorSubject([]);
         this.lancamentos = this._lancamentos.asObservable();

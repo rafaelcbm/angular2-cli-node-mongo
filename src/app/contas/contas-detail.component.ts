@@ -14,7 +14,7 @@ import { Conta } from "../models/models.module";
 import { ContasService } from '../services/contas-service';
 
 
-@Component({
+@Component({    
     selector: 'contas-detail',
     templateUrl: './contas-detail.component.html'
 })

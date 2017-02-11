@@ -20,14 +20,15 @@ import { AuthGuard } from '../authentication/auth-guard.service';
             children: [
                 {
                     path: 'contas',
-                    loadChildren: 'app/contas/contas.module#ContasModule',
+                    loadChildren: '../contas/contas.module#ContasModule',
                 },
                 {
                     path: 'lancamentos',
-                    loadChildren: 'app/lancamentos/lancamentos.module#LancamentosModule',
+                    loadChildren: '../lancamentos/lancamentos.module#LancamentosModule',
                 },
                 {
                     path: '',
+                    pathMatch:'full',
                     redirectTo: 'contas',
                 },
             ]

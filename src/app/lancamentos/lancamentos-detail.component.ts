@@ -5,9 +5,7 @@ import 'rxjs/add/operator/map';
 
 import { NotificationsService } from "angular2-notifications";
 
-
-
-import { Conta } from "../models/models.module";
+import { Lancamento } from "../models/models.module";
 import { LancamentosService } from '../services/lancamentos-service';
 
 

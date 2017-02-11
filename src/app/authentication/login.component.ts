@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Headers, RequestOptions, Response } from "@angular/http";
 
-import { AuthHttp, JwtHelper } from "angular2-jwt";
+//import { AuthHttp, JwtHelper } from "angular2-jwt";
 
 //import { ApiService } from "../shared/api.service";
 import "rxjs/add/operator/map";
@@ -22,7 +22,9 @@ export class LoginComponent implements OnInit {
     username: string;
     password: string;
 
-    constructor(private authService: AuthService, private router: Router, private authHttp: AuthHttp) {  }
+    constructor(private authService: AuthService, private router: Router
+        //, private authHttp: AuthHttp
+        ) {  }
 
     ngOnInit() {
         // subscribe to the observable
@@ -54,29 +56,29 @@ export class LoginComponent implements OnInit {
         this.authService.logout();
     }
 
-    protected() {
-        let jwtHelper: JwtHelper = new JwtHelper();
+    // protected() {
+    //     let jwtHelper: JwtHelper = new JwtHelper();
 
-        var token = localStorage.getItem('id_token');
+    //     var token = localStorage.getItem('id_token');
 
-        if (token) {
-            console.log("* Token utils:");
-            console.log(
-                jwtHelper.decodeToken(token),
-                jwtHelper.getTokenExpirationDate(token),
-                jwtHelper.isTokenExpired(token)
-            );
-        }
+    //     if (token) {
+    //         console.log("* Token utils:");
+    //         console.log(
+    //             jwtHelper.decodeToken(token),
+    //             jwtHelper.getTokenExpirationDate(token),
+    //             jwtHelper.isTokenExpired(token)
+    //         );
+    //     }
 
-        this.authHttp
-            .get("/api")
-            .map((res: Response) => res.json())
-            .subscribe(
-            (data) => {
-                console.log(data);
-            },
-            (resError) => {
-                console.log(resError);
-            });
-    }
+    //     this.authHttp
+    //         .get("/api")
+    //         .map((res: Response) => res.json())
+    //         .subscribe(
+    //         (data) => {
+    //             console.log(data);
+    //         },
+    //         (resError) => {
+    //             console.log(resError);
+    //         });
+    // }
 }

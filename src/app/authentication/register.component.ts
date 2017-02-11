@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
-import { AuthHttp, JwtHelper } from "angular2-jwt";
-
-//import { ApiService } from "../shared/api.service";
+//import { AuthHttp } from "angular2-jwt";
 import "rxjs/add/operator/map";
 
 import { AuthService } from './auth.service';
@@ -19,7 +17,9 @@ export class RegisterComponent implements OnInit {
 
     registerObservable$: Observable < any > ;
 
-    constructor(private authService: AuthService, private router: Router, private http: Http, private authHttp: AuthHttp) {    }
+    constructor(private authService: AuthService, private router: Router, private http: Http
+        //, private authHttp: AuthHttp
+        ) {    }
 
     ngOnInit() {
         // subscribe to the observable

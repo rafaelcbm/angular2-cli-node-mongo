@@ -6,7 +6,7 @@
   "apps": [{
     "root": "src",
     "outDir": "dist",
-    "assets": "assets",
+    "assets": ["assets"],
     "index": "index.html",
     "main": "main.ts",
     "test": "test.ts",
@@ -14,8 +14,7 @@
     "prefix": "app",
     "mobile": false,
     "styles": [
-      "scss/style.scss",
-      "../node_modules/toastr/build/toastr.min.css"
+      "scss/style.scss"
     ],
     "scripts": [
       "../node_modules/chart.js/dist/Chart.bundle.min.js",
@@ -30,17 +29,7 @@
     }
   }],
   "addons": [],
-  "packages": [],
-  "e2e": {
-    "protractor": {
-      "config": "./protractor.conf.js"
-    }
-  },
-  "test": {
-    "karma": {
-      "config": "./karma.conf.js"
-    }
-  },
+  "packages": [],  
   "defaults": {
     "styleExt": "scss",
     "prefixInterfaces": false
