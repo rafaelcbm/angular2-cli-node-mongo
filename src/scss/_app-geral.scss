@@ -1,3 +1,19 @@
 .container.home {
     padding-top: 55px;
 }
+
+//Sobrescreve o margin-bottom da notificação "toastr"
+.notification-margin-bottom {
+    margin-bottom: 50px !important;
+}
+
+.navbar-flex-row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    padding: $navbar-padding-y $navbar-padding-x;
+    
+    a.navbar-brand {
+        flex-grow: 2;
+    }
+}
