@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from "@angular/http";
+import { Headers, RequestOptions, Response } from "@angular/http";
 
-import { AuthHttp,JwtHelper } from "angular2-jwt";
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 
 import { Conta } from "../models/models.module";
 import { AuthService }      from '../authentication/auth.service';
+import { ApiHttpService } from './api-http-service';
 
 // const CONTAS = [
 //     new Conta("1", 'Conta Conjunta'),
@@ -27,34 +27,15 @@ export class ContasService {
         contas: Conta[]
     };
 
-    constructor(private authHttp: Http, private authService:AuthService) {
+    constructor(private apiHttp:ApiHttpService) {
         this.contasStore = { contas: [] };
         this._contas = < BehaviorSubject < Conta[] >> new BehaviorSubject([]);
         this.contas = this._contas.asObservable();
     }
 
     getAllContas() {
-        console.log("authService.isLoggedIn() = ", this.authService.isLoggedIn());
-
-        let jwtHelper: JwtHelper = new JwtHelper();
-
-        var token = localStorage.getItem('id_token');
-
-        if (token) {
-            console.log("* Token utils:");
-            console.log(
-                jwtHelper.decodeToken(token),
-                jwtHelper.getTokenExpirationDate(token),
-                jwtHelper.isTokenExpired(token)
-            );
-        }
-
-
-        this.authHttp
-            .get("/api/contas/", new RequestOptions({
-                headers: new Headers({ "Content-Type": "application/json", "authorization": token })
-            }))
-            .map((res: Response) => res.json())
+        
+        this.apiHttp.get("/api/contas/") 
             .subscribe(
                 data => {
                     console.log("Data return on service:", data);
@@ -77,9 +58,8 @@ export class ContasService {
 
     getAll() {
 
-        return this.authHttp
-            .get("/api/contas/")
-            .map((res: Response) => res.json())
+        return this.apiHttp
+            .get("/api/contas/")            
             .subscribe(
                 data => data,
                 error => {
@@ -90,9 +70,8 @@ export class ContasService {
 
     create(nomeConta) {
 
-        this.authHttp
-            .post("/api/contas/", JSON.stringify({ nomeConta: nomeConta }))
-            .map((res: Response) => res.json())
+        this.apiHttp
+            .post("/api/contas/", { nomeConta: nomeConta })
             .subscribe(
                 data => {
                     if (data.status === "sucesso") {
@@ -107,9 +86,8 @@ export class ContasService {
 
     remove(idConta) {
 
-        this.authHttp
-            .delete(`/api/contas/${idConta}`)
-            .map((res: Response) => res.json())
+        this.apiHttp
+            .delete(`/api/contas/${idConta}`)            
             .subscribe(
                 data => {
                     if (data.status === "sucesso") {
@@ -128,9 +106,8 @@ export class ContasService {
 
     update(idConta, nomeConta) {
 
-        this.authHttp
-            .put(`/api/contas/${idConta}`, JSON.stringify({ nomeConta: nomeConta }))
-            .map((res: Response) => res.json())
+        this.apiHttp
+            .put(`/api/contas/${idConta}`, { nomeConta: nomeConta })            
             .subscribe(
                 data => {
                     if (data.status === "sucesso") {

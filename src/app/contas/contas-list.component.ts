@@ -18,11 +18,12 @@ export class ContasListComponent implements OnInit {
 
 	public options = {
 		position: ["bottom", "right"],
-		timeOut: 5000,		
+		timeOut: 100000000,		
         showProgressBar: true,
         pauseOnHover: true,
         clickToClose: true,
-		lastOnBottom: true
+		lastOnBottom: true,
+		theClass: "notificationMarginBottom"
 	};
 
 	constructor(private contasService: ContasService, private route: ActivatedRoute, private router: Router) { }

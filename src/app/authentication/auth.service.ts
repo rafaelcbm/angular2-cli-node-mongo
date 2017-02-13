@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
-import { tokenNotExpired } from 'angular2-jwt';
+import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -16,11 +16,11 @@ import 'rxjs/Rx';
 export class AuthService {
 
     // expose to component
-    loginObservable$: Observable < any > ;
-    registerObservable$: Observable < any > ;
+    loginObservable$: Observable<any>;
+    registerObservable$: Observable<any>;
 
-    private loginObserver: Observer < any > ;
-    private registerObserver: Observer < any > ;
+    private loginObserver: Observer<any>;
+    private registerObserver: Observer<any>;
 
 
     // store the URL so we can redirect after logging in
@@ -35,42 +35,58 @@ export class AuthService {
         return tokenNotExpired();
     }
 
+    getToken() {
+        // let jwtHelper: JwtHelper = new JwtHelper();
+
+        // var token = localStorage.getItem('id_token');
+
+        // if (token) {
+        //     console.log("* Token utils:");
+        //     console.log(
+        //         jwtHelper.decodeToken(token),
+        //         jwtHelper.getTokenExpirationDate(token),
+        //         jwtHelper.isTokenExpired(token)
+        //     );
+        // }
+        return localStorage.getItem('id_token');
+    }
+
     login(userCredential) {
         //return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
         //this.isLoggedIn = true;
 
         this.http.post("/login", JSON.stringify(userCredential), new RequestOptions({
-                headers: new Headers({ "Content-Type": "application/json" })
-            }))
+            headers: new Headers({ "Content-Type": "application/json" })
+        }))
             .map((res: Response) => res.json())
             .subscribe(
-                (data: any) => {
-                    console.log("Resposta /login:", data);
+            (data: any) => {
+                console.log("Resposta /login:", data);
 
-                    if (data.status === "erro") {
-                        // put data into observavle 
-                        this.loginObserver.next({
-                            status: data.status,
-                            message: data.message,
-                        });
-                    } else {
-                        localStorage.setItem("id_token", data.jwt);
-
-                        // put data into observavle 
-                        this.loginObserver.next({
-                            status: data.status,
-                            jwt: data.jwt
-                        });
-                    }
-                },
-                (error: Error) => {
-                    console.log(error);
-                    // put data into observavle  
+                if (data.status === "erro") {
+                    // put data into observavle 
                     this.loginObserver.next({
-                        status: 'erro',
-                        message: 'Erro ao autenticar usuário!',
-                    })
+                        status: data.status,
+                        message: data.message,
+                    });
+                } else {
+                    localStorage.setItem("id_token", data.jwt);
+
+                    // put data into observavle 
+                    this.loginObserver.next({
+                        status: data.status,
+                        jwt: data.jwt
+                    });
                 }
+            },
+            (error: Error) => {
+                console.log(error);
+                // put data into observavle  
+                this.loginObserver.next({
+                    status: 'erro',
+                    message: 'Erro ao autenticar usuário!',
+                })
+            }
             );
     }
 
@@ -79,37 +95,37 @@ export class AuthService {
         //this.isLoggedIn = true;
 
         this.http.post("/signup", JSON.stringify(userCredential), new RequestOptions({
-                headers: new Headers({ "Content-Type": "application/json" })
-            }))
+            headers: new Headers({ "Content-Type": "application/json" })
+        }))
             .map((res: Response) => res.json())
             .subscribe(
-                (data: any) => {
-                    console.log("Resposta / register:", data);
+            (data: any) => {
+                console.log("Resposta / register:", data);
 
-                    if (data.status === "erro") {
-                        // put data into observavle 
-                        this.registerObserver.next({
-                            status: data.status,
-                            message: data.message,
-                        });
-                    } else {
-                        localStorage.setItem("id_token", data.jwt);
-
-                        // put data into observavle 
-                        this.registerObserver.next({
-                            status: data.status,
-                            jwt: data.jwt
-                        });
-                    }
-                },
-                (error: Error) => {
-                    console.log(error);
-                    // put data into observavle  
+                if (data.status === "erro") {
+                    // put data into observavle 
                     this.registerObserver.next({
-                        status: 'erro',
-                        message: 'Erro ao registrar novo usuário!',
-                    })
+                        status: data.status,
+                        message: data.message,
+                    });
+                } else {
+                    localStorage.setItem("id_token", data.jwt);
+
+                    // put data into observavle 
+                    this.registerObserver.next({
+                        status: data.status,
+                        jwt: data.jwt
+                    });
                 }
+            },
+            (error: Error) => {
+                console.log(error);
+                // put data into observavle  
+                this.registerObserver.next({
+                    status: 'erro',
+                    message: 'Erro ao registrar novo usuário!',
+                })
+            }
             );
     }
 
