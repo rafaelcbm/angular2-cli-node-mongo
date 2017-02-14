@@ -19,7 +19,7 @@ contaRouter.get("/", function(request: Request & { userName: string }, response:
     co(function* () {
 
         let user = yield userDAO.getUser(userName);
-        assert.ok(user);
+        assert.ok(user);        
 
         if (!user.contas) {
             return response.json({
@@ -58,6 +58,15 @@ contaRouter.post("/", function(request: Request & { userName: string }, response
         assert.ok(user);
         //user._id é um OBJETO, nao string, apesar da exibição no log ser igual
         logger.info("** typeof user._id: %s", typeof user._id);
+        logger.info("** USER: %j", user);
+
+        let contas = yield contaDAO.getContaByIds(user.contas);
+        if (contas.find(conta => conta.nome === nomeConta)) {
+            return response.json({
+                "status": "erro",
+                "message": `Usuário já possui conta com o nome informado: "${nomeConta}".`
+            });
+        }
 
         let daoReturn = yield contaDAO.insertConta({ nome: nomeConta });
         assert.equal(daoReturn.result.n, 1);
@@ -161,6 +170,14 @@ contaRouter.put("/:idConta", function(request: Request & { userName: string }, r
                     "message": `Conta informada não pertence ao usuário informado!`
                 });
             }
+        }
+
+        let contas = yield contaDAO.getContaByIds(user.contas);
+        if (contas.find(conta => conta.nome === nomeConta)) {
+            return response.json({
+                "status": "erro",
+                "message": `Usuário já possui conta com o nome informado: "${nomeConta}".`
+            });
         }
 
         let daoReturn = yield contaDAO.updateConta(idConta, nomeConta);

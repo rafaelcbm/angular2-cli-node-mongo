@@ -1,10 +1,7 @@
+import { MongoClient, ObjectID } from "mongodb";
+import * as assert from "assert";
+
 import { logger } from "../app";
-
-let MongoClient = require('mongodb').MongoClient;
-let assert = require('assert');
-let Q = require("q");
-let ObjectID = require('mongodb').ObjectID;
-
 
 // Create a class to manage the data manipulation.
 export class DataAccess {
@@ -32,44 +29,23 @@ export class DataAccess {
 
     // Insert a new document in the collection.
     public insertDocument(document: any, collectionName: string): any {
-        logger.info("** DAL - insertDocument: %j, %j", document, collectionName);
+        logger.info("** DAL - Collection: %j - Inserting Document: %j", collectionName, document);
 
-        let deferred = Q.defer();
-        this.dbConnection.collection(collectionName).insertOne(document, (err, result) => {
-            assert.equal(err, null);
-            if (err) {
-                deferred.reject(new Error(JSON.stringify(err)));
-            }
-
-            deferred.resolve(result);
-        });
-
-        return deferred.promise;
+        return this.dbConnection.collection(collectionName).insertOne(document);
     }
 
-    // Return a Promise of an array od documents
-    public getAllDocuments(collectionName: string): any {
-
-        let allDocuments = [];
-        let deferred = Q.defer();
+    public getDocuments(collectionName: string, query = {}): any {
 
         if (this.dbConnection) {
-            let cursor = this.dbConnection.collection(collectionName).find();
-            cursor.each((err, document) => {
-                logger.info("** document = %j", document);
-
-                if (err) {
-                    deferred.reject(new Error(JSON.stringify(err)));
-                }
-                if (document) {
-                    allDocuments.push(document);
-                }
-
-                deferred.resolve(allDocuments);
-            });
+            return this.dbConnection.collection(collectionName).find(query).toArray();
         }
+    }
 
-        return deferred.promise;
+    public getDocument(collectionName: string, query = {}): any {
+
+        if (this.dbConnection) {
+            return this.dbConnection.collection(collectionName).findOne(query);
+        }
     }
 
     //Obter um documento pelo atributo _id passado como parâmetro
@@ -78,9 +54,7 @@ export class DataAccess {
 
         let idAsObjectID = ObjectID.createFromHexString(id);
 
-        if (this.dbConnection) {
-            return this.dbConnection.collection(collectionName).findOne({ _id: idAsObjectID });
-        }
+        return this.getDocument(collectionName, { _id: idAsObjectID });
     }
 
     // Recebe o _id do documento como string, transforma em ObjectID e o remove.
@@ -95,52 +69,7 @@ export class DataAccess {
 
     // Get the count of all documents in the collection.
     public getDocumentCount(collectionName: string): any {
-        let deferred = Q.defer();
-        this.dbConnection && this.dbConnection.collection(collectionName).count((err, result) => {
-            assert.equal(err, null);
-            if (err) {
-                deferred.reject(new Error(JSON.stringify(err)));
-            }
-            deferred.resolve(result);
-        });
-        return deferred.promise;
+
+        return this.dbConnection && this.dbConnection.collection(collectionName).count();
     }
-
-
-    // // Get a new Student based on the user name.
-    // public getStudent(userName: string): any {
-    //     let deferred = Q.defer();
-    //     if (this.dbConnection) {
-    //         let cursor = this.dbConnection.collection('Students').find();
-    //         cursor.each((err, document) => {
-    //             assert.equal(err, null);
-    //             if (err) {
-    //                 deferred.reject(new Error(JSON.stringify(err)));
-    //             }
-    //             else if (document !== null && document['userName'] === userName) {
-    //                 return deferred.resolve(document);
-    //             }
-    //             else if (document === null) {
-    //                 return deferred.resolve(document);
-    //             }
-    //         });
-    //     }
-
-    //     return deferred.promise;
-    // }
-
-    // // Insert a new document in the collection.
-    // private insertDocument(document: any, collectionName: string): any {
-    //     let deferred = Q.defer();
-    //     this.dbConnection.collection(collectionName).insertOne(document, (err, result) => {
-    //         assert.equal(err, null);
-    //         if (err) {
-    //             deferred.reject(new Error(JSON.stringify(err)));
-    //         }
-    //         deferred.resolve(result);
-    //     });
-
-    //     return deferred.promise;
-    // }
-
 }
