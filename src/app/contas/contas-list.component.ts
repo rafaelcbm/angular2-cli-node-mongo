@@ -23,7 +23,7 @@ export class ContasListComponent implements OnInit {
         pauseOnHover: true,
         clickToClose: true,
 		lastOnBottom: true,
-		theClass: "notificationMarginBottom"
+		//theClass: "notification-margin-bottom"
 	};
 
 	constructor(private contasService: ContasService, private route: ActivatedRoute, private router: Router) { }
