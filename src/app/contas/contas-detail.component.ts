@@ -78,8 +78,6 @@ export class ContasDetailComponent implements OnInit {
 
         this.redirectToList();
 
-        this.showSuccessMessage(`Conta "${formValue.nome}" salva com sucesso.`);
-
         //Exemplo de utilização de libs externas:
         //JQuery
         //$("#campoNome").addClass("text-danger");
@@ -88,11 +86,8 @@ export class ContasDetailComponent implements OnInit {
     }
 
     removerConta(conta) {
-        console.log("Remover Conta chamado", conta);
-
+        
         this.contasService.remove(this.conta._id);
-
-        this.showSuccessMessage(`Conta removida com sucesso.`);
 
         this.redirectToList();
     }
@@ -107,13 +102,5 @@ export class ContasDetailComponent implements OnInit {
             // Include a junk 'foo' property for fun.
             this.router.navigate(['/main/contas', { id: contaId, foo: 'foo' }]);
         }
-    }
-
-    showSuccessMessage(message:string) {
-        //Sobrescreve as opções padrão, definidas no compoenente pai.
-        this._notificationsService.success(
-            'Sucesso',
-            message
-        )
     }
 }

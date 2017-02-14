@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 
 import { Conta } from "../models/models.module";
-import { AuthService }      from '../authentication/auth.service';
+import { AuthService } from '../authentication/auth.service';
 import { ApiHttpService } from './api-http-service';
 
 // const CONTAS = [
@@ -21,33 +21,45 @@ import { ApiHttpService } from './api-http-service';
 @Injectable()
 export class ContasService {
 
-    contas: Observable < Conta[] > ;
-    private _contas: BehaviorSubject < Conta[] > ;
+    sucesso$: Observable<string>;
+    private _sucessos: BehaviorSubject<string>;
+
+    erros$: Observable<string>;
+    private _erros: BehaviorSubject<string>;
+    
+    contas: Observable<Conta[]>;
+    private _contas: BehaviorSubject<Conta[]>;
     private contasStore: {
         contas: Conta[]
     };
 
-    constructor(private apiHttp:ApiHttpService) {
+    constructor(private apiHttp: ApiHttpService) {
         this.contasStore = { contas: [] };
-        this._contas = < BehaviorSubject < Conta[] >> new BehaviorSubject([]);
+        this._contas = <BehaviorSubject<Conta[]>>new BehaviorSubject([]);
         this.contas = this._contas.asObservable();
+
+        this._sucessos = <BehaviorSubject<string>>new BehaviorSubject("");
+        this.sucesso$ = this._sucessos.asObservable();
+
+        this._erros = <BehaviorSubject<string>>new BehaviorSubject("");
+        this.erros$ = this._erros.asObservable();
     }
 
     getAllContas() {
-        
-        this.apiHttp.get("/api/contas/") 
-            .subscribe(
-                data => {
-                    console.log("Data return on service:", data);
 
-                    if (data.status === "sucesso") {
-                        this.contasStore.contas = data.contas;
-                        this._contas.next(Object.assign({}, this.contasStore).contas);
-                    }
-                },
-                error => {
-                    console.log(error);
-                });
+        this.apiHttp.get("/api/contas/")
+            .subscribe(
+            data => {
+                console.log("Data return on service:", data);
+
+                if (data.status === "sucesso") {
+                    this.contasStore.contas = data.contas;
+                    this._contas.next(Object.assign({}, this.contasStore).contas);
+                }
+            },
+            error => {
+                console.log(error);
+            });
     }
 
     getContasById(id: string) {
@@ -59,13 +71,13 @@ export class ContasService {
     getAll() {
 
         return this.apiHttp
-            .get("/api/contas/")            
+            .get("/api/contas/")
             .subscribe(
-                data => data,
-                error => {
-                    console.log(error);
-                    return error;
-                });
+            data => data,
+            error => {
+                console.log(error);
+                return error;
+            });
     }
 
     create(nomeConta) {
@@ -73,55 +85,68 @@ export class ContasService {
         this.apiHttp
             .post("/api/contas/", { nomeConta: nomeConta })
             .subscribe(
-                data => {
-                    if (data.status === "sucesso") {
-                        this.contasStore.contas.push(data.conta);
-                    }
+            data => {
+                if (data.status === "sucesso") {
+                    this.contasStore.contas.push(data.conta);
                     this._contas.next(Object.assign({}, this.contasStore).contas);
-                },
-                error => {
-                    console.log(error);
-                });
+
+                    this._sucessos.next(`Conta "${nomeConta}" salva com sucesso.`);
+                } else if (data.status === "erro") {
+                    console.log(data.message);
+                    this._erros.next(data.message);
+                }
+            },
+            error => {
+                console.log(error);
+            });
     }
 
     remove(idConta) {
 
         this.apiHttp
-            .delete(`/api/contas/${idConta}`)            
+            .delete(`/api/contas/${idConta}`)
             .subscribe(
-                data => {
-                    if (data.status === "sucesso") {
-                        this.contasStore.contas.forEach((c, i) => {
-                            if (c._id === idConta) {
-                                this.contasStore.contas.splice(i, 1);
-                            }
-                        });
-                        this._contas.next(Object.assign({}, this.contasStore).contas);
-                    }
-                },
-                error => {
-                    console.log(error);
-                });
+            data => {
+                if (data.status === "sucesso") {
+                    this.contasStore.contas.forEach((c, i) => {
+                        if (c._id === idConta) {
+                            this.contasStore.contas.splice(i, 1);
+                        }
+                    });
+                    this._contas.next(Object.assign({}, this.contasStore).contas);
+
+                    this._sucessos.next('Conta removida com sucesso.');
+                }
+            },
+            error => {
+                console.log(error);
+            });
     }
 
     update(idConta, nomeConta) {
 
         this.apiHttp
-            .put(`/api/contas/${idConta}`, { nomeConta: nomeConta })            
+            .put(`/api/contas/${idConta}`, { nomeConta: nomeConta })
             .subscribe(
-                data => {
-                    if (data.status === "sucesso") {
-                        this.contasStore.contas.forEach((c, i) => {
-                            if (c._id === data.conta._id) {
-                                this.contasStore.contas[i] = data.conta;
-                            }
-                        });
-                        this._contas.next(Object.assign({}, this.contasStore).contas);
-                    }
-                },
-                error => {
-                    console.log(error);
-                });
+            data => {
+                if (data.status === "sucesso") {
+                    this.contasStore.contas.forEach((c, i) => {
+                        if (c._id === data.conta._id) {
+                            this.contasStore.contas[i] = data.conta;
+                        }
+                    });
+                    this._contas.next(Object.assign({}, this.contasStore).contas);
+                    
+                    this._sucessos.next(`Conta "${nomeConta}" salva com sucesso.`);
+                    
+                } else if (data.status === "erro") {
+                    console.log(data.message);
+                    this._erros.next(data.message);
+                }
+            },
+            error => {
+                console.log(error);
+            });
     }
 
 
