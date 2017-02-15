@@ -11,6 +11,7 @@ import { LancamentosDetailComponent } from './lancamentos-detail.component';
 import { LancamentosService } from '../services/lancamentos-service';
 
 import { SimpleNotificationsModule } from "angular2-notifications";
+import { TabsModule }               from 'ng2-bootstrap/tabs';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { SimpleNotificationsModule } from "angular2-notifications";
         FormsModule,
         HttpModule,
         LancamentosRoutingModule,
-        SimpleNotificationsModule.forRoot()
+        SimpleNotificationsModule.forRoot(),
+        TabsModule.forRoot()
     ],
     providers: [
         LancamentosService
