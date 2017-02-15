@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { NotificationsService } from "angular2-notifications";
-
 import 'rxjs/add/operator/map';
 //Possivel importar assim devido ao @types/jquery.
-import * as $ from 'jquery';
+//import * as $ from 'jquery';
 // Não é possivel importar essã lib dessa forma, pois não é um modulo js. Tem q ser através do "declare".
 //import * as toastr from 'toastr';
 //declare var toastr: any;
@@ -27,8 +25,7 @@ export class ContasDetailComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private contasService: ContasService,
-        private _notificationsService: NotificationsService
+        private contasService: ContasService
     ) {
         console.log("ContasDetailComponent.constructor");
         //toastr.options = { positionClass: 'toast-bottom-right', };

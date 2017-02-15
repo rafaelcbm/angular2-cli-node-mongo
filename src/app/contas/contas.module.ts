@@ -10,6 +10,7 @@ import { DashboardComponent } from './dashboard.component';
 import { ContasListComponent } from './contas-list.component';
 import { ContasDetailComponent } from './contas-detail.component';
 import { ContasService } from '../services/contas-service';
+import { NotificacaoService } from '../services/notificacao-service';
 
 import { SimpleNotificationsModule } from "angular2-notifications";
 
@@ -28,7 +29,8 @@ import { SimpleNotificationsModule } from "angular2-notifications";
         SimpleNotificationsModule.forRoot()
     ],
     providers: [
-        ContasService
+        ContasService,
+        NotificacaoService
     ]
 })
 export class ContasModule {}

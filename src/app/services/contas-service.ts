@@ -3,11 +3,13 @@ import { Headers, RequestOptions, Response } from "@angular/http";
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-import { Conta } from "../models/models.module";
-import { AuthService } from '../authentication/auth.service';
+import { NotificacaoService } from '../services/notificacao-service';
 import { ApiHttpService } from './api-http-service';
+import { AuthService } from '../authentication/auth.service';
+import { Conta } from "../models/models.module";
 
 // const CONTAS = [
 //     new Conta("1", 'Conta Conjunta'),
@@ -20,29 +22,17 @@ import { ApiHttpService } from './api-http-service';
 
 @Injectable()
 export class ContasService {
-
-    sucesso$: Observable<string>;
-    private _sucessos: BehaviorSubject<string>;
-
-    erros$: Observable<string>;
-    private _erros: BehaviorSubject<string>;
-    
+       
     contas: Observable<Conta[]>;
     private _contas: BehaviorSubject<Conta[]>;
     private contasStore: {
         contas: Conta[]
     };
 
-    constructor(private apiHttp: ApiHttpService) {
+    constructor(private apiHttp: ApiHttpService, private notificacaoService: NotificacaoService) {
         this.contasStore = { contas: [] };
         this._contas = <BehaviorSubject<Conta[]>>new BehaviorSubject([]);
         this.contas = this._contas.asObservable();
-
-        this._sucessos = <BehaviorSubject<string>>new BehaviorSubject("");
-        this.sucesso$ = this._sucessos.asObservable();
-
-        this._erros = <BehaviorSubject<string>>new BehaviorSubject("");
-        this.erros$ = this._erros.asObservable();
     }
 
     getAllContas() {
@@ -90,10 +80,10 @@ export class ContasService {
                     this.contasStore.contas.push(data.conta);
                     this._contas.next(Object.assign({}, this.contasStore).contas);
 
-                    this._sucessos.next(`Conta "${nomeConta}" salva com sucesso.`);
+                    this.notificacaoService.sendSucessMessage(`Conta "${nomeConta}" salva com sucesso.`);
                 } else if (data.status === "erro") {
                     console.log(data.message);
-                    this._erros.next(data.message);
+                    this.notificacaoService.sendErrorMessage(data.message);
                 }
             },
             error => {
@@ -115,7 +105,10 @@ export class ContasService {
                     });
                     this._contas.next(Object.assign({}, this.contasStore).contas);
 
-                    this._sucessos.next('Conta removida com sucesso.');
+                    this.notificacaoService.sendSucessMessage('Conta removida com sucesso.');
+                } else if (data.status === "erro") {
+                    console.log(data.message);
+                    this.notificacaoService.sendErrorMessage(data.message);
                 }
             },
             error => {
@@ -137,11 +130,11 @@ export class ContasService {
                     });
                     this._contas.next(Object.assign({}, this.contasStore).contas);
                     
-                    this._sucessos.next(`Conta "${nomeConta}" salva com sucesso.`);
+                    this.notificacaoService.sendSucessMessage(`Conta "${nomeConta}" salva com sucesso.`);
                     
                 } else if (data.status === "erro") {
                     console.log(data.message);
-                    this._erros.next(data.message);
+                    this.notificacaoService.sendErrorMessage(data.message);
                 }
             },
             error => {
