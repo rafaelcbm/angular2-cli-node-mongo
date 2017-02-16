@@ -3,8 +3,8 @@
 ## *USER*
 ```
 user {
-	id:1,
-	name: "", //TODO: mudar para userName futuramente
+	_id:1,
+	userName: "", //TODO: mudar para userName futuramente
 	password:"",
 	contas:[1,2,3] //Conta Ids	
 }
@@ -12,18 +12,19 @@ user {
 ## *CONTA*
 ```
 conta{
-	id:1,
-	name: ""
+	_id:1,
+	nome: ""
 }
 ```
 ## *LANCAMENTO*
 ```
 lancamento{
-	id:1,
-	idConta: 1,
-	name:"",
-	date:Date,
+	_id:1,
+	conta: 1,
+	descricao:"",
+	data:Date,
 	valor:123,45 , //Decimal
-	isCredit: true
+	isDebito: true
+	notas: "Text of Note"
 }
 ```
