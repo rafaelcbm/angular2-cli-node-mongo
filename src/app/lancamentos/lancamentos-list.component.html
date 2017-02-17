@@ -1,4 +1,52 @@
 <h2>Lancamentos-list</h2>
-
-<!-- 
-<simple-notifications [options]="options"></simple-notifications> -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-align-justify"></i> Contas
+            </div>
+            <div class="card-block">
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Conta</th>
+                            <th>Data</th>
+                            <th>Débito?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Async pipe is used to bind an observable directly in our template -->
+                        <tr *ngFor="let lancamento of lancamentos" (click)="onSelect(lancamento)">
+                            <td>{{lancamento._id}}</td>
+                            <td>{{lancamento.descricao}}</td>
+                            <td>{{lancamento.valor}}</td>
+                            <td>{{lancamento.conta.nome}}</td>
+                            <td>{{lancamento.data}}</td>
+                            <td>{{lancamento.isDebito}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Prev</a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">4</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>            
+        </div>
+    </div>    
+</div>

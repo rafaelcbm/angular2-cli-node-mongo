@@ -1,4 +1,9 @@
+import { Conta } from "./conta.model";
+
 export class User {
 
-	constructor(public id: string, public userName: string, public contas: [string]) { }
+	constructor(
+		public _id?: string,
+		public userName?: string,
+		public contas?: [Conta]) { }
 }
