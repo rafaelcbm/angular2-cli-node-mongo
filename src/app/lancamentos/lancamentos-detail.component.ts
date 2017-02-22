@@ -2,6 +2,9 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import 'rxjs/add/operator/map';
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
+
 
 import { NotificationsService } from "angular2-notifications";
 
@@ -18,8 +21,12 @@ import { ContasService } from '../services/contas-service';
 export class LancamentosDetailComponent implements OnInit {
 
 	contas: Conta[];
-	 @Input() lancamento: Lancamento;
+	@Input() lancamento: Lancamento;
+	
 	contaSelectionada = new Conta();
+
+	dataTeste:any;
+	
 
 	constructor(
 		private route: ActivatedRoute,
@@ -29,34 +36,35 @@ export class LancamentosDetailComponent implements OnInit {
 		private _notificationsService: NotificationsService
 	) {
 		console.log("Chamou constructor ");
-	 }
+	}
 
 	ngOnInit() {
-		console.log("Chamou ngOnInit ");	
+		console.log("Chamou ngOnInit ");
 
-		// this.lancamento.descricao = "Compra do Pão";
-		// this.lancamento.data = new Date();
-		// this.lancamento.valor = 150;
-		// this.lancamento.isDebito = true;
-		// this.lancamento.notas = "Nota da compra do pão";
+		moment.locale('pt-BR');
+		console.log(moment.locale());
 
 		this.carregarContas();
+
+		//this.dataTeste = moment().format('YYYY-MM-DD');
+		//this.dataTeste = moment().format();
+		//this.dataTeste=new Date("2016-8-5");
+		//this.dataTeste=moment().toDate();
+		
+		//Para funcionar com o input [type=date] é necessário converter o obj Date para uma string no formato YYYY-MM-DD,
+		// seja usando new Date().toISOString().substring(0, 10) ou moment().format('YYYY-MM-DD').
+		// O pipe de date funciona somente se o input for [type=text], não date. :(
+		//this.dataTeste = moment().toDate().toISOString().substring(0, 10);		
+		this.dataTeste = moment().format('YYYY-MM-DD');		
 	}
 
 	carregarContas() {
 
 		this.contasService.contas.subscribe(
 			contas => {
-				this.contas = contas;				
+				this.contas = contas;
 
-				this.contas.forEach((conta, index)=>{
-					if(conta.nome === this.lancamento.conta.nome){
-						console.log("Econtrou conta.nome = ",conta.nome);
-						console.log("Econtrou this.lancamento.conta.nome = ",this.lancamento.conta.nome);
-						
-						this.lancamento.conta=conta;
-					}
-				});
+				this.associaContaDoLancamento();
 			});
 
 		this.contasService.getAllContas();
@@ -64,28 +72,33 @@ export class LancamentosDetailComponent implements OnInit {
 
 	// NOTA: Essa funcao eh chamada antes do "this.contas" ser carregado, por isso a checagem antes.
 	ngOnChanges(changes: SimpleChanges) {
-    	console.log("ngOnChanges: novo lancamento = ", changes['lancamento'].currentValue);
-    	console.log("ngOnChanges: this.contas = ", this.contas);
+		console.log("ngOnChanges: novo lancamento = ", changes['lancamento'].currentValue);
 
-    	if(this.contas){
-    		
-    		let contaEncontrada = this.contas.find(conta => conta.nome === this.lancamento.conta.nome);
-    		
-    		if(contaEncontrada) {
-    			this.lancamento.conta = contaEncontrada;
-    		}
-    	}
+		if (this.contas) {
+			this.associaContaDoLancamento();
+		}
+	}
+
+	associaContaDoLancamento() {
+		let contaEncontrada = this.contas.find(conta => conta.nome === this.lancamento.conta.nome);
+
+		if (contaEncontrada) {
+			this.lancamento.conta = contaEncontrada;
+		}
 	}
 
 	salvarLancamento(formValue) {
-
 		console.log("salvarLancamento called !!!");
+
+		let date = moment(formValue.data, 'YYYY-MM-DD', 'pt-BR', true);
+		console.log("date parsed on moment =", date);		
+		console.log("date parsed date.format('DD/MM/YYYY') =", date.format('DD/MM/YYYY'));
 	}
 
 	contasChanged(contaChanged) {
 
 		console.log("contaChanged = ", contaChanged);
 
-		//this.contaSelectionada=contaChanged;
+		this.contaSelectionada=contaChanged;
 	}
 }

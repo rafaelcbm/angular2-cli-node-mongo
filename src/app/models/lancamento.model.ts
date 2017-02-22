@@ -7,7 +7,7 @@ export class Lancamento {
 		public descricao?: string,
 		public valor?: number,
 		public conta?: Conta,
-		public data?: Date,
+		public data?: Date|string,
 		public isDebito?: boolean,
 		public notas?: string) { }
 }

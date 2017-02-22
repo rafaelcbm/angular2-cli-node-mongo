@@ -14,17 +14,17 @@
                             <div class="row">
                                 <div class="form-group col-sm-3">
                                     <label for="data">Data</label>
-                                    <input [(ngModel)]="lancamento.data" type="date" class="form-control" id="data" name="data" placeholder="dd/mm/aaaa">
+                                    <input [(ngModel)]="dataTeste" type="date" class="form-control" id="data" name="data" >
                                 </div>
                                 <div class="form-group col-sm-9">
                                     <label for="company">Descrição</label>
-                                    <input [(ngModel)]="lancamento.descricao" type="text" class="form-control" id="descricao" name="descricao_teste" placeholder="Descrição">
+                                    <input [ngModel]="lancamento.descricao" type="text" class="form-control" id="descricao" name="descricao" placeholder="Descrição">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-sm-3">
                                     <label for="street">Conta</label>
-                                    <select [(ngModel)]="lancamento.conta" class="form-control" id="conta" name="conta" #selectContas (change)="contasChanged(selectContas.value)">
+                                    <select [ngModel]="lancamento.conta" class="form-control" id="conta" name="conta" #selectContas (ngModelChange)="contasChanged($event)">
                                         <!-- Outra forma seria passar através do $event: (change)="contasChanged($event.target.value)" -->
                                         <option *ngFor="let c of contas" [ngValue]="c">
                                             {{c.nome}}
@@ -33,14 +33,14 @@
                                 </div>
                                 <div class="form-group col-sm-3">
                                     <label for="city">Valor</label>
-                                    <input [(ngModel)]="lancamento.valor" type="text" class="form-control" id="valor" name="valor" placeholder="R$ 0,00">
+                                    <input [ngModel]="lancamento.valor" type="text" class="form-control" id="valor" name="valor" placeholder="R$ 0,00">
                                 </div>
                                 <div class="form-group col-sm-5">
                                     <label class="col-sm-3 form-control-label" for="isDebito">Débito / Crédito:</label>
                                     <div class="col-sm-2" style="padding-top: 4px;">
                                         <div class="checkbox">
                                             <label for="isDebito">
-                                                <input [(ngModel)]="lancamento.isDebito" id="isDebito" name="isDebito" type="checkbox">Débito
+                                                <input [ngModel]="lancamento.isDebito" id="isDebito" name="isDebito" type="checkbox">Débito
                                             </label>
                                         </div>
                                     </div>
@@ -79,5 +79,7 @@
 <br>
 
 <p>Lancamento: {{lancamento|json}}</p>
+<br>
+<p>dataTeste: {{dataTeste}}</p>
 <br>
 <p>contaSelectionada: {{contaSelectionada|json}}</p>
