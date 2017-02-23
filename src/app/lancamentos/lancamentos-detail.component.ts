@@ -22,11 +22,11 @@ export class LancamentosDetailComponent implements OnInit {
 
 	contas: Conta[];
 	@Input() lancamento: Lancamento;
-	
+
 	contaSelectionada = new Conta();
 
-	dataTeste:any;
-	
+	dataTeste: any;
+
 
 	constructor(
 		private route: ActivatedRoute,
@@ -50,12 +50,12 @@ export class LancamentosDetailComponent implements OnInit {
 		//this.dataTeste = moment().format();
 		//this.dataTeste=new Date("2016-8-5");
 		//this.dataTeste=moment().toDate();
-		
+
 		//Para funcionar com o input [type=date] é necessário converter o obj Date para uma string no formato YYYY-MM-DD,
 		// seja usando new Date().toISOString().substring(0, 10) ou moment().format('YYYY-MM-DD').
 		// O pipe de date funciona somente se o input for [type=text], não date. :(
 		//this.dataTeste = moment().toDate().toISOString().substring(0, 10);		
-		this.dataTeste = moment().format('YYYY-MM-DD');		
+		this.dataTeste = moment().format('YYYY-MM-DD');
 	}
 
 	carregarContas() {
@@ -91,14 +91,19 @@ export class LancamentosDetailComponent implements OnInit {
 		console.log("salvarLancamento called !!!");
 
 		let date = moment(formValue.data, 'YYYY-MM-DD', 'pt-BR', true);
-		console.log("date parsed on moment =", date);		
+		console.log("date parsed on moment =", date);
 		console.log("date parsed date.format('DD/MM/YYYY') =", date.format('DD/MM/YYYY'));
+
+		// Clona e atribui os dados do formulario no obj que sera enviado ao server
+		let novoLancamento = {};
+		Object.assign(novoLancamento, formValue);
+		console.log("novoLancamento =", novoLancamento);
 	}
 
 	contasChanged(contaChanged) {
 
 		console.log("contaChanged = ", contaChanged);
 
-		this.contaSelectionada=contaChanged;
+		this.contaSelectionada = contaChanged;
 	}
 }
