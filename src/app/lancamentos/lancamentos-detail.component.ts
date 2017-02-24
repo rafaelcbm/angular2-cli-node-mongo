@@ -46,11 +46,6 @@ export class LancamentosDetailComponent implements OnInit {
 
 		this.carregarContas();
 
-		//this.dataTeste = moment().format('YYYY-MM-DD');
-		//this.dataTeste = moment().format();
-		//this.dataTeste=new Date("2016-8-5");
-		//this.dataTeste=moment().toDate();
-
 		//Para funcionar com o input [type=date] é necessário converter o obj Date para uma string no formato YYYY-MM-DD,
 		// seja usando new Date().toISOString().substring(0, 10) ou moment().format('YYYY-MM-DD').
 		// O pipe de date funciona somente se o input for [type=text], não date. :(
@@ -98,6 +93,15 @@ export class LancamentosDetailComponent implements OnInit {
 		let novoLancamento = {};
 		Object.assign(novoLancamento, formValue);
 		console.log("novoLancamento =", novoLancamento);
+
+		
+		this.lancamentosService.create(novoLancamento);
+		
+		// if (!this.lancamento) {
+		// 	this.lancamentosService.create(novoLancamento);
+		// } else {
+		// 	this.lancamentosService.update(this.lancamento._id, novoLancamento);
+		// }
 	}
 
 	contasChanged(contaChanged) {

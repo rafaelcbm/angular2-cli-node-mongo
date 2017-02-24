@@ -7,7 +7,8 @@ import { loginRouter } from "./routes/loginRouter";
 import { protectedRouter } from "./routes/protectedRouter";
 import { userRouter } from "./routes/userRouter";
 import { contaRouter } from "./routes/contaRouter";
-import {DataAccess} from "./dal/abstractDAO";
+import { lancamentoRouter } from "./routes/lancamentoRouter";
+import { DataAccess } from "./dal/abstractDAO";
 
 const app: express.Application = express();
 
@@ -34,6 +35,7 @@ app.use("/", loginRouter);
 app.use("/api", protectedRouter);
 app.use("/api/users", userRouter);
 app.use("/api/contas", contaRouter);
+app.use("/api/lancamentos", lancamentoRouter);
 
 // error handlers
 // development error handler
@@ -52,10 +54,10 @@ if (app.get("env") === "development") {
     });
 }
 
-app.use('/*', function (request: express.Request, response: express.Response){
+app.use('/*', function(request: express.Request, response: express.Response) {
     // response.redirect(join(__dirname, '../../public/index.html'));
     //response.sendFile("index.html", {root:join(__dirname, "../../src")});
-    response.sendFile(join(__dirname, '../../dist','index.html'));
+    response.sendFile(join(__dirname, '../../dist', 'index.html'));
 });
 
 // catch 404 and forward to error handler

@@ -1,46 +1,47 @@
 import { Injectable } from '@angular/core';
-import {Http, Headers, RequestOptions, Response } from "@angular/http";
+import { Headers, RequestOptions, Response } from "@angular/http";
 
-//import { AuthHttp } from "angular2-jwt";
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
+import { NotificacaoService } from '../services/notificacao-service';
+import { ApiHttpService } from './api-http-service';
+import { AuthService } from '../authentication/auth.service';
 import { Lancamento } from "../models/models.module";
-
 
 
 @Injectable()
 export class LancamentosService {
-
-    lancamentos: Observable < Lancamento[] > ;
-    private _lancamentos: BehaviorSubject < Lancamento[] > ;
+       
+    lancamentos: Observable<Lancamento[]>;
+    private _lancamentos: BehaviorSubject<Lancamento[]>;
     private lancamentosStore: {
         lancamentos: Lancamento[]
     };
 
-    constructor(private authHttp: Http) {
+    constructor(private apiHttp: ApiHttpService, private notificacaoService: NotificacaoService) {
         this.lancamentosStore = { lancamentos: [] };
-        this._lancamentos = < BehaviorSubject < Lancamento[] >> new BehaviorSubject([]);
+        this._lancamentos = <BehaviorSubject<Lancamento[]>>new BehaviorSubject([]);
         this.lancamentos = this._lancamentos.asObservable();
     }
 
     getAllLancamentos() {
-        this.authHttp
-            .get("/api/lancamentos/")
-            .map((res: Response) => res.json())
-            .subscribe(
-                data => {
-                    console.log("Data return on service:", data);
 
-                    if (data.status === "sucesso") {
-                        this.lancamentosStore.lancamentos = data.lancamentos;
-                        this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
-                    }
-                },
-                error => {
-                    console.log(error);
-                });
+        this.apiHttp.get("/api/lancamentos/")
+            .subscribe(
+            data => {
+                console.log("Data return on service:", data);
+
+                if (data.status === "sucesso") {
+                    this.lancamentosStore.lancamentos = data.lancamentos;
+                    this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
+                }
+            },
+            error => {
+                console.log(error);
+            });
     }
 
     getLancamentosById(id: string) {
@@ -51,83 +52,87 @@ export class LancamentosService {
 
     getAll() {
 
-        return this.authHttp
+        return this.apiHttp
             .get("/api/lancamentos/")
-            .map((res: Response) => res.json())
             .subscribe(
-                data => data,
-                error => {
-                    console.log(error);
-                    return error;
-                });
+            data => data,
+            error => {
+                console.log(error);
+                return error;
+            });
     }
 
-    create(nomeLancamento) {
+    create(lancamento) {
 
-        this.authHttp
-            .post("/api/lancamentos/", JSON.stringify({ nomeLancamento: nomeLancamento }))
-            .map((res: Response) => res.json())
+        this.apiHttp
+            .post("/api/lancamentos/", { lancamento: lancamento })
             .subscribe(
-                data => {
-                    if (data.status === "sucesso") {
-                        this.lancamentosStore.lancamentos.push(data.lancamento);
-                    }
+            data => {
+                if (data.status === "sucesso") {
+                    this.lancamentosStore.lancamentos.push(data.lancamento);
                     this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
-                },
-                error => {
-                    console.log(error);
-                });
+
+                    console.log("this.lancamentosStore.lancamentos  = ",this.lancamentosStore.lancamentos);
+
+                    this.notificacaoService.sendSucessMessage(`Lancamento "${lancamento.descricao}" salvo com sucesso.`);
+                } else if (data.status === "erro") {
+                    console.log(data.message);
+                    this.notificacaoService.sendErrorMessage(data.message);
+                }
+            },
+            error => {
+                console.log(error);
+            });
     }
 
     remove(idLancamento) {
 
-        this.authHttp
+        this.apiHttp
             .delete(`/api/lancamentos/${idLancamento}`)
-            .map((res: Response) => res.json())
             .subscribe(
-                data => {
-                    if (data.status === "sucesso") {
-                        this.lancamentosStore.lancamentos.forEach((c, i) => {
-                            if (c._id === idLancamento) {
-                                this.lancamentosStore.lancamentos.splice(i, 1);
-                            }
-                        });
-                        this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
-                    }
-                },
-                error => {
-                    console.log(error);
-                });
+            data => {
+                if (data.status === "sucesso") {
+                    this.lancamentosStore.lancamentos.forEach((c, i) => {
+                        if (c._id === idLancamento) {
+                            this.lancamentosStore.lancamentos.splice(i, 1);
+                        }
+                    });
+                    this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
+
+                    this.notificacaoService.sendSucessMessage('Lancamento removido com sucesso.');
+                } else if (data.status === "erro") {
+                    console.log(data.message);
+                    this.notificacaoService.sendErrorMessage(data.message);
+                }
+            },
+            error => {
+                console.log(error);
+            });
     }
 
     update(idLancamento, nomeLancamento) {
 
-        this.authHttp
-            .put(`/api/lancamentos/${idLancamento}`, JSON.stringify({ nomeLancamento: nomeLancamento }))
-            .map((res: Response) => res.json())
+        this.apiHttp
+            .put(`/api/lancamentos/${idLancamento}`, { nomeLancamento: nomeLancamento })
             .subscribe(
-                data => {
-                    if (data.status === "sucesso") {
-                        this.lancamentosStore.lancamentos.forEach((c, i) => {
-                            if (c._id === data.lancamento._id) {
-                                this.lancamentosStore.lancamentos[i] = data.lancamento;
-                            }
-                        });
-                        this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
-                    }
-                },
-                error => {
-                    console.log(error);
-                });
+            data => {
+                if (data.status === "sucesso") {
+                    this.lancamentosStore.lancamentos.forEach((c, i) => {
+                        if (c._id === data.lancamento._id) {
+                            this.lancamentosStore.lancamentos[i] = data.lancamento;
+                        }
+                    });
+                    this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
+                    
+                    this.notificacaoService.sendSucessMessage(`Lancamento "${nomeLancamento}" salvo com sucesso.`);
+                    
+                } else if (data.status === "erro") {
+                    console.log(data.message);
+                    this.notificacaoService.sendErrorMessage(data.message);
+                }
+            },
+            error => {
+                console.log(error);
+            });
     }
-
-
-    // getLancamentos() {
-    //     return lancamentosPromise;
-    // }
-
-    // getLancamentosById(id: string) {
-    //     return lancamentosPromise
-    //         .then(lancamentos => lancamentos.find(lancamento => lancamento.id === id));
-    // }
 }

@@ -11,14 +11,6 @@ import { ApiHttpService } from './api-http-service';
 import { AuthService } from '../authentication/auth.service';
 import { Conta } from "../models/models.module";
 
-// const CONTAS = [
-//     new Conta("1", 'Conta Conjunta'),
-//     new Conta("2", 'Cartão - Itaú'),
-//     new Conta("3", 'Cartão - Santander'),
-// ];
-
-// let contasPromise = Promise.resolve(CONTAS);
-
 
 @Injectable()
 export class ContasService {
@@ -142,7 +134,13 @@ export class ContasService {
             });
     }
 
+    // const CONTAS = [
+    //     new Conta("1", 'Conta Conjunta'),
+    //     new Conta("2", 'Cartão - Itaú'),
+    //     new Conta("3", 'Cartão - Santander'),
+    // ];
 
+    // let contasPromise = Promise.resolve(CONTAS);
     // getContas() {
     //     return contasPromise;
     // }
