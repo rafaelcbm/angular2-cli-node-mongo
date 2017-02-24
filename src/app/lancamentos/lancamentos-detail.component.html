@@ -1,85 +1,81 @@
-<h3>Detalhe Lançamento</h3>
-<form (ngSubmit)="salvarLancamento(lancamentoForm.value)" #lancamentoForm="ngForm">
-    <div class="row">
-        <div class="col-sm">
-            <!-- Nav tabs -->
-            <tabset>
-                <tab heading="Lançamento">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Cadastro</strong>
-                            <small>Lançamento</small>
-                        </div>
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="form-group col-sm-3">
-                                    <label for="data">Data</label>
-                                    <input [(ngModel)]="dataTeste" type="date" class="form-control" id="data" name="data" >
-                                </div>
-                                <div class="form-group col-sm-9">
-                                    <label for="company">Descrição</label>
-                                    <input [ngModel]="lancamento.descricao" type="text" class="form-control" id="descricao" name="descricao" placeholder="Descrição">
-                                </div>
+<div *ngIf="lancamento">
+    <form (ngSubmit)="salvarLancamento(lancamentoForm.value)" #lancamentoForm="ngForm">
+        <div class="row">
+            <div class="col-sm">
+                <!-- Nav tabs -->
+                <tabset>
+                    <tab heading="Lançamento">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Cadastro</strong>
+                                <small>Lançamento</small>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-sm-3">
-                                    <label for="street">Conta</label>
-                                    <select [ngModel]="lancamento.conta" class="form-control" id="conta" name="conta" #selectContas (ngModelChange)="contasChanged($event)">
-                                        <!-- Outra forma seria passar através do $event: (change)="contasChanged($event.target.value)" -->
-                                        <option *ngFor="let c of contas" [ngValue]="c">
-                                            {{c.nome}}
-                                        </option>
-                                    </select>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="form-group col-sm-3">
+                                        <label for="data">Data</label>
+                                        <input [ngModel]="dataLancamento" type="date" class="form-control form-control-sm" id="data" name="data">
+                                    </div>
+                                    <div class="form-group col-sm-9">
+                                        <label for="company">Descrição</label>
+                                        <input [ngModel]="lancamento.descricao" type="text" class="form-control form-control-sm" id="descricao" name="descricao" placeholder="Descrição">
+                                    </div>
                                 </div>
-                                <div class="form-group col-sm-3">
-                                    <label for="city">Valor</label>
-                                    <input [ngModel]="lancamento.valor" type="text" class="form-control" id="valor" name="valor" placeholder="R$ 0,00">
-                                </div>
-                                <div class="form-group col-sm-5">
-                                    <label class="col-sm-3 form-control-label" for="isDebito">Débito / Crédito:</label>
-                                    <div class="col-sm-2" style="padding-top: 4px;">
-                                        <div class="checkbox">
-                                            <label for="isDebito">
-                                                <input [ngModel]="lancamento.isDebito" id="isDebito" name="isDebito" type="checkbox">Débito
-                                            </label>
+                                <div class="row">
+                                    <div class="form-group col-sm-3">
+                                        <label for="street">Conta</label>
+                                        <select [ngModel]="lancamento.conta" class="form-control form-control-sm" id="conta" name="conta" #selectContas (ngModelChange)="contasChanged($event)">
+                                            <!-- Outra forma seria passar através do $event: (change)="contasChanged($event.target.value)" -->
+                                            <option *ngFor="let c of contas" [ngValue]="c">
+                                                {{c?.nome}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label for="city">Valor</label>
+                                        <input [ngModel]="lancamento.valor" type="number" class="form-control form-control-sm" id="valor" name="valor" placeholder="R$ 0,00">
+                                    </div>
+                                    <div class="form-group col-sm-5">
+                                        <label class="col-sm-3 form-control-label" for="isDebito">Débito / Crédito:</label>
+                                        <div class="col-sm-2">
+                                            <div class="checkbox">
+                                                <label for="isDebito">
+                                                    <input [ngModel]="lancamento.isDebito" id="isDebito" name="isDebito" type="checkbox">Débito
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-footer">
+                                <button [disabled]="!lancamentoForm.form.valid" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Salvar</button>
+                                <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-close"></i> Remover</button>
+                                <button (click)="voltar()" type="button" class="btn btn-sm btn-warning"><i class="fa fa-ban"></i> Voltar</button>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <button [disabled]="!lancamentoForm.form.valid" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Salvar</button>
-                            <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-close"></i> Remover</button>
-                            <button type="reset" class="btn btn-sm btn-warning"><i class="fa fa-ban"></i> Voltar</button>
-                        </div>
-                    </div>
-                </tab>
-                <tab heading="Repetição">
-                    TODO...
-                </tab>
-                <tab heading="Notas">
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-edit"></i>Notas
-                        </div>
-                        <div class="card-block">
-                            <div class="form-group row">
-                                <div class="col-sm-12">
-                                    <textarea [(ngModel)]="lancamento.notas" id="notas" name="notas" rows="4" class="form-control" placeholder="Conteúdo.."></textarea>
+                    </tab>
+                    <tab heading="Repetição">
+                        TODO...
+                    </tab>
+                    <tab heading="Notas">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-edit"></i>Notas
+                            </div>
+                            <div class="card-block">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <textarea [(ngModel)]="lancamento.notas" id="notas" name="notas" rows="4" class="form-control form-control-sm" placeholder="Conteúdo.."></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </tab>
-            </tabset>
+                    </tab>
+                </tabset>
+            </div>
         </div>
-    </div>
-</form>
-<p>Form Values = {{lancamentoForm.value|json}}</p>
+    </form>
+    <p>Form Values = {{lancamentoForm.value|json}}</p>    
+    <p>Lancamento: {{lancamento|json}}</p>
+</div>
 <br>
-
-<p>Lancamento: {{lancamento|json}}</p>
-<br>
-<p>dataTeste: {{dataTeste}}</p>
-<br>
-<p>contaSelectionada: {{contaSelectionada|json}}</p>

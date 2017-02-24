@@ -23,9 +23,9 @@ export class LancamentosDetailComponent implements OnInit {
 	contas: Conta[];
 	@Input() lancamento: Lancamento;
 
+	//Apenas para testar o drop de contas
 	contaSelectionada = new Conta();
-
-	dataTeste: any;
+	dataLancamento = new Date().toISOString();
 
 
 	constructor(
@@ -45,12 +45,6 @@ export class LancamentosDetailComponent implements OnInit {
 		console.log(moment.locale());
 
 		this.carregarContas();
-
-		//Para funcionar com o input [type=date] é necessário converter o obj Date para uma string no formato YYYY-MM-DD,
-		// seja usando new Date().toISOString().substring(0, 10) ou moment().format('YYYY-MM-DD').
-		// O pipe de date funciona somente se o input for [type=text], não date. :(
-		//this.dataTeste = moment().toDate().toISOString().substring(0, 10);		
-		this.dataTeste = moment().format('YYYY-MM-DD');
 	}
 
 	carregarContas() {
@@ -68,42 +62,55 @@ export class LancamentosDetailComponent implements OnInit {
 	// NOTA: Essa funcao eh chamada antes do "this.contas" ser carregado, por isso a checagem antes.
 	ngOnChanges(changes: SimpleChanges) {
 		console.log("ngOnChanges: novo lancamento = ", changes['lancamento'].currentValue);
+		this.lancamento = changes['lancamento'].currentValue;
 
-		if (this.contas) {
-			this.associaContaDoLancamento();
+		// Se novo Lancamento
+		if (!this.lancamento._id) {
+			this.dataLancamento = moment().format('YYYY-MM-DD');
+			this.lancamento.isDebito = false;
+
+		} else {
+			//Para funcionar com o input [type=date] é necessário converter o obj Date para uma string no formato YYYY-MM-DD,
+			// seja usando new Date().toISOString().substring(0, 10) ou moment().format('YYYY-MM-DD').
+			// O pipe de date funciona somente se o input for [type=text], não date. :(
+			//this.dataTeste = moment().toDate().toISOString().substring(0, 10);
+			this.dataLancamento = moment(this.lancamento.data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+			if (this.contas) {
+				this.associaContaDoLancamento();
+			}
 		}
 	}
 
 	associaContaDoLancamento() {
-		let contaEncontrada = this.contas.find(conta => conta.nome === this.lancamento.conta.nome);
+		if (this.lancamento.conta) {
+			let contaEncontrada = this.contas.find(conta => conta.nome === this.lancamento.conta.nome);
 
-		if (contaEncontrada) {
-			this.lancamento.conta = contaEncontrada;
+			if (contaEncontrada) {
+				this.lancamento.conta = contaEncontrada;
+			}
 		}
 	}
 
 	salvarLancamento(formValue) {
 		console.log("salvarLancamento called !!!");
 
-		let date = moment(formValue.data, 'YYYY-MM-DD', 'pt-BR', true);
-		console.log("date parsed on moment =", date);
-		console.log("date parsed date.format('DD/MM/YYYY') =", date.format('DD/MM/YYYY'));
-
 		// Clona e atribui os dados do formulario no obj que sera enviado ao server
 		let novoLancamento = {};
 		Object.assign(novoLancamento, formValue);
-		console.log("novoLancamento =", novoLancamento);
 
-		
-		this.lancamentosService.create(novoLancamento);
-		
-		// if (!this.lancamento) {
-		// 	this.lancamentosService.create(novoLancamento);
-		// } else {
-		// 	this.lancamentosService.update(this.lancamento._id, novoLancamento);
-		// }
+		if (this.lancamento._id) {
+			this.lancamentosService.update(this.lancamento._id, novoLancamento);
+		} else {
+			this.lancamentosService.create(novoLancamento);
+		}
 	}
 
+	voltar() {
+		this.lancamento = null;
+	}
+
+	//Apenas teste
 	contasChanged(contaChanged) {
 
 		console.log("contaChanged = ", contaChanged);

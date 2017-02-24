@@ -10,7 +10,7 @@ let userDAO = new UserDAO();
 let lancamentoDAO = new LancamentoDAO();
 
 export const lancamentoRouter: Router = Router();
-/*
+
 lancamentoRouter.get("/", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
 
     let userName = request.userName;
@@ -18,17 +18,17 @@ lancamentoRouter.get("/", function(request: Request & { userName: string }, resp
     co(function* () {
 
         let user = yield userDAO.getUser(userName);
-        assert.ok(user);        
+        assert.ok(user);
 
-        if (!user.lancamentos) {
+        let lancamentos = yield lancamentoDAO.getLancamentosByUser(user._id.toString());
+        logger.info("** LANCAMENTOS: %j", lancamentos);
+
+        if (!lancamentos) {
             return response.json({
                 "status": "sucesso",
                 "lancamentos": []
             });
         }
-
-        let lancamentos = yield lancamentoDAO.getLancamentoByIds(user.lancamentos);
-        logger.info("** CONTAS: %j", lancamentos);
 
         response.json({
             "status": "sucesso",
@@ -44,7 +44,7 @@ lancamentoRouter.get("/", function(request: Request & { userName: string }, resp
         });
     });
 });
-*/
+
 
 lancamentoRouter.post("/", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
 
@@ -57,6 +57,10 @@ lancamentoRouter.post("/", function(request: Request & { userName: string }, res
 
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
+
+        // Transforma o _id para String
+        lancamento._idUser = user._id.toString();
+        logger.info("** typeof lancamento._idUser: %s", typeof lancamento._idUser);
 
         let daoReturn = yield lancamentoDAO.insertLancamento(lancamento);
         logger.info("** daoReturn: %j", daoReturn);
@@ -82,6 +86,7 @@ lancamentoRouter.post("/", function(request: Request & { userName: string }, res
         });
     });
 });
+
 /*
 lancamentoRouter.delete("/:idLancamento", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
 

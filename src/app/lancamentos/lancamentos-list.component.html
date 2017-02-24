@@ -1,4 +1,9 @@
-<h2>Lancamentos-list</h2>
+<div class="row">
+    <div class="col-4">
+        <button (click)="adicionar()" type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Adicionar</button>
+    </div>
+</div>
+<br>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -9,7 +14,6 @@
                 <table class="table table-bordered table-striped table-condensed">
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Descrição</th>
                             <th>Valor</th>
                             <th>Conta</th>
@@ -19,8 +23,7 @@
                     </thead>
                     <tbody>
                         <!-- Async pipe is used to bind an observable directly in our template -->
-                        <tr *ngFor="let lancamento of lancamentos" (click)="onSelect(lancamento)">
-                            <td>{{lancamento._id}}</td>
+                        <tr *ngFor="let lancamento of lancamentos$ | async" (click)="onSelect(lancamento)">
                             <td>{{lancamento.descricao}}</td>
                             <td>{{lancamento.valor}}</td>
                             <td>{{lancamento.conta.nome}}</td>
@@ -46,7 +49,8 @@
                         </li>
                     </ul>
                 </nav>
-            </div>            
+            </div>
         </div>
-    </div>    
+    </div>
 </div>
+<simple-notifications [options]="options"></simple-notifications>

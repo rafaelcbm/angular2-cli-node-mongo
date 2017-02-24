@@ -1,7 +1,6 @@
-<h1>Lançamentos</h1>
-<hr>
-<lancamentos-list (onSelectLancamento)="onSelectLancamento($event)"></lancamentos-list>
+<h3>Lançamentos</h3>
 <hr>
 <div *ngIf="lancamento">
-    <lancamentos-detail [lancamento]="lancamento"></lancamentos-detail>
+    <lancamentos-detail [lancamento]="lancamento"></lancamentos-detail>	
 </div>
+<lancamentos-list (onSelectLancamento)="onSelectLancamento($event)"></lancamentos-list>

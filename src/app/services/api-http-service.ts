@@ -6,15 +6,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import { AuthService } from '../authentication/auth.service';
 
-// const CONTAS = [
-//     new Conta("1", 'Conta Conjunta'),
-//     new Conta("2", 'Cartão - Itaú'),
-//     new Conta("3", 'Cartão - Santander'),
-// ];
-
-// let contasPromise = Promise.resolve(CONTAS);
-
-
 @Injectable()
 export class ApiHttpService {
 

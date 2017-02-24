@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
+import * as moment from 'moment';
 
 import { NotificacaoService } from '../services/notificacao-service';
 import { ApiHttpService } from './api-http-service';
@@ -14,7 +15,7 @@ import { Lancamento } from "../models/models.module";
 
 @Injectable()
 export class LancamentosService {
-       
+
     lancamentos: Observable<Lancamento[]>;
     private _lancamentos: BehaviorSubject<Lancamento[]>;
     private lancamentosStore: {
@@ -35,6 +36,12 @@ export class LancamentosService {
                 console.log("Data return on service:", data);
 
                 if (data.status === "sucesso") {
+
+                    if(data.lancamentos){
+                        // Formata a data do objeto de Date para String
+                        data.lancamentos.map(lancamento => lancamento.data = moment(lancamento.data).format('DD/MM/YYYY'));                        
+                    }
+
                     this.lancamentosStore.lancamentos = data.lancamentos;
                     this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
                 }
@@ -69,10 +76,12 @@ export class LancamentosService {
             .subscribe(
             data => {
                 if (data.status === "sucesso") {
+
+                    // Formata a data do objeto de Date para String
+                    data.lancamento.data = moment(data.lancamento.data).format('DD/MM/YYYY');
+
                     this.lancamentosStore.lancamentos.push(data.lancamento);
                     this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
-
-                    console.log("this.lancamentosStore.lancamentos  = ",this.lancamentosStore.lancamentos);
 
                     this.notificacaoService.sendSucessMessage(`Lancamento "${lancamento.descricao}" salvo com sucesso.`);
                 } else if (data.status === "erro") {
@@ -123,9 +132,9 @@ export class LancamentosService {
                         }
                     });
                     this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
-                    
+
                     this.notificacaoService.sendSucessMessage(`Lancamento "${nomeLancamento}" salvo com sucesso.`);
-                    
+
                 } else if (data.status === "erro") {
                     console.log(data.message);
                     this.notificacaoService.sendErrorMessage(data.message);

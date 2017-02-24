@@ -1,4 +1,4 @@
-# Alt-Modelo de Objetos
+# - Modelo de Objetos
 ---
 ## *USER*
 ```
@@ -19,12 +19,20 @@ conta{
 ## *LANCAMENTO*
 ```
 lancamento{
-	_id:1,
-	conta: 1,
+	_id:123,
+	_idUser:1,
+	conta: {
+			_id:1,
+			nome: "Conta"
+			},
 	descricao:"",
 	data:Date,
 	valor:123,45 , //Decimal
-	isDebito: true
-	notas: "Text of Note"
+	isDebito: true,	
+	notas: "Text of Note",		
+	categoria: {
+			_id:1,
+			nome: "cat"
+			}
 }
 ```

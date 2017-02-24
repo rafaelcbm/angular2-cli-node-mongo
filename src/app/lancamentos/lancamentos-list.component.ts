@@ -1,12 +1,14 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
+import { NotificationsService } from "angular2-notifications";
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 
+import { NotificacaoService } from '../services/notificacao-service';
 import { LancamentosService } from '../services/lancamentos-service';
-import { Lancamento, Conta } from "../models/models.module";
+import { Lancamento } from "../models/models.module";
 
 
 @Component({
@@ -15,29 +17,63 @@ import { Lancamento, Conta } from "../models/models.module";
 })
 export class LancamentosListComponent implements OnInit {
 
+	public options = {
+		position: ["bottom", "right"],
+		timeOut: 5000,
+        showProgressBar: true,
+        pauseOnHover: true,
+        clickToClose: true,
+		lastOnBottom: true
+	};
+
 	@Output() onSelectLancamento = new EventEmitter<Lancamento>();
 
-	lancamentos: Lancamento[] = [];
+	lancamentos$: Observable<Lancamento[]>;	
 
-	constructor(private lancamentosService: LancamentosService, private route: ActivatedRoute, private router: Router) { }
+	constructor(private lancamentosService: LancamentosService,
+		private notificacaoService: NotificacaoService,
+		private _notificationsService: NotificationsService) { }
 
 	ngOnInit() {
 
-		moment.locale('pt-BR');
-		console.log(moment.locale());
+		this.lancamentos$ = this.lancamentosService.lancamentos; // subscribe to entire collection
 
-		//let now = moment().format('LLLL');
-		let now = moment().format('DD/MM/YYYY');
-		console.log("moment now.format('DD/MM/YYYY') ",now);
+		this.lancamentosService.getAllLancamentos();    // load all lancamentos
 
 
-		this.lancamentos.push(new Lancamento('1', 'Pipoca', 10.99, new Conta('58a355ab3fa0e022b0b5c523', 'Conta Conjunta'), now, true));
-		this.lancamentos.push(new Lancamento('2', 'Sorvete', 1.99, new Conta('2', 'ITAU'), now, true));
-		this.lancamentos.push(new Lancamento('3', 'Pizza', 60.00, new Conta('58a5c2f2d4e1940bac7a81e4', 'Santander'), now, false));
+		this.notificacaoService.errorMsg$.subscribe(
+			errorMsg => this.showErrorMessage(errorMsg),
+			error => console.log(error)
+		);
+
+		this.notificacaoService.successMsg$.subscribe(
+			successMsg => this.showSuccessMessage(successMsg),
+			error => console.log(error));
 	}
 
 	onSelect(lancamento: Lancamento) {
 
 		this.onSelectLancamento.emit(lancamento);
+	}
+
+	adicionar() {
+
+		this.onSelectLancamento.emit(new Lancamento());
+	}
+
+	showSuccessMessage(message: string) {
+		//Sobrescreve as opções padrão, definidas no compoenente pai.
+		this._notificationsService.success(
+			'Sucesso',
+			message
+		)
+	}
+
+	showErrorMessage(message: string) {
+		//Sobrescreve as opções padrão, definidas no compoenente pai.
+		this._notificationsService.error(
+			'Erro',
+			message
+		)
 	}
 }

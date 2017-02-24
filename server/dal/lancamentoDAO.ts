@@ -1,6 +1,7 @@
 import { ObjectID } from "mongodb";
 import * as assert from "assert";
 import * as co from "co";
+import * as moment from 'moment';
 
 import { logger, dataAccess } from "../app";
 import { DataAccess } from "./abstractDAO";
@@ -23,12 +24,22 @@ export class LancamentoDAO extends DataAccess {
         return dataAccess.getDocumentById('lancamentos', idLancamento);
     }
 
+    //TODO: remover e adicionar um q retorne todos somente do usuario.
+    public getLancamentosByUser(idUser: string): any {
+
+        return dataAccess.getDocuments('lancamentos', { _idUser: idUser });
+    }
+
     public getLancamentoByDescricao(descricaoLancamento: string): any {
 
         return dataAccess.getDocument('lancamentos', { descricao: descricaoLancamento });
     }
 
     public insertLancamento(lancamento: any): any {
+
+        //Parse data to Date
+        lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
+        logger.info("** DAL - lancamento depois: %j", lancamento);
 
         return dataAccess.insertDocument(lancamento, 'lancamentos');
     }
