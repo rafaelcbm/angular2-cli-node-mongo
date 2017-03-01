@@ -146,46 +146,47 @@ lancamentoRouter.delete("/:idLancamento", function(request: Request & { userName
         });
     });
 });
+*/
 
 lancamentoRouter.put("/:idLancamento", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
 
     let userName = request.userName;
     let idLancamento = request.params.idLancamento;
-    let nomeLancamento = request.body.nomeLancamento;
+    let lancamento = request.body.lancamento;
 
     co(function* () {
 
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
 
-        if (user.lancamentos) {
-            let lancamentosUsuario = user.lancamentos.filter(lancamento => lancamento == idLancamento);
+        if (!user.contas) {
+            return response.json({
+                    "status": "erro",
+                    "message": `Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`
+                });
+        }
 
-            if (lancamentosUsuario.length == 0) {
+        if (user.contas) {
+            
+            let contaLancamento = user.contas.find(conta => conta === lancamento.conta._id);
+
+            if (!contaLancamento) {
                 return response.json({
                     "status": "erro",
-                    "message": `Lancamento informada não pertence ao usuário informado!`
+                    "message": `Lancamento informado não pertence a uma conta do usuário!`
                 });
             }
         }
 
-        let lancamentos = yield lancamentoDAO.getLancamentoByIds(user.lancamentos);
-        if (lancamentos.find(lancamento => lancamento.nome === nomeLancamento)) {
-            return response.json({
-                "status": "erro",
-                "message": `Usuário já possui lancamento com o nome informado: "${nomeLancamento}".`
-            });
-        }
-
-        let daoReturn = yield lancamentoDAO.updateLancamento(idLancamento, nomeLancamento);
+        let daoReturn = yield lancamentoDAO.updateLancamento(idLancamento, lancamento);
         assert.equal(daoReturn.result.n, 1);
 
-        let lancamentoAlterada = yield lancamentoDAO.getLancamentoByNome(nomeLancamento);
-        assert.ok(lancamentoAlterada);
+        let lancamentoAlterado = yield lancamentoDAO.getLancamentoByDescricao(lancamento.descricao);
+        assert.ok(lancamentoAlterado);
 
         response.status(201).json({
             "status": "sucesso",
-            "lancamento": lancamentoAlterada
+            "lancamento": lancamentoAlterado
         });
     }).catch((e) => {
         logger.info("** Error = ", e);
@@ -196,4 +197,3 @@ lancamentoRouter.put("/:idLancamento", function(request: Request & { userName: s
         });
     });
 });
-*/

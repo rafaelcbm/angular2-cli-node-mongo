@@ -119,21 +119,25 @@ export class LancamentosService {
             });
     }
 
-    update(idLancamento, nomeLancamento) {
+    update(idLancamento, lancamento) {
 
         this.apiHttp
-            .put(`/api/lancamentos/${idLancamento}`, { nomeLancamento: nomeLancamento })
+            .put(`/api/lancamentos/${idLancamento}`, { lancamento: lancamento })
             .subscribe(
             data => {
                 if (data.status === "sucesso") {
                     this.lancamentosStore.lancamentos.forEach((c, i) => {
                         if (c._id === data.lancamento._id) {
+
+                            // Formata a data do objeto de Date para String
+                            data.lancamento.data = moment(data.lancamento.data).format('DD/MM/YYYY');
+
                             this.lancamentosStore.lancamentos[i] = data.lancamento;
                         }
                     });
                     this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
 
-                    this.notificacaoService.sendSucessMessage(`Lancamento "${nomeLancamento}" salvo com sucesso.`);
+                    this.notificacaoService.sendSucessMessage(`Lancamento "${lancamento.descricao}" salvo com sucesso.`);
 
                 } else if (data.status === "erro") {
                     console.log(data.message);
