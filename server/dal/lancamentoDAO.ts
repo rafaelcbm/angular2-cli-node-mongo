@@ -48,12 +48,21 @@ export class LancamentoDAO extends DataAccess {
         return dataAccess.removeDocumentById('lancamentos', idLancamento);
     }
 
-    public updateLancamento(idLancamento: any, nomeNovaLancamento: any): any {
+    public updateLancamento(idLancamento: any, lancamento: any): any {
 
         if (dataAccess.dbConnection) {
 
-            let query = { _id: new ObjectID(idLancamento) }
-            let updateData = { nome: nomeNovaLancamento }
+            let query = { _id: new ObjectID(idLancamento) }            
+
+            //Parse data to Date
+            lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
+            let updateData = { 
+                descricao: lancamento.descricao,
+                data: lancamento.data,
+                conta: lancamento.conta,
+                valor: lancamento.valor,
+                isDebito: lancamento.isDebito,
+             }
 
             return dataAccess.dbConnection.collection('lancamentos').update(query, { $set: updateData }, { w: 1 });
         }
