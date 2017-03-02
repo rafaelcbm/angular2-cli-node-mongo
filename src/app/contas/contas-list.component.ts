@@ -36,22 +36,13 @@ export class ContasListComponent implements OnInit {
 		//this.erros$ = this.contasService.erros$;
 
 		this.notificacaoService.errorMsg$.subscribe(
-            errorMsg => {
-                console.log(errorMsg);
-                this.showErrorMessage(errorMsg);
-            },
-            error => {
-                console.log(error);
-            });
+			errorMsg => this.showErrorMessage(errorMsg),
+			error => console.log(error)
+		);
 
 		this.notificacaoService.successMsg$.subscribe(
-            successMsg => {
-                console.log(successMsg);
-                this.showSuccessMessage(successMsg);
-            },
-            error => {
-                console.log(error);
-            });
+			successMsg => this.showSuccessMessage(successMsg),
+			error => console.log(error));
 	}
 
 	onSelect(conta: Conta) {
