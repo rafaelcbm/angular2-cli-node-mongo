@@ -82,7 +82,7 @@ export class ContasDetailComponent implements OnInit {
         //toastr.success("Orders downloaded.");
     }
 
-    removerConta(conta) {
+    removerConta() {
         
         this.contasService.remove(this.conta._id);
 

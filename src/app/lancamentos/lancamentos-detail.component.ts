@@ -93,8 +93,6 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	salvarLancamento(formValue) {
-		console.log("salvarLancamento called !!!");
-
 		// Clona e atribui os dados do formulario no obj que sera enviado ao server
 		let novoLancamento = {};
 		Object.assign(novoLancamento, formValue);
@@ -104,6 +102,13 @@ export class LancamentosDetailComponent implements OnInit {
 		} else {
 			this.lancamentosService.create(novoLancamento);
 		}
+	}
+
+	removerLancamento() {
+
+		this.lancamentosService.remove(this.lancamento._id);
+
+		this.voltar();
 	}
 
 	voltar() {

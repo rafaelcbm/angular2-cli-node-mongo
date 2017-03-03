@@ -101,8 +101,8 @@ export class LancamentosService {
             .subscribe(
             data => {
                 if (data.status === "sucesso") {
-                    this.lancamentosStore.lancamentos.forEach((c, i) => {
-                        if (c._id === idLancamento) {
+                    this.lancamentosStore.lancamentos.forEach((l, i) => {
+                        if (l._id === idLancamento) {
                             this.lancamentosStore.lancamentos.splice(i, 1);
                         }
                     });
@@ -126,8 +126,8 @@ export class LancamentosService {
             .subscribe(
             data => {
                 if (data.status === "sucesso") {
-                    this.lancamentosStore.lancamentos.forEach((c, i) => {
-                        if (c._id === data.lancamento._id) {
+                    this.lancamentosStore.lancamentos.forEach((l, i) => {
+                        if (l._id === data.lancamento._id) {
 
                             // Formata a data do objeto de Date para String
                             data.lancamento.data = moment(data.lancamento.data).format('DD/MM/YYYY');

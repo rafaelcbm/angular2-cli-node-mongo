@@ -19,7 +19,7 @@
         </div>
         <div class="card-footer">
             <button [disabled]="!contaForm.form.valid" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Salvar</button>
-            <button *ngIf="conta" (click)="removerConta(conta)" type="button" class="btn btn-sm btn-danger"><i class="fa fa-close"></i> Remover</button>
+            <button *ngIf="conta" (click)="removerConta()" type="button" class="btn btn-sm btn-danger"><i class="fa fa-close"></i> Remover</button>
             <button (click)="redirectToList(contaForm.value)" type="reset" class="btn btn-sm btn-warning"><i class="fa fa-ban"></i> Voltar</button>
         </div>
     </form>

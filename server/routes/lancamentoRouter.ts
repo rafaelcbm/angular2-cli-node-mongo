@@ -87,7 +87,7 @@ lancamentoRouter.post("/", function(request: Request & { userName: string }, res
     });
 });
 
-/*
+
 lancamentoRouter.delete("/:idLancamento", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
 
     let userName = request.userName;
@@ -95,48 +95,32 @@ lancamentoRouter.delete("/:idLancamento", function(request: Request & { userName
 
     co(function* () {
 
-        let lancamentoObtida = yield lancamentoDAO.getLancamentoById(idLancamento);
-        logger.info("** Remover Lancamentos - lancamentoObtida = %j", lancamentoObtida);
-        if (!lancamentoObtida) {
+        let lancamentoObtido = yield lancamentoDAO.getLancamentoById(idLancamento);
+        logger.info("** Remover Lancamentos - lancamentoObtido = %j", lancamentoObtido);
+        if (!lancamentoObtido) {
             return response.json({
                 "status": "erro",
-                "message": "Lancamento não encontrada!"
+                "message": "Lancamento não encontrado!"
             });
         }
 
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
 
-        if (user.lancamentos) {
-            let lancamentosUsuario = user.lancamentos.filter(lancamento => lancamento == idLancamento);
-
-            logger.info("** Remover Lancamentos - filter lancamentosUsuario = ", lancamentosUsuario);
-
-            if (lancamentosUsuario.length == 0) {
-                return response.json({
-                    "status": "erro",
-                    "message": `Lancamento (${lancamentoObtida.nome}) não pertence ao usuário informado!`
-                });
-            }
+        if (user._id.toHexString() != lancamentoObtido._idUser.toHexString()) {
+            return response.json({
+                "status": "erro",
+                "message": `Lancamento (${lancamentoObtido.nome}) não pertence ao usuário informado!`
+            });
         }
 
-        logger.info("** Remover Lancamentos - idLancamento = %j", idLancamento);
         let daoReturn = yield lancamentoDAO.removeLancamentoById(idLancamento);
-        logger.info("** Remover Lancamentos - daoReturn 1 = %j", daoReturn);
         assert.equal(daoReturn.result.n, 1);
-
-        daoReturn = yield userDAO.removeLancamento(user._id, lancamentoObtida._id.toHexString());
-        logger.info("** Remover Lancamentos - daoReturn 2 = %j", daoReturn);
-        assert.equal(daoReturn.result.n, 1);
-
-        user = yield userDAO.getUser(userName);
-        logger.info("** Remover Lancamentos - user = %j", user);
-        assert.ok(user);
 
         response.json({
-            "status": "sucesso",
-            "user": user
+            "status": "sucesso"
         });
+
     }).catch((e) => {
         logger.info("** Error = ", e);
 
@@ -146,7 +130,7 @@ lancamentoRouter.delete("/:idLancamento", function(request: Request & { userName
         });
     });
 });
-*/
+
 
 lancamentoRouter.put("/:idLancamento", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
 
@@ -161,13 +145,13 @@ lancamentoRouter.put("/:idLancamento", function(request: Request & { userName: s
 
         if (!user.contas) {
             return response.json({
-                    "status": "erro",
-                    "message": `Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`
-                });
+                "status": "erro",
+                "message": `Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`
+            });
         }
 
         if (user.contas) {
-            
+
             let contaLancamento = user.contas.find(conta => conta === lancamento.conta._id);
 
             if (!contaLancamento) {
