@@ -2,10 +2,11 @@
   "name": "angular2-cli-test",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "server/dist/app.js",
+  "main": "server/bin/www",
   "angular-cli": {},
   "scripts": {
-    "start": "ng serve",
+    "debug": "npm run all",
+    "start": "npm run all",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update",
