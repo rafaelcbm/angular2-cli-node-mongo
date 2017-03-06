@@ -107,7 +107,7 @@ lancamentoRouter.delete("/:idLancamento", function(request: Request & { userName
         let user = yield userDAO.getUser(userName);
         assert.ok(user);
 
-        if (user._id.toHexString() != lancamentoObtido._idUser.toHexString()) {
+        if (user._id.toHexString() != lancamentoObtido._idUser) {
             return response.json({
                 "status": "erro",
                 "message": `Lancamento (${lancamentoObtido.nome}) não pertence ao usuário informado!`
