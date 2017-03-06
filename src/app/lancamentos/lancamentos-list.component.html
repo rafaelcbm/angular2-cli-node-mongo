@@ -25,7 +25,7 @@
                         <!-- Async pipe is used to bind an observable directly in our template -->
                         <tr *ngFor="let lancamento of lancamentos$ | async" (click)="onSelect(lancamento)">
                             <td>{{lancamento.descricao}}</td>
-                            <td>{{lancamento.valor}}</td>
+                            <td>{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
                             <td>{{lancamento.conta.nome}}</td>
                             <td>{{lancamento.data}}</td>
                             <td>{{lancamento.isDebito}}</td>

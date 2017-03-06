@@ -1,5 +1,5 @@
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -19,7 +19,9 @@ import { ApiHttpService } from './services/api-http-service';
         //O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
         AppRoutingModule
     ],
-    providers: [ ApiHttpService ],
+    providers: [
+        ApiHttpService,
+        { provide: LOCALE_ID, useValue:'pt-BR' }],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
