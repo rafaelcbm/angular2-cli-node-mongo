@@ -1,70 +1,67 @@
 import { ObjectID } from "mongodb";
-import * as assert from "assert";
-import * as co from "co";
 import * as moment from 'moment';
+import { Service, Inject } from 'typedi';
+import * as logger from 'logops';
 
-import { logger, dataAccess } from "../app";
 import { DataAccess } from "./abstractDAO";
 
-// Create a class to manage the data manipulation.
-export class LancamentoDAO extends DataAccess {
+@Service()
+export class LancamentoDAO {
 
-    // Get a new Student based on the user name.
+    @Inject() private _dataAccess: DataAccess;
+    
     public getLancamentoByIds(idsLancamentos: any): any {
 
         //Converte os ids de String->ObjectID, para uso como parâmetro da consulta.
-        let idsConstasAsObjectID = [];
-        idsLancamentos.forEach(id => idsConstasAsObjectID.push(ObjectID.createFromHexString(id)));
+        let idsLancametosAsObjectID = [];
+        idsLancamentos.forEach(id => idsLancametosAsObjectID.push(ObjectID.createFromHexString(id)));
 
-        return dataAccess.getDocuments('lancamentos', { _id: { $in: idsConstasAsObjectID } });
+        return this._dataAccess.getDocuments('lancamentos', { _id: { $in: idsLancametosAsObjectID } });
     }
 
     public getLancamentoById(idLancamento: string): any {
 
-        return dataAccess.getDocumentById('lancamentos', idLancamento);
+        return this._dataAccess.getDocumentById('lancamentos', idLancamento);
     }
 
-    //TODO: remover e adicionar um q retorne todos somente do usuario.
     public getLancamentosByUser(idUser: string): any {
-
-        return dataAccess.getDocuments('lancamentos', { _idUser: idUser });
+        return this._dataAccess.getDocuments('lancamentos', { _idUser: idUser });
     }
 
     public getLancamentoByDescricao(descricaoLancamento: string): any {
 
-        return dataAccess.getDocument('lancamentos', { descricao: descricaoLancamento });
+        return this._dataAccess.getDocument('lancamentos', { descricao: descricaoLancamento });
     }
 
     public insertLancamento(lancamento: any): any {
-
         //Parse data to Date
         lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
         logger.info("** DAL - lancamento depois: %j", lancamento);
 
-        return dataAccess.insertDocument(lancamento, 'lancamentos');
+        return this._dataAccess.insertDocument(lancamento, 'lancamentos');
     }
 
     public removeLancamentoById(idLancamento: string): any {
-        return dataAccess.removeDocumentById('lancamentos', idLancamento);
+        return this._dataAccess.removeDocumentById('lancamentos', idLancamento);
     }
 
     public updateLancamento(idLancamento: any, lancamento: any): any {
 
-        if (dataAccess.dbConnection) {
+        if (this._dataAccess.dbConnection) {
 
-            let query = { _id: new ObjectID(idLancamento) }            
+            let query = { _id: new ObjectID(idLancamento) }
 
             //Parse data to Date
             lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
-            let updateData = { 
+            let updateData = {
                 descricao: lancamento.descricao,
                 data: lancamento.data,
                 conta: lancamento.conta,
                 valor: lancamento.valor,
                 isDebito: lancamento.isDebito,
-             }
+            }
 
-            return dataAccess.dbConnection.collection('lancamentos').update(query, { $set: updateData }, { w: 1 });
+            return this._dataAccess.dbConnection.collection('lancamentos').update(query, { $set: updateData }, { w: 1 });
         }
     }
 }

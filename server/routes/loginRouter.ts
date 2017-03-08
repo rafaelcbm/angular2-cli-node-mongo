@@ -3,13 +3,14 @@ import { randomBytes, pbkdf2 } from "crypto";
 import * as co from "co";
 import * as assert from "assert";
 import { sign } from "jsonwebtoken";
+import { Container } from 'typedi';
+import * as logger from 'logops';
 
 import { secret, length, digest } from "../config";
-import { app, logger } from "../app";
 import { UserDAO } from "../dal/userDAO";
 
 const loginRouter: Router = Router();
-let userDAO = new UserDAO();
+const userDAO: UserDAO = Container.get(UserDAO);
 
 loginRouter.post("/signup", function(request: Request, response: Response, next: NextFunction) {
 

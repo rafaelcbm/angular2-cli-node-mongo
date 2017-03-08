@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug Server - Node in Typescript Program",
-            "program": "${workspaceRoot}\\server\\bin\\www",
+            "name": "Debug Server - Node in Typescript Program",            
+            "program": "${workspaceRoot}\\server\\app.ts",
             "outFiles": [
                 "${workspaceRoot}\\server\\dist\\**\\*.js"
             ]

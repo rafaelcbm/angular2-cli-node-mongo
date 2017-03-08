@@ -1,14 +1,14 @@
 import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
-//import * as co from "co";
-let co = require('co');
+import * as co from "co";
+import { Container } from 'typedi';
+import * as logger from 'logops';
 
-import { app, logger } from "../app";
 import { UserDAO } from "../dal/userDAO";
 import { ContaDAO } from "../dal/contaDAO";
 
-let userDAO = new UserDAO();
-let contaDAO = new ContaDAO();
+const contaDAO: ContaDAO = Container.get(ContaDAO);
+const userDAO: UserDAO = Container.get(UserDAO);
 
 export const contaRouter: Router = Router();
 
