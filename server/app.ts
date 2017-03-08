@@ -1,7 +1,11 @@
+import 'core-js/es7/reflect';
 import * as express from "express";
+import * as expressLogging from 'express-logging';
+import * as logger from 'logops';
 import { join } from "path";
 import * as favicon from "serve-favicon";
 import { json, urlencoded } from "body-parser";
+import { Container } from 'typedi';
 
 import { loginRouter } from "./routes/loginRouter";
 import { protectedRouter } from "./routes/protectedRouter";
@@ -13,17 +17,16 @@ import { DataAccess } from "./dal/abstractDAO";
 const app: express.Application = express();
 
 //Inicializa conexão
-var dataAccess = new DataAccess();
-dataAccess.openDbConnection();
+// var dataAccess = new DataAccess();
+// dataAccess.openDbConnection();
+ var dataAccess = undefined;
 
 //Log config - express-logging
-var expressLogging = require('express-logging');
-var logger = require('logops');
 app.use(expressLogging(logger));
 logger.info("** LOGGER INICIALIZADO");
 
+//Disable header: X-Powered-By:Express
 app.disable("x-powered-by");
-
 app.use(favicon(join(__dirname, "../../src", "favicon.ico")));
 app.use(express.static(join(__dirname, '../../dist')));
 
@@ -60,6 +63,16 @@ app.use('/*', function(request: express.Request, response: express.Response) {
     response.sendFile(join(__dirname, '../../dist', 'index.html'));
 });
 
+// Porta que o express irá escutar as requisições
+const port: number = process.env.PORT || 3002;
+
+// Iniciar o servidor na porta especificada
+app.listen(port, () => {
+    // Mensagem de inicialização com sucesso
+    Container.get(DataAccess).openDbConnection();
+    logger.info(`## Escutando no endereço: http://localhost:${port}/`);
+});
+
 // catch 404 and forward to error handler
 // app.use(function(req: express.Request, res: express.Response, next) {
 //     let err = new Error("Not Found");
@@ -76,6 +89,7 @@ app.use('/*', function(request: express.Request, response: express.Response) {
 //     });
 // });
 
+
 export { app };
 export { logger };
-export { dataAccess };
+//export { dataAccess };

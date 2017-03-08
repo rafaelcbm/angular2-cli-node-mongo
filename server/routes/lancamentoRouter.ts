@@ -1,17 +1,19 @@
 import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
 import * as co from "co";
+import { Container } from 'typedi';
 
-import { app, logger } from "../app";
+import { logger } from "../app";
 import { UserDAO } from "../dal/userDAO";
 import { LancamentoDAO } from "../dal/lancamentoDAO";
 
-let userDAO = new UserDAO();
-let lancamentoDAO = new LancamentoDAO();
+
+const lancamentoDAO: LancamentoDAO = Container.get(LancamentoDAO);
+const userDAO: UserDAO = Container.get(UserDAO);
 
 export const lancamentoRouter: Router = Router();
 
-lancamentoRouter.get("/", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
+lancamentoRouter.get("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
     let userName = request.userName;
 
@@ -46,7 +48,7 @@ lancamentoRouter.get("/", function(request: Request & { userName: string }, resp
 });
 
 
-lancamentoRouter.post("/", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
+lancamentoRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
     let userName = request.userName;
 
@@ -88,7 +90,7 @@ lancamentoRouter.post("/", function(request: Request & { userName: string }, res
 });
 
 
-lancamentoRouter.delete("/:idLancamento", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
+lancamentoRouter.delete("/:idLancamento", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
     let userName = request.userName;
     let idLancamento = request.params.idLancamento;
@@ -132,7 +134,7 @@ lancamentoRouter.delete("/:idLancamento", function(request: Request & { userName
 });
 
 
-lancamentoRouter.put("/:idLancamento", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
+lancamentoRouter.put("/:idLancamento", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
     let userName = request.userName;
     let idLancamento = request.params.idLancamento;

@@ -1,7 +1,7 @@
 import { Router, Response, Request, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 import { secret } from "../config";
-import { app, logger } from "../app";
+import { logger } from "../app";
 
 const protectedRouter: Router = Router();
 

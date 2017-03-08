@@ -1,50 +1,49 @@
 import { ObjectID } from "mongodb";
-import * as assert from "assert";
-import * as co from "co";
+import { Service, Inject } from 'typedi';
 
-import { logger, dataAccess } from "../app";
 import { DataAccess } from "./abstractDAO";
 
-// Create a class to manage the data manipulation.
+@Service()
 export class ContaDAO extends DataAccess {
 
-    // Get a new Student based on the user name.
+    @Inject() private _dataAccess: DataAccess;
+
     public getContaByIds(idsContas: any): any {
 
-        //Converte os ids de String->ObjectID, para uso como parâmetro da consulta.
+        //Converte os ids de String->ObjectID, para uso como parâmetro da consulta.        
         let idsConstasAsObjectID = [];
         idsContas.forEach(id => idsConstasAsObjectID.push(ObjectID.createFromHexString(id)));
 
-        return dataAccess.getDocuments('contas', { _id: { $in: idsConstasAsObjectID } });
+        return this._dataAccess.getDocuments('contas', { _id: { $in: idsConstasAsObjectID } });
     }
 
     public getContaById(idConta: string): any {
 
-        return dataAccess.getDocumentById('contas', idConta);
+        return this._dataAccess.getDocumentById('contas', idConta);
     }
 
     public getContaByNome(nomeConta: string): any {
 
-        return dataAccess.getDocument('contas', { nome: nomeConta });
+        return this._dataAccess.getDocument('contas', { nome: nomeConta });
     }
 
     public insertConta(conta: any): any {
 
-        return dataAccess.insertDocument(conta, 'contas');
+        return this._dataAccess.insertDocument(conta, 'contas');
     }
 
     public removeContaById(idConta: string): any {
-        return dataAccess.removeDocumentById('contas', idConta);
+        return this._dataAccess.removeDocumentById('contas', idConta);
     }
 
     public updateConta(idConta: any, nomeNovaConta: any): any {
 
-        if (dataAccess.dbConnection) {
+        if (this._dataAccess.dbConnection) {
 
             let query = { _id: new ObjectID(idConta) }
             let updateData = { nome: nomeNovaConta }
 
-            return dataAccess.dbConnection.collection('contas').update(query, { $set: updateData }, { w: 1 });
+            return this._dataAccess.dbConnection.collection('contas').update(query, { $set: updateData }, { w: 1 });
         }
     }
 }

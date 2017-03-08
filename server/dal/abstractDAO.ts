@@ -1,22 +1,23 @@
-import { MongoClient, ObjectID } from "mongodb";
+import { MongoClient, ObjectID, Db } from "mongodb";
 import * as assert from "assert";
+import { Service } from 'typedi';
 
 import { logger } from "../app";
 
-// Create a class to manage the data manipulation.
+@Service()
 export class DataAccess {
-    static shareItUrl: string = 'mongodb://127.0.0.1:27017/test';
-    dbConnection: any = null;
+    private shareItUrl: string = 'mongodb://127.0.0.1:27017/test';
+    public dbConnection = null;
 
     // Open the MongoDB connection.
     public openDbConnection() {
-        if (this.dbConnection == null) {
-            MongoClient.connect(DataAccess.shareItUrl, (err, db) => {
-                assert.equal(null, err);
-                logger.info("** Connected correctly to MongoDB server.");
-                this.dbConnection = db;
-            });
-        }
+        return MongoClient.connect(this.shareItUrl).then(db => {
+            this.dbConnection = db;
+            logger.info('## Conectado com sucesso com o MongoBD');
+        }).catch(err => {
+            logger.info('## Erro ao tentar se conectar com MongoBD: %j', err);
+            throw err;
+        });;
     }
 
     // Close the existing connection.
@@ -66,8 +67,7 @@ export class DataAccess {
             return this.dbConnection.collection(collectionName).removeOne({ _id: idAsObjectID }, { w: 1 });
         }
     }
-
-    // Get the count of all documents in the collection.
+    
     public getDocumentCount(collectionName: string): any {
 
         return this.dbConnection && this.dbConnection.collection(collectionName).count();
