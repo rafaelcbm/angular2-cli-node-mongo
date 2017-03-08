@@ -4,8 +4,8 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { NotificationsService } from "angular2-notifications";
 import { Observable } from 'rxjs/Observable';
 
-import { NotificacaoService } from '../services/notificacao-service';
-import { ContasService } from '../services/contas-service';
+import { NotificacaoService } from '../services/notificacao.service';
+import { ContasService } from '../services/contas.service';
 import { Conta } from "../models/models.module";
 
 @Component({

@@ -6,8 +6,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-import { NotificacaoService } from '../services/notificacao-service';
-import { ApiHttpService } from './api-http-service';
+import { NotificacaoService } from '../services/notificacao.service';
+import { ApiHttpService } from './api-http.service';
 import { AuthService } from '../authentication/auth.service';
 import { Conta } from "../models/models.module";
 

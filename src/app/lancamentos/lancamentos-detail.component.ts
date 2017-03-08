@@ -10,8 +10,8 @@ import { NotificationsService } from "angular2-notifications";
 
 import { Lancamento, Conta } from "../models/models.module";
 
-import { LancamentosService } from '../services/lancamentos-service';
-import { ContasService } from '../services/contas-service';
+import { LancamentosService } from '../services/lancamentos.service';
+import { ContasService } from '../services/contas.service';
 
 
 @Component({

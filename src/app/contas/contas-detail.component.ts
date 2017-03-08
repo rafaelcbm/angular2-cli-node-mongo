@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 //declare var toastr: any;
 
 import { Conta } from "../models/models.module";
-import { ContasService } from '../services/contas-service';
+import { ContasService } from '../services/contas.service';
 
 
 @Component({    

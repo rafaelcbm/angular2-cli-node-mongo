@@ -6,8 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 
-import { NotificacaoService } from '../services/notificacao-service';
-import { LancamentosService } from '../services/lancamentos-service';
+import { NotificacaoService } from '../services/notificacao.service';
+import { LancamentosService } from '../services/lancamentos.service';
 import { Lancamento } from "../models/models.module";
 
 

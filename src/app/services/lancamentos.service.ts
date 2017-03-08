@@ -7,8 +7,8 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import * as moment from 'moment';
 
-import { NotificacaoService } from '../services/notificacao-service';
-import { ApiHttpService } from './api-http-service';
+import { NotificacaoService } from '../services/notificacao.service';
+import { ApiHttpService } from './api-http.service';
 import { AuthService } from '../authentication/auth.service';
 import { Lancamento } from "../models/models.module";
 
