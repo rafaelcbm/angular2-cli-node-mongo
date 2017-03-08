@@ -17,9 +17,7 @@ import { DataAccess } from "./dal/abstractDAO";
 const app: express.Application = express();
 
 //Inicializa conexão
-// var dataAccess = new DataAccess();
-// dataAccess.openDbConnection();
- var dataAccess = undefined;
+Container.get(DataAccess).openDbConnection();
 
 //Log config - express-logging
 app.use(expressLogging(logger));
@@ -69,7 +67,6 @@ const port: number = process.env.PORT || 3002;
 // Iniciar o servidor na porta especificada
 app.listen(port, () => {
     // Mensagem de inicialização com sucesso
-    Container.get(DataAccess).openDbConnection();
     logger.info(`## Escutando no endereço: http://localhost:${port}/`);
 });
 
@@ -88,8 +85,3 @@ app.listen(port, () => {
 //         message: err.message
 //     });
 // });
-
-
-export { app };
-export { logger };
-//export { dataAccess };

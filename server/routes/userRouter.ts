@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { Container } from 'typedi';
+import * as logger from 'logops';
 
-import { logger } from "../app";
 import { UserDAO } from "../dal/userDAO";
 
 export const userRouter: Router = Router();

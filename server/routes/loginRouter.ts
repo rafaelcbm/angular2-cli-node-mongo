@@ -4,9 +4,9 @@ import * as co from "co";
 import * as assert from "assert";
 import { sign } from "jsonwebtoken";
 import { Container } from 'typedi';
+import * as logger from 'logops';
 
 import { secret, length, digest } from "../config";
-import { logger } from "../app";
 import { UserDAO } from "../dal/userDAO";
 
 const loginRouter: Router = Router();

@@ -2,8 +2,8 @@ import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
 import * as co from "co";
 import { Container } from 'typedi';
+import * as logger from 'logops';
 
-import { logger } from "../app";
 import { UserDAO } from "../dal/userDAO";
 import { ContaDAO } from "../dal/contaDAO";
 

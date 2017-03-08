@@ -1,8 +1,6 @@
 import { MongoClient, ObjectID, Db } from "mongodb";
-import * as assert from "assert";
 import { Service } from 'typedi';
-
-import { logger } from "../app";
+import * as logger from 'logops';
 
 @Service()
 export class DataAccess {

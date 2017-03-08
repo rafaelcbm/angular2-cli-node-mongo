@@ -1,9 +1,7 @@
 import { ObjectID } from "mongodb";
-import * as assert from "assert";
-import * as co from "co";
 import { Service, Inject } from 'typedi';
+import * as logger from 'logops';
 
-import { logger } from "../app";
 import { DataAccess } from "./abstractDAO";
 
 // Create a class to manage the data manipulation.
