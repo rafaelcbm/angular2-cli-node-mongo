@@ -34,10 +34,7 @@ export class LancamentoDAO {
     }
 
     public insertLancamento(lancamento: any): any {
-        //Parse data to Date
-        lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
-        logger.info("** DAL - lancamento depois: %j", lancamento);
-
+        
         return this._dataAccess.insertDocument(lancamento, 'lancamentos');
     }
 

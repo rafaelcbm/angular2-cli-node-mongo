@@ -36,12 +36,6 @@ export class LancamentosService {
                 console.log("Data return on service:", data);
 
                 if (data.status === "sucesso") {
-
-                    if(data.lancamentos){
-                        // Formata a data do objeto de Date para String
-                        data.lancamentos.map(lancamento => lancamento.data = moment(lancamento.data).format('DD/MM/YYYY'));                        
-                    }
-
                     this.lancamentosStore.lancamentos = data.lancamentos;
                     this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
                 }
@@ -76,10 +70,6 @@ export class LancamentosService {
             .subscribe(
             data => {
                 if (data.status === "sucesso") {
-
-                    // Formata a data do objeto de Date para String
-                    data.lancamento.data = moment(data.lancamento.data).format('DD/MM/YYYY');
-
                     this.lancamentosStore.lancamentos.push(data.lancamento);
                     this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
 
@@ -127,14 +117,11 @@ export class LancamentosService {
             data => {
                 if (data.status === "sucesso") {
                     this.lancamentosStore.lancamentos.forEach((l, i) => {
-                        if (l._id === data.lancamento._id) {
-
-                            // Formata a data do objeto de Date para String
-                            data.lancamento.data = moment(data.lancamento.data).format('DD/MM/YYYY');
-
+                        if (l._id === data.lancamento._id) {                            
                             this.lancamentosStore.lancamentos[i] = data.lancamento;
                         }
                     });
+
                     this._lancamentos.next(Object.assign({}, this.lancamentosStore).lancamentos);
 
                     this.notificacaoService.sendSucessMessage(`Lancamento "${lancamento.descricao}" salvo com sucesso.`);

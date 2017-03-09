@@ -74,7 +74,9 @@ export class LancamentosDetailComponent implements OnInit {
 			// seja usando new Date().toISOString().substring(0, 10) ou moment().format('YYYY-MM-DD').
 			// O pipe de date funciona somente se o input for [type=text], não date. :(
 			//this.dataTeste = moment().toDate().toISOString().substring(0, 10);
-			this.dataLancamento = moment(this.lancamento.data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+			//this.dataLancamento = moment(this.lancamento.data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+			this.dataLancamento = moment(this.lancamento.data).format('YYYY-MM-DD');
 
 			if (this.contas) {
 				this.associaContaDoLancamento();
@@ -94,8 +96,11 @@ export class LancamentosDetailComponent implements OnInit {
 
 	salvarLancamento(formValue) {
 		// Clona e atribui os dados do formulario no obj que sera enviado ao server
-		let novoLancamento = {};
+		let novoLancamento: Lancamento = new Lancamento();
 		Object.assign(novoLancamento, formValue);
+
+		// Parse de string para Date
+		novoLancamento.data = moment(novoLancamento.data, 'YYYY-MM-DD').toDate();
 
 		if (this.lancamento._id) {
 			this.lancamentosService.update(this.lancamento._id, novoLancamento);
