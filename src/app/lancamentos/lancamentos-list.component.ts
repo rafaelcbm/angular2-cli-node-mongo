@@ -17,15 +17,6 @@ import { Lancamento } from "../models/models.module";
 })
 export class LancamentosListComponent implements OnInit {
 
-	public options = {
-		position: ["bottom", "right"],
-		timeOut: 5000,
-        showProgressBar: true,
-        pauseOnHover: true,
-        clickToClose: true,
-		lastOnBottom: true
-	};
-
 	@Output() onSelectLancamento = new EventEmitter<Lancamento>();
 
 	lancamentos$: Observable<Lancamento[]>;	

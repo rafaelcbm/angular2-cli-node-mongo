@@ -1,6 +1,8 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { SimpleNotificationsModule } from 'angular2-notifications';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -17,7 +19,8 @@ import { ApiHttpService } from './services/api-http.service';
         AuthenticationModule,
         CommonPagesModule,
         //O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
-        AppRoutingModule
+        AppRoutingModule,
+        SimpleNotificationsModule.forRoot()
     ],
     providers: [
         ApiHttpService,

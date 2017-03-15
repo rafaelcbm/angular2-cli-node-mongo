@@ -17,15 +17,6 @@ export class ContasListComponent implements OnInit {
 	contas$: Observable<Conta[]>;
 	public selectedId: string;
 
-	public options = {
-		position: ["bottom", "right"],
-		timeOut: 5000,
-        showProgressBar: true,
-        pauseOnHover: true,
-        clickToClose: true,
-		lastOnBottom: true
-	};
-
 	constructor(private contasService: ContasService, private route: ActivatedRoute, private router: Router,
      private notificacaoService: NotificacaoService, private _notificationsService: NotificationsService ) { }
 

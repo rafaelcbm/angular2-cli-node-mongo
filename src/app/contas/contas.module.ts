@@ -12,8 +12,6 @@ import { ContasDetailComponent } from './contas-detail.component';
 import { ContasService } from '../services/contas.service';
 import { NotificacaoService } from '../services/notificacao.service';
 
-import { SimpleNotificationsModule } from "angular2-notifications";
-
 @NgModule({
     declarations: [
         ManageContasComponent,
@@ -25,8 +23,7 @@ import { SimpleNotificationsModule } from "angular2-notifications";
         CommonModule,
         FormsModule,
         HttpModule,
-        ContasRoutingModule,
-        SimpleNotificationsModule.forRoot()
+        ContasRoutingModule
     ],
     providers: [
         ContasService,
