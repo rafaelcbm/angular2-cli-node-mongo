@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-//import { provideAuth } from "angular2-jwt";
-
 import { AuthenticationRoutingModule } from './authentication.routing';
 import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
@@ -18,13 +16,6 @@ import { LoginComponent } from './login.component';
         FormsModule,
         HttpModule,
         AuthenticationRoutingModule
-    ]//,
-    // providers: [        
-    //     provideAuth({
-    //         globalHeaders: [{ "Content-type": "application/json" }],
-    //         noJwtError: true,
-    //         noTokenScheme: true
-    //     })
-    // ]
+    ]
 })
 export class AuthenticationModule { }

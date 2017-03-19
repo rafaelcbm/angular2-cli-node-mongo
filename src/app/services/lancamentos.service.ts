@@ -9,7 +9,6 @@ import * as moment from 'moment';
 
 import { NotificacaoService } from '../services/notificacao.service';
 import { ApiHttpService } from './api-http.service';
-import { AuthService } from '../authentication/auth.service';
 import { Lancamento } from "../models/models.module";
 
 

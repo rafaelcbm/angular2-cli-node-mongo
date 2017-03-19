@@ -8,7 +8,6 @@ import 'rxjs/add/operator/map';
 
 import { NotificacaoService } from '../services/notificacao.service';
 import { ApiHttpService } from './api-http.service';
-import { AuthService } from '../authentication/auth.service';
 import { Conta } from "../models/models.module";
 
 

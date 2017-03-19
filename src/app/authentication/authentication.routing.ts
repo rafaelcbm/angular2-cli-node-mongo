@@ -4,9 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
 
-import { AuthGuard }      from './auth-guard.service';
-import { AuthService }    from './auth.service';
-
 @NgModule({
     imports: [
         RouterModule.forChild([
@@ -22,10 +19,6 @@ import { AuthService }    from './auth.service';
     ],
     exports: [
         RouterModule
-    ],
-    providers: [
-        AuthGuard,
-        AuthService
     ]
 })
 export class AuthenticationRoutingModule { }

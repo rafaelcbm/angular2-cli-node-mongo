@@ -36,9 +36,7 @@ export class MainComponent implements OnInit {
     ngOnInit(): void {}
 
     public logout() {
-
         this.authService.logout();
-
         this.router.navigate(['/home']);
     }
 }

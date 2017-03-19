@@ -35,8 +35,9 @@ import { CommonPagesRoutingModule } from './common-pages.routing';
 
         /* Imports do template */
         DropdownModule.forRoot(),
-    TabsModule.forRoot(),
-    ChartsModule,
+        TabsModule.forRoot(),
+        ChartsModule,
+        
         SimpleNotificationsModule.forRoot()
     ],
     providers: []

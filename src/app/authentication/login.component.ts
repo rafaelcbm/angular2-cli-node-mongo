@@ -2,15 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Headers, RequestOptions, Response } from "@angular/http";
 
-//import { AuthHttp, JwtHelper } from "angular2-jwt";
-
-//import { ApiService } from "../shared/api.service";
+import { Observable } from 'rxjs/Observable';
 import "rxjs/add/operator/map";
 
 import { AuthService } from './auth.service';
-
-import { Observable } from 'rxjs/Observable';
-
 
 @Component({
     templateUrl: './login.component.html'
@@ -22,9 +17,7 @@ export class LoginComponent implements OnInit {
     username: string;
     password: string;
 
-    constructor(private authService: AuthService, private router: Router
-        //, private authHttp: AuthHttp
-        ) {  }
+    constructor(private authService: AuthService, private router: Router) {  }
 
     ngOnInit() {
         // subscribe to the observable
@@ -55,30 +48,4 @@ export class LoginComponent implements OnInit {
     logout(): void {
         this.authService.logout();
     }
-
-    // protected() {
-    //     let jwtHelper: JwtHelper = new JwtHelper();
-
-    //     var token = localStorage.getItem('id_token');
-
-    //     if (token) {
-    //         console.log("* Token utils:");
-    //         console.log(
-    //             jwtHelper.decodeToken(token),
-    //             jwtHelper.getTokenExpirationDate(token),
-    //             jwtHelper.isTokenExpired(token)
-    //         );
-    //     }
-
-    //     this.authHttp
-    //         .get("/api")
-    //         .map((res: Response) => res.json())
-    //         .subscribe(
-    //         (data) => {
-    //             console.log(data);
-    //         },
-    //         (resError) => {
-    //             console.log(resError);
-    //         });
-    // }
 }
