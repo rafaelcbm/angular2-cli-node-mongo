@@ -3,8 +3,6 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { NotificationsService } from "angular2-notifications";
 import { Observable } from 'rxjs/Observable';
-import * as moment from 'moment';
-import 'moment/locale/pt-br';
 
 import { NotificacaoService } from '../services/notificacao.service';
 import { LancamentosService } from '../services/lancamentos.service';

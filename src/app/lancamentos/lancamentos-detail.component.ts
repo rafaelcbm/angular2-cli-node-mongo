@@ -20,6 +20,8 @@ import { ContasService } from '../services/contas.service';
 })
 export class LancamentosDetailComponent implements OnInit {
 
+	showDatePicker = false;
+
 	contas: Conta[];
 	@Input() lancamento: Lancamento;
 
