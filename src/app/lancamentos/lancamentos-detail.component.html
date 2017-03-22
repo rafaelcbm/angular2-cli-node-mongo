@@ -15,11 +15,11 @@
                                     <div class="form-group col-sm-3">
                                         <label for="data">Data</label>
                                         <div class="input-group">
-                                            <span class="input-group-addon" (click)="showDatePicker=(!showDatePicker)"><i class="fa fa-calendar"></i></span>
-                                            <div *ngIf="showDatePicker" style="position:absolute; z-index:10; min-height:290px;">
+                                            <span class="input-group-addon p-0" (click)="showDatePicker=(!showDatePicker)"><i class="fa fa-calendar"></i></span>
+                                            <div *ngIf="showDatePicker" style="position:absolute; top:35px; z-index:10; min-height:290px;">
                                                 <datepicker [(ngModel)]="dataLancamento" (selectionDone)="showDatePicker=false" [ngModelOptions]="{standalone: true}"></datepicker>
                                             </div>
-                                            <input [ngModel]="dataLancamento | date:'dd/MM/yyyy'" id="data" name="data" class="form-control" placeholder="Data" required>
+                                            <input [ngModel]="dataLancamento | date:'dd/MM/yyyy'" class="form-control form-control-sm" id="data" name="data" placeholder="Data" required>
                                         </div>
                                     </div>
                                     <div class="form-group col-sm-9">
