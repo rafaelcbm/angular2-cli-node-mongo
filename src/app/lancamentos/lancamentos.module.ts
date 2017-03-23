@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { TabsModule }               from 'ng2-bootstrap/tabs';
+import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 
 import { LancamentosRoutingModule } from './lancamentos.routing';
 import { ManageLancamentosComponent } from './manage-lancamentos.component';
@@ -24,7 +25,8 @@ import { NotificacaoService } from '../services/notificacao.service';
         FormsModule,
         HttpModule,
         LancamentosRoutingModule,
-        TabsModule.forRoot()
+        TabsModule.forRoot(),
+        DatepickerModule.forRoot()
     ],
     providers: [
         LancamentosService,
