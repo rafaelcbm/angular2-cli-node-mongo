@@ -1,36 +1,42 @@
 {
-  "project": {
-    "version": "1.0.0",
-    "name": "angular2-cli-test"
-  },
-  "apps": [{
-    "root": "src",
-    "outDir": "dist",
-    "assets": ["assets"],
-    "index": "index.html",
-    "main": "main.ts",
-    "polyfills": "polyfills.ts",
-    "test": "test.ts",
-    "tsconfig": "tsconfig.json",
-    "prefix": "app",
-    "mobile": false,
-    "styles": [
-      "scss/style.scss"
-    ],
-    "scripts": [
-      "../node_modules/chart.js/dist/Chart.bundle.min.js",
-      "../node_modules/chart.js/dist/Chart.min.js"
-    ],
-   "environmentSource": "environments/environment.ts",
-      "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
-      }
-  }],
-  "addons": [],
-  "packages": [],  
-  "defaults": {
-    "styleExt": "scss",
-    "prefixInterfaces": false
-  }
+	"project": {
+		"version": "1.0.0",
+		"name": "angular2-cli-test"
+	},
+	"apps": [
+		{
+			"root": "src",
+			"outDir": "dist",
+			"assets": [
+				"assets"
+			],
+			"index": "index.html",
+			"main": "main.ts",
+			"polyfills": "polyfills.ts",
+			"test": "test.ts",
+			"tsconfig": "tsconfig.json",
+			"prefix": "app",
+			"mobile": false,
+			"styles": [
+				"scss/style.scss"
+			],
+			"scripts": [
+				"../node_modules/jquery/dist/jquery.js",
+				"../node_modules/jquery-mask-plugin/dist/jquery.mask.min.js",
+				"../node_modules/chart.js/dist/Chart.bundle.min.js",
+				"../node_modules/chart.js/dist/Chart.min.js"
+			],
+			"environmentSource": "environments/environment.ts",
+			"environments": {
+				"dev": "environments/environment.ts",
+				"prod": "environments/environment.prod.ts"
+			}
+		}
+	],
+	"addons": [],
+	"packages": [],
+	"defaults": {
+		"styleExt": "scss",
+		"prefixInterfaces": false
+	}
 }

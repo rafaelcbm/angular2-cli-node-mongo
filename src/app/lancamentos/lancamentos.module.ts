@@ -6,6 +6,8 @@ import { HttpModule } from '@angular/http';
 import { TabsModule }               from 'ng2-bootstrap/tabs';
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 
+import { SharedDirectivesModule } from './../directives/shared-directives.module';
+import { SharedPipesModule } from './../pipes/shared-pipes.module';
 import { LancamentosRoutingModule } from './lancamentos.routing';
 import { ManageLancamentosComponent } from './manage-lancamentos.component';
 import { LancamentosListComponent } from './lancamentos-list.component';
@@ -25,6 +27,8 @@ import { NotificacaoService } from '../services/notificacao.service';
         FormsModule,
         HttpModule,
         LancamentosRoutingModule,
+		SharedPipesModule,
+		SharedDirectivesModule,
         TabsModule.forRoot(),
         DatepickerModule.forRoot()
     ],

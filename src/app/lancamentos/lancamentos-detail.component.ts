@@ -3,13 +3,11 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import 'rxjs/add/operator/map';
 import * as moment from 'moment';
-import 'moment/locale/pt-br';
-
 
 import { NotificationsService } from "angular2-notifications";
 
+import { Log } from './../util/log';
 import { Lancamento, Conta } from "../models/models.module";
-
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
 
@@ -36,16 +34,9 @@ export class LancamentosDetailComponent implements OnInit {
 		private lancamentosService: LancamentosService,
 		private contasService: ContasService,
 		private _notificationsService: NotificationsService
-	) {
-		console.log("Chamou constructor ");
-	}
+	) { }
 
 	ngOnInit() {
-		console.log("Chamou ngOnInit ");
-
-		moment.locale('pt-BR');
-		console.log(moment.locale());
-
 		this.carregarContas();
 	}
 
@@ -61,9 +52,8 @@ export class LancamentosDetailComponent implements OnInit {
 		this.contasService.getAllContas();
 	}
 
-	// NOTA: Essa funcao eh chamada antes do "this.contas" ser carregado, por isso a checagem antes.
 	ngOnChanges(changes: SimpleChanges) {
-		console.log("ngOnChanges: novo lancamento = ", changes['lancamento'].currentValue);
+		Log.debug("ngOnChanges: novo lancamento = ", changes['lancamento'].currentValue);
 		this.lancamento = changes['lancamento'].currentValue;
 
 		// Se novo Lancamento
@@ -80,6 +70,7 @@ export class LancamentosDetailComponent implements OnInit {
 			//this.dataLancamento = moment(this.lancamento.data, 'DD/MM/YYYY').format('YYYY-MM-DD');
 			this.dataLancamento = moment(this.lancamento.data).format('YYYY-MM-DD');
 
+			// NOTA: Essa funcao eh chamada antes do "this.contas" ser carregado no OnInit, por isso a checagem antes.
 			if (this.contas) {
 				this.associaContaDoLancamento();
 			}
@@ -124,9 +115,7 @@ export class LancamentosDetailComponent implements OnInit {
 
 	//Apenas teste
 	contasChanged(contaChanged) {
-
-		console.log("contaChanged = ", contaChanged);
-
+		Log.log("contaChanged = ", contaChanged);
 		this.contaSelectionada = contaChanged;
 	}
 }

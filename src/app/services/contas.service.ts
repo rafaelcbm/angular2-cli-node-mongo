@@ -13,7 +13,7 @@ import { Conta } from "../models/models.module";
 
 @Injectable()
 export class ContasService {
-       
+
     contas: Observable<Conta[]>;
     private _contas: BehaviorSubject<Conta[]>;
     private contasStore: {
@@ -40,24 +40,6 @@ export class ContasService {
             },
             error => {
                 console.log(error);
-            });
-    }
-
-    getContasById(id: string) {
-        console.log("no service id=", id);
-        console.log("no service this.contasStore=", this.contasStore);
-        //TODO: tentar obtendo do observer do service com o find, sem ter q fezer outra chamada ao backend
-    }
-
-    getAll() {
-
-        return this.apiHttp
-            .get("/api/contas/")
-            .subscribe(
-            data => data,
-            error => {
-                console.log(error);
-                return error;
             });
     }
 
@@ -120,9 +102,9 @@ export class ContasService {
                         }
                     });
                     this._contas.next(Object.assign({}, this.contasStore).contas);
-                    
+
                     this.notificacaoService.sendSucessMessage(`Conta "${nomeConta}" salva com sucesso.`);
-                    
+
                 } else if (data.status === "erro") {
                     console.log(data.message);
                     this.notificacaoService.sendErrorMessage(data.message);
@@ -132,20 +114,4 @@ export class ContasService {
                 console.log(error);
             });
     }
-
-    // const CONTAS = [
-    //     new Conta("1", 'Conta Conjunta'),
-    //     new Conta("2", 'Cartão - Itaú'),
-    //     new Conta("3", 'Cartão - Santander'),
-    // ];
-
-    // let contasPromise = Promise.resolve(CONTAS);
-    // getContas() {
-    //     return contasPromise;
-    // }
-
-    // getContasById(id: string) {
-    //     return contasPromise
-    //         .then(contas => contas.find(conta => conta.id === id));
-    // }
 }

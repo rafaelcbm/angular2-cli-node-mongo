@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { NotificationsService } from "angular2-notifications";
 import { Observable } from 'rxjs/Observable';
 
+import { Log } from './../util/log';
 import { NotificacaoService } from '../services/notificacao.service';
 import { LancamentosService } from '../services/lancamentos.service';
 import { Lancamento } from "../models/models.module";
@@ -17,7 +18,7 @@ export class LancamentosListComponent implements OnInit {
 
 	@Output() onSelectLancamento = new EventEmitter<Lancamento>();
 
-	lancamentos$: Observable<Lancamento[]>;	
+	lancamentos$: Observable<Lancamento[]>;
 
 	constructor(private lancamentosService: LancamentosService,
 		private notificacaoService: NotificacaoService,
@@ -25,44 +26,33 @@ export class LancamentosListComponent implements OnInit {
 
 	ngOnInit() {
 
-		this.lancamentos$ = this.lancamentosService.lancamentos; // subscribe to entire collection
+		this.lancamentos$ = this.lancamentosService.lancamentos;
 
-		this.lancamentosService.getAllLancamentos();    // load all lancamentos
-
+		this.lancamentosService.getAllLancamentos();
 
 		this.notificacaoService.errorMsg$.subscribe(
 			errorMsg => this.showErrorMessage(errorMsg),
-			error => console.log(error)
+			error => Log.log(error)
 		);
 
 		this.notificacaoService.successMsg$.subscribe(
 			successMsg => this.showSuccessMessage(successMsg),
-			error => console.log(error));
+			error => Log.log(error));
 	}
 
 	onSelect(lancamento: Lancamento) {
-
 		this.onSelectLancamento.emit(lancamento);
 	}
 
 	adicionar() {
-
 		this.onSelectLancamento.emit(new Lancamento());
 	}
 
 	showSuccessMessage(message: string) {
-		//Sobrescreve as opções padrão, definidas no compoenente pai.
-		this._notificationsService.success(
-			'Sucesso',
-			message
-		)
+		this._notificationsService.success('Sucesso', message);
 	}
 
 	showErrorMessage(message: string) {
-		//Sobrescreve as opções padrão, definidas no compoenente pai.
-		this._notificationsService.error(
-			'Erro',
-			message
-		)
+		this._notificationsService.error('Erro', message);
 	}
 }

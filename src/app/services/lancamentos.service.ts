@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
-import * as moment from 'moment';
 
 import { NotificacaoService } from '../services/notificacao.service';
 import { ApiHttpService } from './api-http.service';
@@ -41,24 +40,6 @@ export class LancamentosService {
             },
             error => {
                 console.log(error);
-            });
-    }
-
-    getLancamentosById(id: string) {
-        console.log("no service id=", id);
-        console.log("no service this.lancamentosStore=", this.lancamentosStore);
-        //TODO: tentar obtendo do observer do service com o find, sem ter q fezer outra chamada ao backend
-    }
-
-    getAll() {
-
-        return this.apiHttp
-            .get("/api/lancamentos/")
-            .subscribe(
-            data => data,
-            error => {
-                console.log(error);
-                return error;
             });
     }
 
@@ -116,7 +97,7 @@ export class LancamentosService {
             data => {
                 if (data.status === "sucesso") {
                     this.lancamentosStore.lancamentos.forEach((l, i) => {
-                        if (l._id === data.lancamento._id) {                            
+                        if (l._id === data.lancamento._id) {
                             this.lancamentosStore.lancamentos[i] = data.lancamento;
                         }
                     });
