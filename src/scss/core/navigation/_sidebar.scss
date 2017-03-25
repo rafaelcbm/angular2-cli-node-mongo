@@ -156,7 +156,7 @@
             width: ($font-size-base);
             height: ($font-size-base);
             padding: 0;
-            font-size: $font-size-base;
+            font-size: $font-size-base * 2;
             line-height: ($font-size-base * 3 / 4);
             text-align: center;
             content: "\2039";
@@ -177,8 +177,14 @@
             max-height: 1000px;
           }
 
+          ul.nav-dropdown-items {
+            a.nav-link {
+              padding-left: $padding-left-nav-dropdown-sub-itens;
+            }
+          }
+
           a.nav-link {
-            color: $sidebar-nav-dropdown-color;
+            color: $sidebar-nav-link-color-pai;
             border-left: 0 !important;
           }
 
