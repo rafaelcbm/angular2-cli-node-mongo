@@ -6,30 +6,25 @@
                 <tabset>
                     <tab heading="Lançamento">
                         <div class="card">
-                            <div class="card-header">
-                                <strong>Cadastro</strong>
-                                <small>Lançamento</small>
-                            </div>
                             <div class="card-block">
                                 <div class="row">
-                                    <div class="form-group col-sm-3">
+                                    <div class="form-group col-sm-2">
                                         <label for="data">Data</label>
                                         <div class="input-group">
                                             <span class="input-group-addon p-0" (click)="showDatePicker=(!showDatePicker)"><i class="fa fa-calendar"></i></span>
                                             <div *ngIf="showDatePicker" style="position:absolute; top:35px; z-index:10; min-height:290px;">
                                                 <datepicker [(ngModel)]="dataLancamento" (selectionDone)="showDatePicker=false" [ngModelOptions]="{standalone: true}"></datepicker>
                                             </div>
-                                            <input [ngModel]="dataLancamento | date:'dd/MM/yyyy'" class="form-control form-control-sm" id="data" name="data" placeholder="Data" required>
+                                            <input [ngModel]="dataLancamento | date:'dd/MM/yyyy'" class="form-control form-control-sm" id="data" name="data" placeholder="Data"
+                                                required [input-mask]="'00/00/0000'">
                                         </div>
                                     </div>
-                                    <div class="form-group col-sm-9">
+                                    <div class="form-group col-sm-3">
                                         <label for="company">Descrição</label>
                                         <input [ngModel]="lancamento.descricao" required type="text" class="form-control form-control-sm" id="descricao" name="descricao"
                                             placeholder="Descrição">
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-sm-3">
+                                    <div class="form-group col-sm-2">
                                         <label for="street">Conta</label>
                                         <select [ngModel]="lancamento.conta" class="form-control form-control-sm" id="conta" name="conta" (ngModelChange)="contasChanged($event)">
                                             <!-- Outra forma seria passar através do $event: (change)="contasChanged($event.target.value)" -->
@@ -38,14 +33,14 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-sm-3">
+                                    <div class="form-group col-sm-2">
                                         <label for="city">Valor</label>
-                                        <input [ngModel]="lancamento.valor" required type="number" step="any" class="form-control form-control-sm" id="valor" name="valor"
-											[input-mask]="'000.000,00'" [input-mask-options]="{reverse: true}" autocomplete="off" [focus]="lancamento.valor">
+                                        <input [ngModel]="lancamento.valor" required class="form-control form-control-sm" id="valor" name="valor" [input-mask]="'000.000,00'"
+                                            [input-mask-options]="{reverse: true}" autocomplete="off" [focus]="lancamento">
                                     </div>
-                                    <div class="form-group col-sm-5">
-                                        <label class="col-sm-5 form-control-label" for="isDebito">Débito / Crédito:</label>
-                                        <div class="col-sm-2">
+                                    <div class="form-group col-sm-3">
+                                        <label class="col-sm-8 form-control-label" for="isDebito">Débito / Crédito:</label>
+                                        <div class="col-sm-4">
                                             <div class="checkbox">
                                                 <label for="isDebito">
                                                     <input [ngModel]="lancamento.isDebito" id="isDebito" name="isDebito" type="checkbox">Débito
