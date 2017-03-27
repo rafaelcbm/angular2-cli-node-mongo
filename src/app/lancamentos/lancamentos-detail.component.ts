@@ -94,6 +94,10 @@ export class LancamentosDetailComponent implements OnInit {
 
 		// Parse de string para Date
 		novoLancamento.data = moment(novoLancamento.data, 'YYYY-MM-DD').toDate();
+		// Parse Valor to Number
+		//TODO: Implementar corretamente.
+		novoLancamento.valor = Number.parseFloat(formValue.valor.toString());
+		Log.log('novoLancamento = ',novoLancamento);
 
 		if (this.lancamento._id) {
 			this.lancamentosService.update(this.lancamento._id, novoLancamento);

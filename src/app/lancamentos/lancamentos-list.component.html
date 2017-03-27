@@ -28,7 +28,7 @@
                             <td>{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
                             <td>{{lancamento.conta.nome}}</td>
                             <td>{{lancamento.data | date:"dd/MM/yyyy"}}</td>
-                            <td>{{lancamento.isDebito}}</td>
+                            <td>{{lancamento.isDebito | boolean}}</td>
                         </tr>
                     </tbody>
                 </table>
