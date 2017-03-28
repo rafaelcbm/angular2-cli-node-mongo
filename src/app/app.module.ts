@@ -1,3 +1,4 @@
+import { Messages } from './util/messages';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -12,22 +13,23 @@ import { AuthService } from './authentication/auth.service';
 import { ApiHttpService } from './services/api-http.service';
 
 @NgModule({
-    declarations: [
-        AppComponent
-    ],
-    imports: [
-        BrowserModule,
-        AuthenticationModule,
-        CommonPagesModule,
-        //O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
-        AppRoutingModule,
-        SimpleNotificationsModule.forRoot()
-    ],
-    providers: [
-        ApiHttpService,
-        AuthService,
-        AuthGuard,
-        { provide: LOCALE_ID, useValue:'pt-BR' }],
-    bootstrap: [AppComponent]
+	declarations: [
+		AppComponent
+	],
+	imports: [
+		BrowserModule,
+		AuthenticationModule,
+		CommonPagesModule,
+		//O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
+		AppRoutingModule,
+		SimpleNotificationsModule.forRoot()
+	],
+	providers: [
+		ApiHttpService,
+		AuthService,
+		AuthGuard,
+		{ provide: LOCALE_ID, useValue: 'pt-BR' },
+		Messages],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }

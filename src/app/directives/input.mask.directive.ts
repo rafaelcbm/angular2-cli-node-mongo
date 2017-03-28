@@ -1,4 +1,5 @@
-import { Directive, Input, ElementRef } from '@angular/core';
+import { Log } from './../util/log';
+import { Directive, Input, ElementRef, SimpleChanges } from '@angular/core';
 import { NgControl } from "@angular/forms";
 
 declare let $: any;
@@ -16,7 +17,7 @@ export class InputMaskDirective {
 	@Input('input-mask') pattern: string;
 
 	constructor(private el: ElementRef,
-				private control: NgControl) {}
+		private control: NgControl) { }
 
 	ngAfterContentInit() {
 		$(this.el.nativeElement).mask(this.pattern, this.options);
@@ -30,6 +31,15 @@ export class InputMaskDirective {
 
 	ngOnDestroy() {
 		$(this.el.nativeElement).unmask();
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		Log.info('ngOnChanges called');
+
+		this.control.valueChanges.subscribe(param => {
+			Log.log('ngOnChanges param: ', param);
+			this.change();
+		});
 	}
 
 	change() {

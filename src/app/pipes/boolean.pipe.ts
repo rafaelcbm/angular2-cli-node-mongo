@@ -8,7 +8,7 @@ export class BooleanPipe implements PipeTransform {
 	transform(value: any, args?: any): any {
 		if (value && value !== "false") {
 			return "Sim";
-		} else if (value == 'false') {
+		} else if (!value) {
 			return "Não";
 		} else {
 			return "-";

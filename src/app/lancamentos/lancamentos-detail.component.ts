@@ -1,3 +1,5 @@
+import { Messages } from './../util/messages';
+import { Util } from './../util/util';
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
@@ -33,7 +35,8 @@ export class LancamentosDetailComponent implements OnInit {
 		private router: Router,
 		private lancamentosService: LancamentosService,
 		private contasService: ContasService,
-		private _notificationsService: NotificationsService
+		private _notificationsService: NotificationsService,
+		private messages: Messages
 	) { }
 
 	ngOnInit() {
@@ -88,16 +91,18 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	salvarLancamento(formValue) {
+
+
+
 		// Clona e atribui os dados do formulario no obj que sera enviado ao server
 		let novoLancamento: Lancamento = new Lancamento();
 		Object.assign(novoLancamento, formValue);
 
-		// Parse de string para Date
-		novoLancamento.data = moment(novoLancamento.data, 'YYYY-MM-DD').toDate();
-		// Parse Valor to Number
-		//TODO: Implementar corretamente.
-		novoLancamento.valor = Number.parseFloat(formValue.valor.toString());
-		Log.log('novoLancamento = ',novoLancamento);
+		// Parse form values
+		novoLancamento.data = moment(formValue.data, 'YYYY-MM-DD').toDate();
+		novoLancamento.valor = Util.parseCurrency(formValue.valor);
+
+		Log.log('novoLancamento = ', novoLancamento);
 
 		if (this.lancamento._id) {
 			this.lancamentosService.update(this.lancamento._id, novoLancamento);
@@ -107,9 +112,7 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	removerLancamento() {
-
 		this.lancamentosService.remove(this.lancamento._id);
-
 		this.voltar();
 	}
 
