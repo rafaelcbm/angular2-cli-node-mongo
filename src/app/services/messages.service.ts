@@ -1,8 +1,7 @@
-import { Log } from './log';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class Messages {
+export class MessagesService {
 
 	constructor() { }
 

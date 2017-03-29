@@ -12,7 +12,7 @@ import { Conta } from "../models/models.module";
 import { ContasService } from '../services/contas.service';
 
 
-@Component({    
+@Component({
     selector: 'contas-detail',
     templateUrl: './contas-detail.component.html'
 })
@@ -22,20 +22,12 @@ export class ContasDetailComponent implements OnInit {
     novaConta = false;
     conta: any;
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private contasService: ContasService
-    ) {
-        console.log("ContasDetailComponent.constructor");
-        //toastr.options = { positionClass: 'toast-bottom-right', };
-    }
+    constructor(private route: ActivatedRoute, private router: Router, private contasService: ContasService) { }
 
     ngOnInit() {
-        console.log("ContasDetailComponent.ngOnInit");
 
         this.route.params
-            .switchMap((params: Params) => this.contasService.contas.map(contas => contas.find(c => c._id === params['id'])))
+            .switchMap((params: Params) => this.contasService.dataObservable$.map(contas => contas.find(c => c._id === params['id'])))
             .subscribe((conta: any) => {
                 this.conta = conta
 
@@ -61,16 +53,13 @@ export class ContasDetailComponent implements OnInit {
         // 	});
     }
 
-   
+
     salvarConta(formValue) {
 
-        console.log("salvarConta Conta ", this.conta);
-        console.log("salvarConta Conta Nome:", formValue.nome);
-
         if (this.novaConta) {
-            this.contasService.create(formValue.nome);
+            this.contasService.create({ nomeConta: formValue.nome });
         } else {
-            this.contasService.update(this.conta._id, formValue.nome);
+            this.contasService.update(this.conta._id, { nomeConta: formValue.nome });
         }
 
         this.redirectToList();
@@ -83,13 +72,13 @@ export class ContasDetailComponent implements OnInit {
     }
 
     removerConta() {
-        
+
         this.contasService.remove(this.conta._id);
 
         this.redirectToList();
     }
- 
-     redirectToList() {
+
+    redirectToList() {
         if (this.novaConta) {
             this.router.navigate(['/main/contas']);
         } else {

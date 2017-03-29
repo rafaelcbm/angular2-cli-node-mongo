@@ -1,18 +1,15 @@
-import { Messages } from './../util/messages';
-import { Util } from './../util/util';
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import 'rxjs/add/operator/map';
 import * as moment from 'moment';
-
 import { NotificationsService } from "angular2-notifications";
 
 import { Log } from './../util/log';
+import { Util } from './../util/util';
 import { Lancamento, Conta } from "../models/models.module";
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
-
 
 @Component({
 	selector: 'lancamentos-detail',
@@ -20,23 +17,21 @@ import { ContasService } from '../services/contas.service';
 })
 export class LancamentosDetailComponent implements OnInit {
 
-	showDatePicker = false;
-
-	contas: Conta[];
 	@Input() lancamento: Lancamento;
+
+	showDatePicker = false;
+	contas: Conta[];
+	dataLancamento = new Date().toISOString();
 
 	//Apenas para testar o drop de contas
 	contaSelectionada = new Conta();
-	dataLancamento = new Date().toISOString();
-
 
 	constructor(
 		private route: ActivatedRoute,
 		private router: Router,
 		private lancamentosService: LancamentosService,
 		private contasService: ContasService,
-		private _notificationsService: NotificationsService,
-		private messages: Messages
+		private _notificationsService: NotificationsService
 	) { }
 
 	ngOnInit() {
@@ -44,15 +39,13 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	carregarContas() {
-
-		this.contasService.contas.subscribe(
+		this.contasService.dataObservable$.subscribe(
 			contas => {
 				this.contas = contas;
-
 				this.associaContaDoLancamento();
 			});
 
-		this.contasService.getAllContas();
+		this.contasService.retrieve();
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -92,22 +85,20 @@ export class LancamentosDetailComponent implements OnInit {
 
 	salvarLancamento(formValue) {
 
-
-
 		// Clona e atribui os dados do formulario no obj que sera enviado ao server
 		let novoLancamento: Lancamento = new Lancamento();
 		Object.assign(novoLancamento, formValue);
 
 		// Parse form values
-		novoLancamento.data = moment(formValue.data, 'YYYY-MM-DD').toDate();
+		novoLancamento.data = moment(formValue.data, 'DD/MM/YYYY').toDate();
 		novoLancamento.valor = Util.parseCurrency(formValue.valor);
 
-		Log.log('novoLancamento = ', novoLancamento);
+		Log.debug('novoLancamento = ', novoLancamento);
 
 		if (this.lancamento._id) {
-			this.lancamentosService.update(this.lancamento._id, novoLancamento);
+			this.lancamentosService.update(this.lancamento._id, { lancamento: novoLancamento });
 		} else {
-			this.lancamentosService.create(novoLancamento);
+			this.lancamentosService.create({ lancamento: novoLancamento });
 		}
 	}
 
@@ -120,7 +111,7 @@ export class LancamentosDetailComponent implements OnInit {
 		this.lancamento = null;
 	}
 
-	//Apenas teste
+	//Apenas teste de como obter o valor do select através ngModelChange
 	contasChanged(contaChanged) {
 		Log.log("contaChanged = ", contaChanged);
 		this.contaSelectionada = contaChanged;

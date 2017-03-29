@@ -26,9 +26,9 @@ export class LancamentosListComponent implements OnInit {
 
 	ngOnInit() {
 
-		this.lancamentos$ = this.lancamentosService.lancamentos;
+		this.lancamentos$ = this.lancamentosService.dataObservable$;
 
-		this.lancamentosService.getAllLancamentos();
+		this.lancamentosService.retrieve();
 
 		this.notificacaoService.errorMsg$.subscribe(
 			errorMsg => this.showErrorMessage(errorMsg),

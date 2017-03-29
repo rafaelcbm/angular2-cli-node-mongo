@@ -34,7 +34,7 @@ lancamentoRouter.get("/", function (request: Request & { userName: string }, res
 
         response.json({
             "status": "sucesso",
-            "lancamentos": lancamentos
+            "data": lancamentos
         });
 
     }).catch((e) => {
@@ -77,7 +77,7 @@ lancamentoRouter.post("/", function (request: Request & { userName: string }, re
 
         response.status(201).json({
             "status": "sucesso",
-            "lancamento": lancamentoObtida
+            "data": lancamentoObtida
         });
     }).catch((e) => {
         logger.info("** Error = ", e);
@@ -172,7 +172,7 @@ lancamentoRouter.put("/:idLancamento", function (request: Request & { userName: 
 
         response.status(201).json({
             "status": "sucesso",
-            "lancamento": lancamentoAlterado
+            "data": lancamentoAlterado
         });
     }).catch((e) => {
         logger.info("** Error = ", e);

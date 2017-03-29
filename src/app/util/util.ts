@@ -1,6 +1,3 @@
-import { Messages } from './messages';
-import { Log } from './log';
-
 export class Util {
 
 	private constructor() { }
@@ -17,12 +14,9 @@ export class Util {
 			result = Number.parseFloat(parteInteira.concat('.').concat(parteDecimal));
 		} else {
 			result = Number.parseFloat(value);
-		}
-
-		let messages = new Messages();
+		}		
 
 		if (result.isNAN) {
-			Log.warn(messages.value(messages.ERROR_PARSE_CURRENCY, value));
 			return 0.0;
 		}
 

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { NotificationsService } from "angular2-notifications";
 import { Observable } from 'rxjs/Observable';
 
+import { Log } from './../util/log';
 import { NotificacaoService } from '../services/notificacao.service';
 import { ContasService } from '../services/contas.service';
 import { Conta } from "../models/models.module";
@@ -21,19 +22,18 @@ export class ContasListComponent implements OnInit {
      private notificacaoService: NotificacaoService, private _notificationsService: NotificationsService ) { }
 
 	ngOnInit() {
-		this.contas$ = this.contasService.contas; // subscribe to entire collection
+		this.contas$ = this.contasService.dataObservable$;		
 
-		this.contasService.getAllContas();    // load all contas
-		//this.erros$ = this.contasService.erros$;
+		this.contasService.retrieve();
 
 		this.notificacaoService.errorMsg$.subscribe(
 			errorMsg => this.showErrorMessage(errorMsg),
-			error => console.log(error)
+			error => Log.error(error)
 		);
 
 		this.notificacaoService.successMsg$.subscribe(
 			successMsg => this.showSuccessMessage(successMsg),
-			error => console.log(error));
+			error => Log.error(error));
 	}
 
 	onSelect(conta: Conta) {

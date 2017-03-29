@@ -24,7 +24,7 @@ contaRouter.get("/", function(request: Request & { userName: string }, response:
         if (!user.contas) {
             return response.json({
                 "status": "sucesso",
-                "contas": []
+                "data": []
             });
         }
 
@@ -33,7 +33,7 @@ contaRouter.get("/", function(request: Request & { userName: string }, response:
 
         response.json({
             "status": "sucesso",
-            "contas": contas
+            "data": contas
         });
 
     }).catch((e) => {
@@ -79,7 +79,7 @@ contaRouter.post("/", function(request: Request & { userName: string }, response
 
         response.status(201).json({
             "status": "sucesso",
-            "conta": contaObtida
+            "data": contaObtida
         });
     }).catch((e) => {
         logger.info("** Error = ", e);
@@ -188,7 +188,7 @@ contaRouter.put("/:idConta", function(request: Request & { userName: string }, r
 
         response.status(201).json({
             "status": "sucesso",
-            "conta": contaAlterada
+            "data": contaAlterada
         });
     }).catch((e) => {
         logger.info("** Error = ", e);

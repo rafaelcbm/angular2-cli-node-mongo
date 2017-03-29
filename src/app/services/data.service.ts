@@ -13,9 +13,13 @@ import { Model } from "../models/generic-model.model";
 
 
 @Injectable()
-export class ContasService<T extends Model> {
+export class DataService<T extends Model> {
 
-	apiBaseUrl:string;
+    protected apiBaseUrl: string;
+    protected successPostMessage: string = "Objeto criado com sucesso.";
+    protected successPutMessage: string = "Objeto alterado com sucesso.";
+    protected successDeleteMessage: string = "Objeto deletado com sucesso.";
+
     dataObservable$: Observable<Model[]>;
     private _dataBehaviorSubject: BehaviorSubject<Model[]>;
     private dataStore: {
@@ -28,15 +32,19 @@ export class ContasService<T extends Model> {
         this.dataObservable$ = this._dataBehaviorSubject.asObservable();
     }
 
-    getAllContas() {
+    protected setApiBaseUrl(apiBaseUrl: string) {
+        this.apiBaseUrl = apiBaseUrl;
+    }
+
+    retrieve() {
 
         this.apiHttp.get(this.apiBaseUrl)
             .subscribe(
-            data => {
-                console.log("Data return on service:", data);
+            jsonData => {
+                console.log("Data return on service:", jsonData);
 
-                if (data.status === "sucesso") {
-                    this.dataStore.dataList = data.contas;
+                if (jsonData.status === "sucesso") {
+                    this.dataStore.dataList = jsonData.data;                    
                     this._dataBehaviorSubject.next(Object.assign({}, this.dataStore).dataList);
                 }
             },
@@ -45,20 +53,20 @@ export class ContasService<T extends Model> {
             });
     }
 
-    create(nomeConta) {
+    create(payLoad) {
 
         this.apiHttp
-            .post(this.apiBaseUrl, { nomeConta: nomeConta })
+            .post(this.apiBaseUrl, payLoad)
             .subscribe(
-            data => {
-                if (data.status === "sucesso") {
-                    this.dataStore.dataList.push(data.conta);
+            jsonData => {
+                if (jsonData.status === "sucesso") {
+                    this.dataStore.dataList.push(jsonData.data);
                     this._dataBehaviorSubject.next(Object.assign({}, this.dataStore).dataList);
 
-                    this.notificacaoService.sendSucessMessage(`Model "${nomeConta}" salva com sucesso.`);
-                } else if (data.status === "erro") {
-                    console.log(data.message);
-                    this.notificacaoService.sendErrorMessage(data.message);
+                    this.notificacaoService.sendSucessMessage(this.successPostMessage);
+                } else if (jsonData.status === "erro") {
+                    console.log(jsonData.message);
+                    this.notificacaoService.sendErrorMessage(jsonData.message);
                 }
             },
             error => {
@@ -71,8 +79,8 @@ export class ContasService<T extends Model> {
         this.apiHttp
             .delete(`${this.apiBaseUrl}/${modelId}`)
             .subscribe(
-            data => {
-                if (data.status === "sucesso") {
+            jsonData => {
+                if (jsonData.status === "sucesso") {
                     this.dataStore.dataList.forEach((dataItem, i) => {
                         if (dataItem._id === modelId) {
                             this.dataStore.dataList.splice(i, 1);
@@ -80,10 +88,10 @@ export class ContasService<T extends Model> {
                     });
                     this._dataBehaviorSubject.next(Object.assign({}, this.dataStore).dataList);
 
-                    this.notificacaoService.sendSucessMessage('Model removida com sucesso.');
-                } else if (data.status === "erro") {
-                    console.log(data.message);
-                    this.notificacaoService.sendErrorMessage(data.message);
+                    this.notificacaoService.sendSucessMessage(this.successDeleteMessage);
+                } else if (jsonData.status === "erro") {
+                    console.log(jsonData.message);
+                    this.notificacaoService.sendErrorMessage(jsonData.message);
                 }
             },
             error => {
@@ -91,25 +99,25 @@ export class ContasService<T extends Model> {
             });
     }
 
-    update(idConta, nomeConta) {
+    update(modelId, payLoad) {
 
         this.apiHttp
-            .put(`${this.apiBaseUrl}/${idConta}`, { nomeConta: nomeConta })
+            .put(`${this.apiBaseUrl}/${modelId}`, payLoad)
             .subscribe(
-            data => {
-                if (data.status === "sucesso") {
-                    this.dataStore.dataList.forEach((c, i) => {
-                        if (c._id === data.conta._id) {
-                            this.dataStore.dataList[i] = data.conta;
+            jsonData => {
+                if (jsonData.status === "sucesso") {
+                    this.dataStore.dataList.forEach((dataItem, i) => {
+                        if (dataItem._id === jsonData.data._id) {
+                            this.dataStore.dataList[i] = jsonData.data;
                         }
                     });
                     this._dataBehaviorSubject.next(Object.assign({}, this.dataStore).dataList);
 
-                    this.notificacaoService.sendSucessMessage(`Model "${nomeConta}" salva com sucesso.`);
+                    this.notificacaoService.sendSucessMessage(this.successPutMessage);
 
-                } else if (data.status === "erro") {
-                    console.log(data.message);
-                    this.notificacaoService.sendErrorMessage(data.message);
+                } else if (jsonData.status === "erro") {
+                    console.log(jsonData.message);
+                    this.notificacaoService.sendErrorMessage(jsonData.message);
                 }
             },
             error => {
@@ -117,3 +125,4 @@ export class ContasService<T extends Model> {
             });
     }
 }
+

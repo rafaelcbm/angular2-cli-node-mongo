@@ -9,7 +9,7 @@ import { DataAccess } from "./abstractDAO";
 export class LancamentoDAO {
 
     @Inject() private _dataAccess: DataAccess;
-    
+
     public getLancamentoByIds(idsLancamentos: any): any {
 
         //Converte os ids de String->ObjectID, para uso como parâmetro da consulta.
@@ -34,7 +34,9 @@ export class LancamentoDAO {
     }
 
     public insertLancamento(lancamento: any): any {
-        
+
+        //Parse data to Date
+        lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
         return this._dataAccess.insertDocument(lancamento, 'lancamentos');
     }
 

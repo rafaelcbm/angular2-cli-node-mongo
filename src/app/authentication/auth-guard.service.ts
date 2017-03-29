@@ -11,22 +11,18 @@ import { AuthService }      from './auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
 
-   constructor(private authService: AuthService, private router: Router) { 
-   console.log("* AuthGuard.constructor");}
+   constructor(private authService: AuthService, private router: Router) { }
 
    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-      console.log("* canActivate");
       let url: string = state.url;
       return this.checkLogin(url);
    }
 
    canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-      console.log("* canActivateChild");
       return this.canActivate(route, state);
    }
 
    checkLogin(url: string): boolean {
-      console.log("* this.authService.isLoggedIn", this.authService.isLoggedIn());
       if (this.authService.isLoggedIn()) { return true; }
       // Store the attempted URL for redirecting
       this.authService.redirectUrl = url;

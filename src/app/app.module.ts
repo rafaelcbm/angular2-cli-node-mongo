@@ -1,4 +1,3 @@
-import { Messages } from './util/messages';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -11,6 +10,7 @@ import { CommonPagesModule } from './common-pages/common-pages.module';
 import { AuthGuard } from './authentication/auth-guard.service';
 import { AuthService } from './authentication/auth.service';
 import { ApiHttpService } from './services/api-http.service';
+import { MessagesService } from './services/messages.service';
 
 @NgModule({
 	declarations: [
@@ -29,7 +29,7 @@ import { ApiHttpService } from './services/api-http.service';
 		AuthService,
 		AuthGuard,
 		{ provide: LOCALE_ID, useValue: 'pt-BR' },
-		Messages],
+		MessagesService],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
