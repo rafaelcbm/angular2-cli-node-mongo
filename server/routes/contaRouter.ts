@@ -12,190 +12,192 @@ const userDAO: UserDAO = Container.get(UserDAO);
 
 export const contaRouter: Router = Router();
 
-contaRouter.get("/", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
+contaRouter.get("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    let userName = request.userName;
+	let userName = request.userName;
 
-    co(function* () {
+	co(function* () {
 
-        let user = yield userDAO.getUser(userName);
-        assert.ok(user);        
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-        if (!user.contas) {
-            return response.json({
-                "status": "sucesso",
-                "data": []
-            });
-        }
+		if (!user.contas) {
+			return response.json({
+				"status": "sucesso",
+				"data": []
+			});
+		}
 
-        let contas = yield contaDAO.getContaByIds(user.contas);
-        logger.info("** CONTAS: %j", contas);
+		let contas = yield contaDAO.getContaByIds(user.contas);
+		logger.info("** CONTAS: %j", contas);
 
-        response.json({
-            "status": "sucesso",
-            "data": contas
-        });
+		response.json({
+			"status": "sucesso",
+			"data": contas
+		});
 
-    }).catch((e) => {
-        logger.info("** Error = ", e);
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao obter contas do usuário!"
-        });
-    });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao obter contas do usuário!"
+		});
+	});
 });
 
 
-contaRouter.post("/", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
+contaRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    let userName = request.userName;
-    let nomeConta = request.body.nomeConta;
+	let userName = request.userName;
+	let nomeConta = request.body.nomeConta;
 
-    co(function* () {
+	co(function* () {
 
-        let user = yield userDAO.getUser(userName);
-        assert.ok(user);
-        //user._id é um OBJETO, nao string, apesar da exibição no log ser igual
-        logger.info("** typeof user._id: %s", typeof user._id);
-        logger.info("** USER: %j", user);
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
+		//user._id é um OBJETO, nao string, apesar da exibição no log ser igual
+		logger.info("** typeof user._id: %s", typeof user._id);
+		logger.info("** USER: %j", user);
 
-        let contas = yield contaDAO.getContaByIds(user.contas);
-        if (contas.find(conta => conta.nome === nomeConta)) {
-            return response.json({
-                "status": "erro",
-                "message": `Usuário já possui conta com o nome informado: "${nomeConta}".`
-            });
-        }
+		if (user.contas) {
+			let contas = yield contaDAO.getContaByIds(user.contas);
+			if (contas.find(conta => conta.nome === nomeConta)) {
+				return response.json({
+					"status": "erro",
+					"message": `Usuário já possui conta com o nome informado: "${nomeConta}".`
+				});
+			}
+		}
 
-        let daoReturn = yield contaDAO.insertConta({ nome: nomeConta });
-        assert.equal(daoReturn.result.n, 1);
+		let daoReturn = yield contaDAO.insertConta({ nome: nomeConta });
+		assert.equal(daoReturn.result.n, 1);
 
-        let contaObtida = yield contaDAO.getContaByNome(nomeConta);
-        assert.ok(contaObtida);
+		let contaObtida = yield contaDAO.getContaByNome(nomeConta);
+		assert.ok(contaObtida);
 
-        daoReturn = yield userDAO.addConta(user._id, contaObtida._id.toHexString());
-        assert.equal(daoReturn.result.n, 1);
+		daoReturn = yield userDAO.addConta(user._id, contaObtida._id.toHexString());
+		assert.equal(daoReturn.result.n, 1);
 
-        response.status(201).json({
-            "status": "sucesso",
-            "data": contaObtida
-        });
-    }).catch((e) => {
-        logger.info("** Error = ", e);
+		response.status(201).json({
+			"status": "sucesso",
+			"data": contaObtida
+		});
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao inserir conta do usuário!"
-        });
-    });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao inserir conta do usuário!"
+		});
+	});
 });
 
-contaRouter.delete("/:idConta", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
+contaRouter.delete("/:idConta", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    let userName = request.userName;
-    let idConta = request.params.idConta;
+	let userName = request.userName;
+	let idConta = request.params.idConta;
 
-    co(function* () {
+	co(function* () {
 
-        let contaObtida = yield contaDAO.getContaById(idConta);
-        logger.info("** Remover Contas - contaObtida = %j", contaObtida);
-        if (!contaObtida) {
-            return response.json({
-                "status": "erro",
-                "message": "Conta não encontrada!"
-            });
-        }
+		let contaObtida = yield contaDAO.getContaById(idConta);
+		logger.info("** Remover Contas - contaObtida = %j", contaObtida);
+		if (!contaObtida) {
+			return response.json({
+				"status": "erro",
+				"message": "Conta não encontrada!"
+			});
+		}
 
-        let user = yield userDAO.getUser(userName);
-        assert.ok(user);
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-        if (user.contas) {
-            let contasUsuario = user.contas.filter(conta => conta == idConta);
+		if (user.contas) {
+			let contasUsuario = user.contas.filter(conta => conta == idConta);
 
-            logger.info("** Remover Contas - filter contasUsuario = ", contasUsuario);
+			logger.info("** Remover Contas - filter contasUsuario = ", contasUsuario);
 
-            if (contasUsuario.length == 0) {
-                return response.json({
-                    "status": "erro",
-                    "message": `Conta (${contaObtida.nome}) não pertence ao usuário informado!`
-                });
-            }
-        }
+			if (contasUsuario.length == 0) {
+				return response.json({
+					"status": "erro",
+					"message": `Conta (${contaObtida.nome}) não pertence ao usuário informado!`
+				});
+			}
+		}
 
-        logger.info("** Remover Contas - idConta = %j", idConta);
-        let daoReturn = yield contaDAO.removeContaById(idConta);
-        logger.info("** Remover Contas - daoReturn 1 = %j", daoReturn);
-        assert.equal(daoReturn.result.n, 1);
+		logger.info("** Remover Contas - idConta = %j", idConta);
+		let daoReturn = yield contaDAO.removeContaById(idConta);
+		logger.info("** Remover Contas - daoReturn 1 = %j", daoReturn);
+		assert.equal(daoReturn.result.n, 1);
 
-        daoReturn = yield userDAO.removeConta(user._id, contaObtida._id.toHexString());
-        logger.info("** Remover Contas - daoReturn 2 = %j", daoReturn);
-        assert.equal(daoReturn.result.n, 1);
+		daoReturn = yield userDAO.removeConta(user._id, contaObtida._id.toHexString());
+		logger.info("** Remover Contas - daoReturn 2 = %j", daoReturn);
+		assert.equal(daoReturn.result.n, 1);
 
-        user = yield userDAO.getUser(userName);
-        logger.info("** Remover Contas - user = %j", user);
-        assert.ok(user);
+		user = yield userDAO.getUser(userName);
+		logger.info("** Remover Contas - user = %j", user);
+		assert.ok(user);
 
-        response.json({
-            "status": "sucesso",
-            "user": user
-        });
-    }).catch((e) => {
-        logger.info("** Error = ", e);
+		response.json({
+			"status": "sucesso",
+			"user": user
+		});
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao remover conta do usuário!"
-        });
-    });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao remover conta do usuário!"
+		});
+	});
 });
 
-contaRouter.put("/:idConta", function(request: Request & { userName: string }, response: Response, next: NextFunction) {
+contaRouter.put("/:idConta", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    let userName = request.userName;
-    let idConta = request.params.idConta;
-    let nomeConta = request.body.nomeConta;
+	let userName = request.userName;
+	let idConta = request.params.idConta;
+	let nomeConta = request.body.nomeConta;
 
-    co(function* () {
+	co(function* () {
 
-        let user = yield userDAO.getUser(userName);
-        assert.ok(user);
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-        if (user.contas) {
-            let contasUsuario = user.contas.filter(conta => conta == idConta);
+		if (user.contas) {
+			let contasUsuario = user.contas.filter(conta => conta == idConta);
 
-            if (contasUsuario.length == 0) {
-                return response.json({
-                    "status": "erro",
-                    "message": `Conta informada não pertence ao usuário informado!`
-                });
-            }
-        }
+			if (contasUsuario.length == 0) {
+				return response.json({
+					"status": "erro",
+					"message": `Conta informada não pertence ao usuário informado!`
+				});
+			}
+		}
 
-        let contas = yield contaDAO.getContaByIds(user.contas);
-        if (contas.find(conta => conta.nome === nomeConta)) {
-            return response.json({
-                "status": "erro",
-                "message": `Usuário já possui conta com o nome informado: "${nomeConta}".`
-            });
-        }
+		let contas = yield contaDAO.getContaByIds(user.contas);
+		if (contas.find(conta => conta.nome === nomeConta)) {
+			return response.json({
+				"status": "erro",
+				"message": `Usuário já possui conta com o nome informado: "${nomeConta}".`
+			});
+		}
 
-        let daoReturn = yield contaDAO.updateConta(idConta, nomeConta);
-        assert.equal(daoReturn.result.n, 1);
+		let daoReturn = yield contaDAO.updateConta(idConta, nomeConta);
+		assert.equal(daoReturn.result.n, 1);
 
-        let contaAlterada = yield contaDAO.getContaByNome(nomeConta);
-        assert.ok(contaAlterada);
+		let contaAlterada = yield contaDAO.getContaByNome(nomeConta);
+		assert.ok(contaAlterada);
 
-        response.status(201).json({
-            "status": "sucesso",
-            "data": contaAlterada
-        });
-    }).catch((e) => {
-        logger.info("** Error = ", e);
+		response.status(201).json({
+			"status": "sucesso",
+			"data": contaAlterada
+		});
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao alterar conta do usuário!"
-        });
-    });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao alterar conta do usuário!"
+		});
+	});
 });

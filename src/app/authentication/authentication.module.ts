@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { SharedDirectivesModule } from './../directives/shared-directives.module';
 import { AuthenticationRoutingModule } from './authentication.routing';
 import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
@@ -15,7 +16,8 @@ import { LoginComponent } from './login.component';
         CommonModule,
         FormsModule,
         HttpModule,
-        AuthenticationRoutingModule
+        AuthenticationRoutingModule,
+		SharedDirectivesModule,
     ]
 })
 export class AuthenticationModule { }

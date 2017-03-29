@@ -12,7 +12,7 @@
             <div class="form-group row">
                 <label id="campoNome" class="col-md-3 form-control-label" for="nome">Nome</label>
                 <div class="col-md-9">
-                    <input [ngModel]="conta?.nome" #nome="ngModel" required id="nome" name="nome" placeholder="Nome Conta" class="form-control">
+                    <input [ngModel]="conta?.nome" #nome="ngModel" required id="nome" name="nome" placeholder="Nome Conta" class="form-control" [focus]="true">
                     <span [hidden]="nome.valid || nome.pristine" class="help-block text-danger">Por favor, digite o Nome da Conta.</span>
                 </div>
             </div>

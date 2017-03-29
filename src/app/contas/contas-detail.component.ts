@@ -13,80 +13,83 @@ import { ContasService } from '../services/contas.service';
 
 
 @Component({
-    selector: 'contas-detail',
-    templateUrl: './contas-detail.component.html'
+	selector: 'contas-detail',
+	templateUrl: './contas-detail.component.html'
 })
 export class ContasDetailComponent implements OnInit {
 
+	novaConta = false;
+	conta: any;
 
-    novaConta = false;
-    conta: any;
+	constructor(private route: ActivatedRoute, private router: Router, private contasService: ContasService) { }
 
-    constructor(private route: ActivatedRoute, private router: Router, private contasService: ContasService) { }
+	ngOnInit() {
 
-    ngOnInit() {
+		this.route.params
+			.switchMap((params: Params) => this.contasService.dataObservable$.map(contas => {
+				if (contas) {
+					return contas.find(c => c._id === params['id'])
+				}
+			}))
+			.subscribe((conta: any) => {
+				this.conta = conta
 
-        this.route.params
-            .switchMap((params: Params) => this.contasService.dataObservable$.map(contas => contas.find(c => c._id === params['id'])))
-            .subscribe((conta: any) => {
-                this.conta = conta
+				//Se nova conta
+				if (!this.conta) {
+					this.novaConta = true;
+				}
+			});
 
-                //Se nova conta
-                if (!this.conta) {
-                    this.novaConta = true;
-                }
-            });
-
-        // NOTA: Sem o operador switchMap, necessários 2 subscribes
-        //
-        // this.route.params
-        // 	.map((params: Params) => {
-        // 		console.log("ContasDetailComponent.ngOnInit params['id']", params['id']);
-        // 		return this.contasService.contas.map(contas => contas.find(c => c._id === params['id']));		
-        // 	})
-        // 	.subscribe((paramsObservableResult: any) => {
-        // 		console.log("CHEGOU NO subscribe do Observable params = ", paramsObservableResult);
-        // 		paramsObservableResult.subscribe(conta => {
-        // 			console.log("Valor realmente desejado no inner Observable:", conta)
-        // 			this.conta = conta;
-        // 		});
-        // 	});
-    }
+		// NOTA: Sem o operador switchMap, necessários 2 subscribes
+		//
+		// this.route.params
+		// 	.map((params: Params) => {
+		// 		console.log("ContasDetailComponent.ngOnInit params['id']", params['id']);
+		// 		return this.contasService.contas.map(contas => contas.find(c => c._id === params['id']));
+		// 	})
+		// 	.subscribe((paramsObservableResult: any) => {
+		// 		console.log("CHEGOU NO subscribe do Observable params = ", paramsObservableResult);
+		// 		paramsObservableResult.subscribe(conta => {
+		// 			console.log("Valor realmente desejado no inner Observable:", conta)
+		// 			this.conta = conta;
+		// 		});
+		// 	});
+	}
 
 
-    salvarConta(formValue) {
+	salvarConta(formValue) {
 
-        if (this.novaConta) {
-            this.contasService.create({ nomeConta: formValue.nome });
-        } else {
-            this.contasService.update(this.conta._id, { nomeConta: formValue.nome });
-        }
+		if (this.novaConta) {
+			this.contasService.create({ nomeConta: formValue.nome });
+		} else {
+			this.contasService.update(this.conta._id, { nomeConta: formValue.nome });
+		}
 
-        this.redirectToList();
+		this.redirectToList();
 
-        //Exemplo de utilização de libs externas:
-        //JQuery
-        //$("#campoNome").addClass("text-danger");
-        //Toastr
-        //toastr.success("Orders downloaded.");
-    }
+		//Exemplo de utilização de libs externas:
+		//JQuery
+		//$("#campoNome").addClass("text-danger");
+		//Toastr
+		//toastr.success("Orders downloaded.");
+	}
 
-    removerConta() {
+	removerConta() {
 
-        this.contasService.remove(this.conta._id);
+		this.contasService.remove(this.conta._id);
 
-        this.redirectToList();
-    }
+		this.redirectToList();
+	}
 
-    redirectToList() {
-        if (this.novaConta) {
-            this.router.navigate(['/main/contas']);
-        } else {
-            let contaId = this.conta._id;
-            // Pass along the conta id if available
-            // so that the contaList component can select that conta
-            // Include a junk 'foo' property for fun.
-            this.router.navigate(['/main/contas', { id: contaId, foo: 'foo' }]);
-        }
-    }
+	redirectToList() {
+		if (this.novaConta) {
+			this.router.navigate(['/main/contas']);
+		} else {
+			let contaId = this.conta._id;
+			// Pass along the conta id if available
+			// so that the contaList component can select that conta
+			// Include a junk 'foo' property for fun.
+			this.router.navigate(['/main/contas', { id: contaId, foo: 'foo' }]);
+		}
+	}
 }

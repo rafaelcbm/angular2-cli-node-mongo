@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { ContasRoutingModule } from './contas.routing';
-
+import { SharedDirectivesModule } from './../directives/shared-directives.module';
 import { ManageContasComponent } from './manage-contas.component';
 import { DashboardComponent } from './dashboard.component';
 import { ContasListComponent } from './contas-list.component';
@@ -23,7 +23,8 @@ import { NotificacaoService } from '../services/notificacao.service';
         CommonModule,
         FormsModule,
         HttpModule,
-        ContasRoutingModule
+        ContasRoutingModule,
+		SharedDirectivesModule,
     ],
     providers: [
         ContasService,
