@@ -10,7 +10,6 @@ import { DashboardComponent } from './dashboard.component';
 import { ContasListComponent } from './contas-list.component';
 import { ContasDetailComponent } from './contas-detail.component';
 import { ContasService } from '../services/contas.service';
-import { NotificacaoService } from '../services/notificacao.service';
 
 @NgModule({
     declarations: [
@@ -27,8 +26,7 @@ import { NotificacaoService } from '../services/notificacao.service';
 		SharedDirectivesModule,
     ],
     providers: [
-        ContasService,
-        NotificacaoService
+        ContasService
     ]
 })
 export class ContasModule {}

@@ -1,17 +1,31 @@
 import { Injectable } from '@angular/core';
 
-import { NotificacaoService } from './notificacao.service';
+import { NotificationsService } from 'angular2-notifications';
+
+import { MessagesService } from './messages.service';
 import { DataService } from './data.service';
 import { ApiHttpService } from './api-http.service';
 import { Conta } from "../models/models.module";
 
-
 @Injectable()
 export class ContasService extends DataService<Conta> {
 
-    constructor(apiHttp: ApiHttpService, notificacaoService: NotificacaoService) {
-        
-        super(apiHttp, notificacaoService);
-        super.setApiBaseUrl('/api/contas/');
-    }
+	constructor(apiHttp: ApiHttpService, _notificationsService: NotificationsService, private msgService: MessagesService) {
+		super(apiHttp, _notificationsService, '/api/contas/');
+	}
+
+	create(payLoad) {
+		this.successPostMessage = this.msgService.getMessage(this.msgService.SUCCESS_CREATE_CONTA, payLoad.nomeConta);
+		super.create(payLoad);
+	}
+
+	remove(modelId) {
+		this.successDeleteMessage = this.msgService.getMessage(this.msgService.SUCCESS_DELETE_CONTA);
+		super.remove(modelId);
+	}
+
+	update(modelId, payLoad) {
+		this.successPutMessage = this.msgService.getMessage(this.msgService.SUCCESS_UPDATE_CONTA, payLoad.nomeConta);
+		super.update(modelId, payLoad);
+	}
 }

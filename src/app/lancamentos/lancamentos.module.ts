@@ -14,7 +14,7 @@ import { LancamentosListComponent } from './lancamentos-list.component';
 import { LancamentosDetailComponent } from './lancamentos-detail.component';
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
-import { NotificacaoService } from '../services/notificacao.service';
+
 
 @NgModule({
     declarations: [
@@ -34,8 +34,7 @@ import { NotificacaoService } from '../services/notificacao.service';
     ],
     providers: [
         LancamentosService,
-        ContasService,
-        NotificacaoService
+        ContasService
     ]
 })
 export class LancamentosModule {}
