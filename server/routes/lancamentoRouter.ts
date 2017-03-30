@@ -15,171 +15,166 @@ export const lancamentoRouter: Router = Router();
 
 lancamentoRouter.get("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    let userName = request.userName;
+	let userName = request.userName;
 
-    co(function* () {
+	co(function* () {
 
-        let user = yield userDAO.getUser(userName);
-        assert.ok(user);
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-        let lancamentos = yield lancamentoDAO.getLancamentosByUser(user._id.toString());
-        logger.info("** LANCAMENTOS: %j", lancamentos);
+		let lancamentos = yield lancamentoDAO.getLancamentosByUser(user._id.toString());
+		logger.info("** LANCAMENTOS: %j", lancamentos);
 
-        if (!lancamentos) {
-            return response.json({
-                "status": "sucesso",
-                "lancamentos": []
-            });
-        }
+		if (!lancamentos) {
+			return response.json({
+				"status": "sucesso",
+				"lancamentos": []
+			});
+		}
 
-        response.json({
-            "status": "sucesso",
-            "data": lancamentos
-        });
+		response.json({
+			"status": "sucesso",
+			"data": lancamentos
+		});
 
-    }).catch((e) => {
-        logger.info("** Error = ", e);
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao obter lancamentos do usuário!"
-        });
-    });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao obter lancamentos do usuário!"
+		});
+	});
 });
 
 
 lancamentoRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    let userName = request.userName;
+	let userName = request.userName;
 
-    logger.info("** lancamentoRouter.post: request.body.lancamento = %j", request.body.lancamento);
-    let lancamento = request.body.lancamento;
+	logger.info("** lancamentoRouter.post: request.body.lancamento = %j", request.body.lancamento);
+	let lancamento = request.body.lancamento;
 
-    co(function* () {
+	co(function* () {
 
-        let user = yield userDAO.getUser(userName);
-        assert.ok(user);
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-        // Transforma o _id para String
-        lancamento._idUser = user._id.toString();
-        logger.info("** typeof lancamento._idUser: %s", typeof lancamento._idUser);
+		// Transforma o _id para String
+		lancamento._idUser = user._id.toString();
+		logger.info("** typeof lancamento._idUser: %s", typeof lancamento._idUser);
 
-        let daoReturn = yield lancamentoDAO.insertLancamento(lancamento);
-        logger.info("** daoReturn: %j", daoReturn);
-        assert.equal(daoReturn.result.n, 1);
+		let daoReturn = yield lancamentoDAO.insertLancamento(lancamento);
+		logger.info("** insert result: %j", daoReturn);
+		logger.info("** inserted obj: %j", daoReturn.ops[0]);
+		let insertedDocument = daoReturn.ops[0];
+		assert.equal(daoReturn.result.n, 1);
 
-        let lancamentoObtida = yield lancamentoDAO.getLancamentoByDescricao(lancamento.descricao);
-        assert.ok(lancamentoObtida);
+		response.status(201).json({
+			"status": "sucesso",
+			"data": insertedDocument
+		});
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-        //TODO: vincular o lancamento à conta, na verdade, o contrario
-        // daoReturn = yield userDAO.addLancamento(user._id, lancamentoObtida._id.toHexString());
-        // assert.equal(daoReturn.result.n, 1);
-
-        response.status(201).json({
-            "status": "sucesso",
-            "data": lancamentoObtida
-        });
-    }).catch((e) => {
-        logger.info("** Error = ", e);
-
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao inserir lancamento do usuário!"
-        });
-    });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao inserir lancamento do usuário!"
+		});
+	});
 });
 
 
 lancamentoRouter.delete("/:idLancamento", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    let userName = request.userName;
-    let idLancamento = request.params.idLancamento;
+	let userName = request.userName;
+	let idLancamento = request.params.idLancamento;
 
-    co(function* () {
+	co(function* () {
 
-        let lancamentoObtido = yield lancamentoDAO.getLancamentoById(idLancamento);
-        logger.info("** Remover Lancamentos - lancamentoObtido = %j", lancamentoObtido);
-        if (!lancamentoObtido) {
-            return response.json({
-                "status": "erro",
-                "message": "Lancamento não encontrado!"
-            });
-        }
+		let lancamentoObtido = yield lancamentoDAO.getLancamentoById(idLancamento);
+		logger.info("** Remover Lancamentos - lancamentoObtido = %j", lancamentoObtido);
+		if (!lancamentoObtido) {
+			return response.json({
+				"status": "erro",
+				"message": "Lancamento não encontrado!"
+			});
+		}
 
-        let user = yield userDAO.getUser(userName);
-        assert.ok(user);
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-        if (user._id.toHexString() != lancamentoObtido._idUser) {
-            return response.json({
-                "status": "erro",
-                "message": `Lancamento (${lancamentoObtido.nome}) não pertence ao usuário informado!`
-            });
-        }
+		if (user._id.toHexString() != lancamentoObtido._idUser) {
+			return response.json({
+				"status": "erro",
+				"message": `Lancamento (${lancamentoObtido.nome}) não pertence ao usuário informado!`
+			});
+		}
 
-        let daoReturn = yield lancamentoDAO.removeLancamentoById(idLancamento);
-        assert.equal(daoReturn.result.n, 1);
+		let daoReturn = yield lancamentoDAO.removeLancamentoById(idLancamento);
+		assert.equal(daoReturn.result.n, 1);
 
-        response.json({
-            "status": "sucesso"
-        });
+		response.json({
+			"status": "sucesso"
+		});
 
-    }).catch((e) => {
-        logger.info("** Error = ", e);
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao remover lancamento do usuário!"
-        });
-    });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao remover lancamento do usuário!"
+		});
+	});
 });
 
 
 lancamentoRouter.put("/:idLancamento", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-    let userName = request.userName;
-    let idLancamento = request.params.idLancamento;
-    let lancamento = request.body.lancamento;
+	let userName = request.userName;
+	let idLancamento = request.params.idLancamento;
+	let lancamento = request.body.lancamento;
 
-    co(function* () {
+	co(function* () {
 
-        let user = yield userDAO.getUser(userName);
-        assert.ok(user);
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-        if (!user.contas) {
-            return response.json({
-                "status": "erro",
-                "message": `Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`
-            });
-        }
+		if (!user.contas) {
+			return response.json({
+				"status": "erro",
+				"message": `Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`
+			});
+		}
 
-        if (user.contas) {
+		if (user.contas) {
 
-            let contaLancamento = user.contas.find(conta => conta === lancamento.conta._id);
+			let contaLancamento = user.contas.find(conta => conta === lancamento.conta._id);
 
-            if (!contaLancamento) {
-                return response.json({
-                    "status": "erro",
-                    "message": `Lancamento informado não pertence a uma conta do usuário!`
-                });
-            }
-        }
+			if (!contaLancamento) {
+				return response.json({
+					"status": "erro",
+					"message": `Lancamento informado não pertence a uma conta do usuário!`
+				});
+			}
+		}
 
-        let daoReturn = yield lancamentoDAO.updateLancamento(idLancamento, lancamento);
-        assert.equal(daoReturn.result.n, 1);
+		let daoReturn = yield lancamentoDAO.updateLancamento(idLancamento, lancamento);
+		assert.equal(daoReturn.result.n, 1);
 
-        let lancamentoAlterado = yield lancamentoDAO.getLancamentoByDescricao(lancamento.descricao);
-        assert.ok(lancamentoAlterado);
+		let lancamentoAlterado = yield lancamentoDAO.getLancamentoByDescricao(lancamento.descricao);
+		assert.ok(lancamentoAlterado);
 
-        response.status(201).json({
-            "status": "sucesso",
-            "data": lancamentoAlterado
-        });
-    }).catch((e) => {
-        logger.info("** Error = ", e);
+		response.status(201).json({
+			"status": "sucesso",
+			"data": lancamentoAlterado
+		});
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao alterar lancamento do usuário!"
-        });
-    });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao alterar lancamento do usuário!"
+		});
+	});
 });
