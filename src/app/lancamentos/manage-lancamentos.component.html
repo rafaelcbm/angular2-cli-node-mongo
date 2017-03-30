@@ -1,6 +1,7 @@
 <h3>Lançamentos</h3>
 <hr>
+<lancamentos-filtro (onAdicionar)="onAdicionar($event)"></lancamentos-filtro>
 <div *ngIf="lancamento">
-    <lancamentos-detail [lancamento]="lancamento"></lancamentos-detail>	
+    <lancamentos-detail [lancamento]="lancamento"></lancamentos-detail>
 </div>
 <lancamentos-list (onSelectLancamento)="onSelectLancamento($event)"></lancamentos-list>

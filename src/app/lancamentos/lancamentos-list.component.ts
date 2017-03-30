@@ -30,8 +30,4 @@ export class LancamentosListComponent implements OnInit {
 	onSelect(lancamento: Lancamento) {
 		this.onSelectLancamento.emit(lancamento);
 	}
-
-	adicionar() {
-		this.onSelectLancamento.emit(new Lancamento());
-	}
 }

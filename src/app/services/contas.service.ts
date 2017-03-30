@@ -12,6 +12,7 @@ export class ContasService extends DataService<Conta> {
 
 	constructor(apiHttp: ApiHttpService, _notificationsService: NotificationsService, private msgService: MessagesService) {
 		super(apiHttp, _notificationsService, '/api/contas/');
+		this.successDeleteMessage = this.msgService.getMessage(this.msgService.SUCCESS_DELETE_CONTA);
 	}
 
 	create(payLoad) {
@@ -20,7 +21,6 @@ export class ContasService extends DataService<Conta> {
 	}
 
 	remove(modelId) {
-		this.successDeleteMessage = this.msgService.getMessage(this.msgService.SUCCESS_DELETE_CONTA);
 		super.remove(modelId);
 	}
 

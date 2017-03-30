@@ -1,3 +1,4 @@
+import { Log } from './../util/log';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -12,8 +13,11 @@ export class ManageLancamentosComponent {
 	lancamento: Lancamento;
 
 	onSelectLancamento(lancamento: Lancamento) {
-
-		console.log("onSelectLancamento: ", lancamento);
 		this.lancamento = lancamento;
+	}
+
+	onAdicionar(lancamento: Lancamento) {
+		Log.info('Chamou on Adicionar');
+		this.lancamento = new Lancamento();
 	}
 }

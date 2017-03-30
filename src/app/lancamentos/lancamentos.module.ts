@@ -12,6 +12,7 @@ import { LancamentosRoutingModule } from './lancamentos.routing';
 import { ManageLancamentosComponent } from './manage-lancamentos.component';
 import { LancamentosListComponent } from './lancamentos-list.component';
 import { LancamentosDetailComponent } from './lancamentos-detail.component';
+import { LancamentosFiltroComponent } from './lancamentos-filtro.component';
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
 
@@ -20,7 +21,8 @@ import { ContasService } from '../services/contas.service';
     declarations: [
         ManageLancamentosComponent,
         LancamentosListComponent,
-        LancamentosDetailComponent
+        LancamentosDetailComponent,
+		LancamentosFiltroComponent
     ],
     imports: [
         CommonModule,
