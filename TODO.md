@@ -6,8 +6,7 @@
 ```
 ## *CLIENT*
 ```
-- CRUD Lancamento: Colocar o botao de Adicionar como um componente de filtro, fora da lista.
-- Geral: Incluir o _notificationsService no notificacaoService para exibicao de mensagens, e tirar dos componentes.
 - Geral: Remover referencia a modulos/componentes do template, não utilizados no commons-pages module
 - Incluir componente de breadcrump
+- Filtrar Competencias de lancamentos (queryex.:  db.lancamentos.find( {$and: [{data:{"$gte":ISODate("2015-01-01 10:03:46.000Z")}},{data:{"$lte":ISODate("2018-01-01 10:03:46.000Z")}}]}).pretty();)
 ```
