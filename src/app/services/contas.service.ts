@@ -20,10 +20,6 @@ export class ContasService extends DataService<Conta> {
 		super.create(payLoad);
 	}
 
-	remove(modelId) {
-		super.remove(modelId);
-	}
-
 	update(modelId, payLoad) {
 		this.successPutMessage = this.msgService.getMessage(this.msgService.SUCCESS_UPDATE_CONTA, payLoad.nomeConta);
 		super.update(modelId, payLoad);
