@@ -21,7 +21,7 @@ export class LancamentosListComponent implements OnInit {
 
 	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService) {
 		this.filtroLancamentoService.competenciaLancamento$
-			.debounceTime(1000)
+			.debounceTime(500)
 			.distinctUntilChanged()
 			.subscribe(
 			novaCompetencia => Log.info('Nova competência informada:', novaCompetencia)
