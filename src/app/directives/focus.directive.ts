@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef } from '@angular/core';
+import { Directive, Input, ElementRef, SimpleChanges } from '@angular/core';
 
 @Directive({
 	selector: '[focus]'
@@ -9,7 +9,7 @@ export class FocusDirective {
 
 	constructor(private element: ElementRef) { }
 
-	ngOnChanges() {
+	ngOnChanges(changes: SimpleChanges) {
 		if (this.focus) {
 			this.element.nativeElement.focus();
 		}

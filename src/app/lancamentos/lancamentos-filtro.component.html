@@ -8,11 +8,11 @@
 			<span class="input-group-addon p-0 text-primary" (click)="previousMonth()"><i class="fa fa-chevron-left fa-lg"></i></span>
 			<span class="input-group-addon p-0" (click)="showDatePicker=(!showDatePicker)"><i class="fa fa-calendar"></i></span>
 			<div *ngIf="showDatePicker" style="position:absolute; top:35px; z-index:10; min-height:290px;">
-				<datepicker [(ngModel)]="mesCompetencia" (selectionDone)="showDatePicker=false" [ngModelOptions]="{standalone: true}" [datepickerMode]="'month'"
+				<datepicker [(ngModel)]="mesCompetencia" (selectionDone)="onSelectionDone($event)" [ngModelOptions]="{standalone: true}" [datepickerMode]="'month'"
 				 [maxMode]="'month'" [minMode]="'month'"></datepicker>
 			</div>
 			<input [ngModel]="mesCompetencia | date:'MM/yyyy'" class="form-control form-control" id="data" name="data" placeholder="Mês/Ano"
-			 [input-mask]="'00/0000'">
+			 [input-mask]="'00/0000'" #inputCompetencia (keyup)="onCompetenciaChanged(inputCompetencia.value)">
 			<span class="input-group-addon p-0 text-primary" (click)="nextMonth()"><i class="fa fa-chevron-right fa-lg"></i></span>
 
 		</div>

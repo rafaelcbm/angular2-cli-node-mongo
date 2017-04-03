@@ -33,8 +33,8 @@ export class InputMaskDirective {
 		$(this.el.nativeElement).unmask();
 	}
 
-	ngOnChanges(changes: SimpleChanges) {		
-		this.control.valueChanges.subscribe(param => {			
+	ngOnChanges(changes: SimpleChanges) {
+		this.control.valueChanges.subscribe(param => {
 			this.change();
 		});
 	}

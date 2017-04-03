@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { Log } from './../util/log';
 import { LancamentosService } from '../services/lancamentos.service';
+import { FiltroLancamentoService } from './filtro-lancamento.service';
 import { Lancamento } from "../models/models.module";
 
 
@@ -18,7 +19,14 @@ export class LancamentosListComponent implements OnInit {
 
 	lancamentos$: Observable<Lancamento[]>;
 
-	constructor(private lancamentosService: LancamentosService) { }
+	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService) {
+		this.filtroLancamentoService.competenciaLancamento$
+			.debounceTime(1000)
+			.distinctUntilChanged()
+			.subscribe(
+			novaCompetencia => Log.info('Nova competência informada:', novaCompetencia)
+			)
+	}
 
 	ngOnInit() {
 
