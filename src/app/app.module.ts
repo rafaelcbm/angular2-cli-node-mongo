@@ -19,10 +19,10 @@ import { MessagesService } from './services/messages.service';
 	imports: [
 		BrowserModule,
 		AuthenticationModule,
+		SimpleNotificationsModule.forRoot(),
 		CommonPagesModule,
 		//O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
-		AppRoutingModule,
-		SimpleNotificationsModule.forRoot()
+		AppRoutingModule
 	],
 	providers: [
 		ApiHttpService,

@@ -9,15 +9,6 @@ import { AuthService } from '../authentication/auth.service';
 })
 export class MainComponent implements OnInit {
 
-    public options = {
-		position: ["bottom", "right"],
-		timeOut: 5000,
-        showProgressBar: true,
-        pauseOnHover: true,
-        clickToClose: true,
-		lastOnBottom: true
-	};
-
     constructor(private authService: AuthService, private router: Router) {}
 
     public disabled: boolean = false;

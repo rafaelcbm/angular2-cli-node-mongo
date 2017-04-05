@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { SimpleNotificationsModule } from 'angular2-notifications';
-
 /**** Inicio imports componentes do template ****/
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { TabsModule } from 'ng2-bootstrap/tabs';
@@ -19,27 +17,24 @@ import { MainComponent } from './main.component';
 import { CommonPagesRoutingModule } from './common-pages.routing';
 
 @NgModule({
-    declarations: [
-        HomeComponent, MainComponent,
-
-        /* Imports do template */
-        NAV_DROPDOWN_DIRECTIVES,
-        BreadcrumbsComponent,
-        SIDEBAR_TOGGLE_DIRECTIVES,
-        AsideToggleDirective,
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        CommonPagesRoutingModule,
-
-        /* Imports do template */
-        DropdownModule.forRoot(),
-        TabsModule.forRoot(),
-        ChartsModule,
-        
-        SimpleNotificationsModule.forRoot()
-    ],
-    providers: []
+	declarations: [
+		HomeComponent,
+		MainComponent,
+		/* Imports do template */
+		NAV_DROPDOWN_DIRECTIVES,
+		BreadcrumbsComponent,
+		SIDEBAR_TOGGLE_DIRECTIVES,
+		AsideToggleDirective,
+	],
+	imports: [
+		CommonModule,
+		FormsModule,
+		CommonPagesRoutingModule,
+		/* Imports do template */
+		DropdownModule.forRoot(),
+		TabsModule.forRoot(),
+		ChartsModule
+	],
+	providers: []
 })
 export class CommonPagesModule { }
