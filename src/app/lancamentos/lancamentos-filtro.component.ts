@@ -54,6 +54,6 @@ export class LancamentosFiltroComponent {
 	}
 
 	notificaNovaCompetencia() {
-		this.filtroLancamentoService.novaCompetencia(moment(this.mesCompetencia, 'YYYY-MM-DD').toISOString());
+		this.filtroLancamentoService.novaCompetencia(moment(this.mesCompetencia, 'YYYY-MM-DD').format('YYYYMM'));
 	}
 }

@@ -8,59 +8,71 @@ import { DataAccess } from "./abstractDAO";
 @Service()
 export class LancamentoDAO {
 
-    @Inject() private _dataAccess: DataAccess;
+	@Inject() private _dataAccess: DataAccess;
 
-    public getLancamentoByIds(idsLancamentos: any): any {
+	public getLancamentoByIds(idsLancamentos: any): any {
 
-        //Converte os ids de String->ObjectID, para uso como parâmetro da consulta.
-        let idsLancametosAsObjectID = [];
-        idsLancamentos.forEach(id => idsLancametosAsObjectID.push(ObjectID.createFromHexString(id)));
+		//Converte os ids de String->ObjectID, para uso como parâmetro da consulta.
+		let idsLancametosAsObjectID = [];
+		idsLancamentos.forEach(id => idsLancametosAsObjectID.push(ObjectID.createFromHexString(id)));
 
-        return this._dataAccess.getDocuments('lancamentos', { _id: { $in: idsLancametosAsObjectID } });
-    }
+		return this._dataAccess.getDocuments('lancamentos', { _id: { $in: idsLancametosAsObjectID } });
+	}
 
-    public getLancamentoById(idLancamento: string): any {
+	public getLancamentoById(idLancamento: string): any {
 
-        return this._dataAccess.getDocumentById('lancamentos', idLancamento);
-    }
+		return this._dataAccess.getDocumentById('lancamentos', idLancamento);
+	}
 
-    public getLancamentosByUser(idUser: string): any {
-        return this._dataAccess.getDocuments('lancamentos', { _idUser: idUser });
-    }
+	public getLancamentosByUser(idUser: string): any {
+		return this._dataAccess.getDocuments('lancamentos', { _idUser: idUser });
+	}
 
-    public getLancamentoByDescricao(descricaoLancamento: string): any {
+	public getLancamentoByDescricao(descricaoLancamento: string): any {
+		return this._dataAccess.getDocument('lancamentos', { descricao: descricaoLancamento });
+	}
 
-        return this._dataAccess.getDocument('lancamentos', { descricao: descricaoLancamento });
-    }
+	public getLancamentoByCompetencia(idUser: string, competencia: string): any {
 
-    public insertLancamento(lancamento: any): any {
+		let dataInicio = moment(competencia, "YYYYMM").toDate();
+		let dataFim = moment(competencia, "YYYYMM").add(1, 'months').toDate();
+		console.log('** dataInicio = ', dataInicio);
+		console.log('** dataFim = ', dataFim);
+		console.log('** idUser = ', idUser);
 
-        //Parse data to Date
-        lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
-        return this._dataAccess.insertDocument(lancamento, 'lancamentos');
-    }
+		return this._dataAccess.getDocuments('lancamentos',
+			{ $and: [{ _idUser: idUser }, { data: { $gte: dataInicio } }, { data: { $lt: dataFim } }] });
 
-    public removeLancamentoById(idLancamento: string): any {
-        return this._dataAccess.removeDocumentById('lancamentos', idLancamento);
-    }
+	}
 
-    public updateLancamento(idLancamento: any, lancamento: any): any {
+	public insertLancamento(lancamento: any): any {
 
-        if (this._dataAccess.dbConnection) {
+		//Parse data to Date
+		lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
+		return this._dataAccess.insertDocument(lancamento, 'lancamentos');
+	}
 
-            let query = { _id: new ObjectID(idLancamento) }
+	public removeLancamentoById(idLancamento: string): any {
+		return this._dataAccess.removeDocumentById('lancamentos', idLancamento);
+	}
 
-            //Parse data to Date
-            lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
-            let updateData = {
-                descricao: lancamento.descricao,
-                data: lancamento.data,
-                conta: lancamento.conta,
-                valor: lancamento.valor,
-                isDebito: lancamento.isDebito,
-            }
+	public updateLancamento(idLancamento: any, lancamento: any): any {
 
-            return this._dataAccess.dbConnection.collection('lancamentos').update(query, { $set: updateData }, { w: 1 });
-        }
-    }
+		if (this._dataAccess.dbConnection) {
+
+			let query = { _id: new ObjectID(idLancamento) }
+
+			//Parse data to Date
+			lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
+			let updateData = {
+				descricao: lancamento.descricao,
+				data: lancamento.data,
+				conta: lancamento.conta,
+				valor: lancamento.valor,
+				isDebito: lancamento.isDebito,
+			}
+
+			return this._dataAccess.dbConnection.collection('lancamentos').update(query, { $set: updateData }, { w: 1 });
+		}
+	}
 }

@@ -178,3 +178,40 @@ lancamentoRouter.put("/:idLancamento", function (request: Request & { userName: 
 		});
 	});
 });
+
+lancamentoRouter.get("/:competencia", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+
+	let userName = request.userName;
+	let competencia = request.params.competencia;
+
+	co(function* () {
+
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
+
+		let userId = user._id.toString();
+
+		let lancamentos = yield lancamentoDAO.getLancamentoByCompetencia(userId, competencia);
+		logger.info("** LANCAMENTOS: %j", lancamentos);
+
+		if (!lancamentos) {
+			return response.json({
+				"status": "sucesso",
+				"lancamentos": []
+			});
+		}
+
+		response.json({
+			"status": "sucesso",
+			"data": lancamentos
+		});
+
+	}).catch((e) => {
+		logger.info("** Error = ", e);
+
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao obter lancamentos do usuário!"
+		});
+	});
+});

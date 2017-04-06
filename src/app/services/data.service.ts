@@ -19,13 +19,13 @@ export class DataService<T extends Model> {
 	protected successDeleteMessage: string = "Objeto deletado com sucesso.";
 
 	dataObservable$: Observable<Model[]>;
-	private _dataBehaviorSubject: BehaviorSubject<Model[]>;
-	private dataStore: {
+	protected _dataBehaviorSubject: BehaviorSubject<Model[]>;
+	protected _dataStore: {
 		dataList: Model[]
 	};
 
-	constructor(private _apiHttp: ApiHttpService, private _notificationsService: NotificationsService, private apiBaseUrl) {
-		this.dataStore = { dataList: [] };
+	constructor(protected _apiHttp: ApiHttpService, protected _notificationsService: NotificationsService, protected apiBaseUrl) {
+		this._dataStore = { dataList: [] };
 		this._dataBehaviorSubject = <BehaviorSubject<Model[]>>new BehaviorSubject([]);
 		this.dataObservable$ = this._dataBehaviorSubject.asObservable();
 	}
@@ -42,8 +42,8 @@ export class DataService<T extends Model> {
 				console.log("Data return on service:", jsonData);
 
 				if (jsonData.status === "sucesso") {
-					this.dataStore.dataList = jsonData.data;
-					this._dataBehaviorSubject.next(Object.assign({}, this.dataStore).dataList);
+					this._dataStore.dataList = jsonData.data;
+					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 				}
 			},
 			error => {
@@ -58,8 +58,8 @@ export class DataService<T extends Model> {
 			.subscribe(
 			jsonData => {
 				if (jsonData.status === "sucesso") {
-					this.dataStore.dataList.push(jsonData.data);
-					this._dataBehaviorSubject.next(Object.assign({}, this.dataStore).dataList);
+					this._dataStore.dataList.push(jsonData.data);
+					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
 					this._notificationsService.success('Sucesso', this.successPostMessage);
 				} else if (jsonData.status === "erro") {
@@ -78,12 +78,12 @@ export class DataService<T extends Model> {
 			.subscribe(
 			jsonData => {
 				if (jsonData.status === "sucesso") {
-					this.dataStore.dataList.forEach((dataItem, i) => {
+					this._dataStore.dataList.forEach((dataItem, i) => {
 						if (dataItem._id === modelId) {
-							this.dataStore.dataList.splice(i, 1);
+							this._dataStore.dataList.splice(i, 1);
 						}
 					});
-					this._dataBehaviorSubject.next(Object.assign({}, this.dataStore).dataList);
+					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
 					this._notificationsService.success('Sucesso', this.successDeleteMessage);
 				} else if (jsonData.status === "erro") {
@@ -102,12 +102,12 @@ export class DataService<T extends Model> {
 			.subscribe(
 			jsonData => {
 				if (jsonData.status === "sucesso") {
-					this.dataStore.dataList.forEach((dataItem, i) => {
+					this._dataStore.dataList.forEach((dataItem, i) => {
 						if (dataItem._id === jsonData.data._id) {
-							this.dataStore.dataList[i] = jsonData.data;
+							this._dataStore.dataList[i] = jsonData.data;
 						}
 					});
-					this._dataBehaviorSubject.next(Object.assign({}, this.dataStore).dataList);
+					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
 					this._notificationsService.success('Sucesso', this.successPutMessage);
 

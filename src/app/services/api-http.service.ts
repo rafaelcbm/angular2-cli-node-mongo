@@ -9,48 +9,44 @@ import { AuthService } from '../authentication/auth.service';
 @Injectable()
 export class ApiHttpService {
 
-    constructor(private http: Http, private authService: AuthService) { }
+	constructor(private http: Http, private authService: AuthService) { }
 
-    get(url: string, requestOptions?: RequestOptions) : Observable<any>{
+	get(url: string, requestOptions?: RequestOptions): Observable<any> {
 
-        if (this.authService.isLoggedIn()) {
+		if (this.authService.isLoggedIn()) {
+			return this.http.get(url, requestOptions ? requestOptions : this.getRequestOptionsPadrao())
+				.map((res: Response) => res.json());
+		}
+	}
 
-            return this.http.get(url, requestOptions ? requestOptions : this.getRequestOptionsPadrao())
-                .map((res: Response) => res.json());
-        }
-    }
+	post(url: string, payLoad: any, requestOptions?: RequestOptions) {
 
-    post(url: string, payLoad: any, requestOptions?: RequestOptions) {
+		if (this.authService.isLoggedIn()) {
+			return this.http.post(url, JSON.stringify(payLoad), requestOptions ? requestOptions : this.getRequestOptionsPadrao())
+				.map((res: Response) => res.json());
+		}
+	}
 
-        if (this.authService.isLoggedIn()) {
+	delete(url: string, requestOptions?: RequestOptions) {
 
-            return this.http.post(url, JSON.stringify(payLoad), requestOptions ? requestOptions : this.getRequestOptionsPadrao())
-                .map((res: Response) => res.json());
-        }
-    }
+		if (this.authService.isLoggedIn()) {
+			return this.http.delete(url, requestOptions ? requestOptions : this.getRequestOptionsPadrao()).map((res: Response) => res.json());
+		}
+	}
 
-    delete(url: string, requestOptions?: RequestOptions) {
+	put(url: string, payLoad: any, requestOptions?: RequestOptions) {
 
-        if (this.authService.isLoggedIn()) {
+		if (this.authService.isLoggedIn()) {
+			return this.http.put(url, JSON.stringify(payLoad), requestOptions ? requestOptions : this.getRequestOptionsPadrao())
+				.map((res: Response) => res.json());
+		}
+	}
 
-            return this.http.delete(url, requestOptions ? requestOptions : this.getRequestOptionsPadrao()).map((res: Response) => res.json());
-        }
-    }
+	getRequestOptionsPadrao() {
+		let requestOptions = new RequestOptions({
+			headers: new Headers({ "Content-Type": "application/json", "authorization": this.authService.getToken() })
+		});
 
-    put(url: string, payLoad: any, requestOptions?: RequestOptions) {
-
-        if (this.authService.isLoggedIn()) {
-
-            return this.http.put(url, JSON.stringify(payLoad), requestOptions ? requestOptions : this.getRequestOptionsPadrao())
-                .map((res: Response) => res.json());
-        }
-    }
-
-    getRequestOptionsPadrao() {
-        let requestOptions = new RequestOptions({
-            headers: new Headers({ "Content-Type": "application/json", "authorization": this.authService.getToken() })
-        });
-
-        return requestOptions;
-    }
+		return requestOptions;
+	}
 }
