@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { TabsModule }               from 'ng2-bootstrap/tabs';
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
+import { TreeModule } from 'angular-tree-component';
 
 import { SharedDirectivesModule } from './../directives/shared-directives.module';
 import { SharedPipesModule } from './../pipes/shared-pipes.module';
@@ -33,7 +34,8 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 		SharedPipesModule,
 		SharedDirectivesModule,
         TabsModule.forRoot(),
-        DatepickerModule.forRoot()
+        DatepickerModule.forRoot(),
+		TreeModule
     ],
     providers: [
         LancamentosService,

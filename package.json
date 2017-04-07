@@ -38,6 +38,7 @@
     "@types/mongodb": "^2.1.33",
     "@types/reflect-metadata": "0.0.5",
     "angular-calendar": "0.7.2",
+    "angular-tree-component": "^3.2.4",
     "angular2-datatable": "0.5.3",
     "angular2-jwt": "^0.1.22",
     "angular2-ladda": "1.1.1",

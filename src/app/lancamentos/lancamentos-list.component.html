@@ -1,49 +1,65 @@
+<hr>
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <i class="fa fa-align-justify"></i> Lançamentos
-            </div>
-            <div class="card-block">
-                <table class="table table-bordered table-striped table-condensed table-hover">
-                    <thead>
-                        <tr>
-                            <th>Descrição</th>
-                            <th>Valor</th>
-                            <th>Conta</th>
-                            <th>Data</th>
-                            <th>Débito?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Async pipe is used to bind an observable directly in our template -->
-                        <tr *ngFor="let lancamento of lancamentos$ | async" (click)="onSelect(lancamento)">
-                            <td>{{lancamento.descricao}}</td>
-                            <td>{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
-                            <td>{{lancamento.conta.nome}}</td>
-                            <td>{{lancamento.data | date:"dd/MM/yyyy"}}</td>
-                            <td>{{lancamento.isDebito | boolean}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Prev</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">4</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
+	<div class="col-3">
+		<tree-root #tree [nodes]="nodes">
+			<template #treeNodeTemplate let-node="node" let-index="index">
+				<span>{{ node.data.name }} - {{ node.data.outraInfo }}</span>
+				<button (click)="edit(node, index)" style="background-color: rgba(245, 199, 79, 0.33);    border: 0;"><i class="fa fa-pencil"></i></button>
+				<button (click)="remove(node, index)" style="background-color: rgba(79, 245, 82, 0.33);    border: 0;"><i class="fa fa-remove"></i></button>
+				<button (click)="add(node, index)" style="background-color: rgba(41, 87, 142, 0.33);   border: 0;"><i class="fa fa-plus"></i></button>
+				<div *ngIf="node.data.showEdit" class="m1">
+					<input [(ngModel)]="node.data.name" type="text">
+					<button (click)="saveNewNode(node, index)" style="background-color: rgba(208, 9, 11, 0.33);border: 0;display: inline;margin-left: 5px;"><i class="fa fa-check"></i></button>
+				</div>
+			</template>
+		</tree-root>
+	</div>
+
+	<div class="col-9">
+		<div class="card">
+			<div class="card-header">
+				<i class="fa fa-align-justify"></i> Lançamentos
+			</div>
+			<div class="card-block">
+				<table class="table table-bordered table-striped table-condensed table-hover">
+					<thead>
+						<tr>
+							<th>Descrição</th>
+							<th>Valor</th>
+							<th>Conta</th>
+							<th>Data</th>
+							<th>Débito?</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Async pipe is used to bind an observable directly in our template -->
+						<tr *ngFor="let lancamento of lancamentos$ | async" (click)="onSelect(lancamento)">
+							<td>{{lancamento.descricao}}</td>
+							<td>{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
+							<td>{{lancamento.conta.nome}}</td>
+							<td>{{lancamento.data | date:"dd/MM/yyyy"}}</td>
+							<td>{{lancamento.isDebito | boolean}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<nav>
+					<ul class="pagination">
+						<li class="page-item"><a class="page-link" href="#">Prev</a>
+						</li>
+						<li class="page-item active">
+							<a class="page-link" href="#">1</a>
+						</li>
+						<li class="page-item"><a class="page-link" href="#">2</a>
+						</li>
+						<li class="page-item"><a class="page-link" href="#">3</a>
+						</li>
+						<li class="page-item"><a class="page-link" href="#">4</a>
+						</li>
+						<li class="page-item"><a class="page-link" href="#">Next</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
 </div>
