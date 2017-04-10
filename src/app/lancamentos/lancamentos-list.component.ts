@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
-import { TreeComponent } from "angular-tree-component/dist/angular-tree-component";
+import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from "angular-tree-component/dist/angular-tree-component";
 
 import { Log } from './../util/log';
 import { LancamentosService } from '../services/lancamentos.service';
@@ -21,7 +21,20 @@ export class LancamentosListComponent implements OnInit {
 	@ViewChild(TreeComponent)
 	private tree: TreeComponent;
 
+	actionMapping: IActionMapping = {
+		mouse: {
+			click: TREE_ACTIONS.TOGGLE_SELECTED_MULTI
+		}
+	}
+
+
+	newIndex = 999;
+
 	lancamentos$: Observable<Lancamento[]>;
+
+	options = {
+		actionMapping: this.actionMapping
+	};
 
 	nodes: any = [
 		{
@@ -76,42 +89,53 @@ export class LancamentosListComponent implements OnInit {
 		this.onSelectLancamento.emit(lancamento);
 	}
 
-	edit(node, indexNode) {
-		Log.log('EDIT node: ', node);
+	add(node, indexNode) {
+		node.data.operation = 'add';
 		this.toogleEdit(node);
+
+	}
+
+	edit(node, indexNode) {
+		node.data.operation = 'edit';
+		this.toogleEdit(node);
+	}
+
+	saveNode(node, indexNode) {
+		Log.log('saveNode node: ', node);
+
+		if (node.data.operation === 'add') {
+			if (!node.data.children) {
+				node.data.children = [];
+			}
+
+			let newNode = { id: this.newIndex++, name: node.data.newName };
+
+			Log.log('saveNode newNode: ', newNode);
+			node.data.children.push(newNode);
+		} else if (node.data.operation === 'edit') {
+			node.data.name = node.data.newName;
+		}
+
+		this.toogleEdit(node);
+		this.tree.treeModel.update();
 	}
 
 	remove(node, indexNode) {
-		Log.log('REMOVE node: ', node);
+		let parent = node.parent;
+		parent.data.children.splice(indexNode, 1);
 
-		node.parent.children.splice(indexNode,1);
 		this.tree.treeModel.update();
 	}
 
-	add(node, indexNode) {
-		Log.log('ADD node: ', node);
-
-		this.toogleEdit(node);
-	}
-
-	saveNewNode(node, indexNode) {
-		Log.log('saveNewNode node: ', node);
-
-		if (!node.data.children) {
-			node.data.children = [];
-
-		}
-
-		let newNode = { id: 123, name: 'NOVO LANCAMENTO' };
-		node.data.children.push(newNode);
-
-
-		this.tree.treeModel.update();
-
-		this.toogleEdit(node);
+	clearTempData(node) {
+		node.data.newName = '';
+		node.data.operation = '';
 	}
 
 	toogleEdit(node) {
 		node.data.showEdit = !node.data.showEdit;
+		if (!node.data.showEdit) {
+			this.clearTempData(node);
+		}
 	}
 }
