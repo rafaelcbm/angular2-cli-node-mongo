@@ -12,6 +12,7 @@ import { protectedRouter } from "./routes/protectedRouter";
 import { userRouter } from "./routes/userRouter";
 import { contaRouter } from "./routes/contaRouter";
 import { lancamentoRouter } from "./routes/lancamentoRouter";
+import { categoriaRouter } from "./routes/categoriaRouter";
 import { DataAccess } from "./dal/abstractDAO";
 
 const app: express.Application = express();
@@ -37,6 +38,7 @@ app.use("/api", protectedRouter);
 app.use("/api/users", userRouter);
 app.use("/api/contas", contaRouter);
 app.use("/api/lancamentos", lancamentoRouter);
+app.use("/api/categorias", categoriaRouter);
 
 // error handlers
 // development error handler

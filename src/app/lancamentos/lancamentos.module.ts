@@ -17,7 +17,7 @@ import { LancamentosFiltroComponent } from './lancamentos-filtro.component';
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
-
+import { CategoriasService } from './../services/categorias.service';
 
 @NgModule({
     declarations: [
@@ -40,7 +40,8 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
     providers: [
         LancamentosService,
         ContasService,
-		FiltroLancamentoService
+		FiltroLancamentoService,
+		CategoriasService
     ]
 })
 export class LancamentosModule {}

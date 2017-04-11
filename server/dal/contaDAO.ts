@@ -4,13 +4,13 @@ import { Service, Inject } from 'typedi';
 import { DataAccess } from "./abstractDAO";
 
 @Service()
-export class ContaDAO extends DataAccess {
+export class ContaDAO {
 
     @Inject() private _dataAccess: DataAccess;
 
     public getContaByIds(idsContas: any): any {
 
-        //Converte os ids de String->ObjectID, para uso como parâmetro da consulta.        
+        //Converte os ids de String->ObjectID, para uso como parâmetro da consulta.
         let idsConstasAsObjectID = [];
         idsContas.forEach(id => idsConstasAsObjectID.push(ObjectID.createFromHexString(id)));
 

@@ -9,6 +9,7 @@ import { Log } from './../util/log';
 import { LancamentosService } from '../services/lancamentos.service';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
 import { Lancamento } from "../models/models.module";
+import { CategoriasService } from './../services/categorias.service';
 
 @Component({
 	selector: 'lancamentos-list',
@@ -28,47 +29,58 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 
-	newIndex = 999;
 
 	lancamentos$: Observable<Lancamento[]>;
 
 	options = {
-		actionMapping: this.actionMapping
+		actionMapping: this.actionMapping,
+		idField: '_id',
+		displayField: 'nome'
+		//childrenField: 'subCategorias'
 	};
 
-	nodes: any = [
-		{
-			id: 1,
-			name: 'Despesas',
-			isExpanded: true,
-			children: [
-				{ id: 2, name: 'Alimentação' },
-				{ id: 3, name: 'Lazer' },
-				{ id: 4, name: 'Transporte' }
-			]
-		},
-		{
-			id: 5,
-			name: 'Receitas',
-			children: [
-				{ id: 6, name: 'Salário' },
-				{
-					id: 7, name: 'Ticket',
-					children: [
-						{ id: 8, name: 'Alimentação' },
-						{ id: 9, name: 'Refeição' }
-					]
-				}
-			]
-		}
-	];
+	//Temp data
+	newIndex = Math.floor(Math.random() * 1000) + 1;
+	categorias = [];
+	// categorias: any = [
+	// 	{
+	// 		_id: 1,
+	// 		nome: 'Despesas',
+	// 		isExpanded: true,
+	// 		children: [
+	// 			{ _id: 2, nome: 'Alimentação' },
+	// 			{ _id: 3, nome: 'Lazer' },
+	// 			{ _id: 4, nome: 'Transporte' }
+	// 		]
+	// 	},
+	// 	{
+	// 		_id: 5,
+	// 		nome: 'Receitas',
+	// 		children: [
+	// 			{ _id: 6, nome: 'Salário' },
+	// 			{
+	// 				_id: 7, nome: 'Ticket',
+	// 				children: [
+	// 					{ _id: 8, nome: 'Alimentação' },
+	// 					{ _id: 9, nome: 'Refeição' }
+	// 				]
+	// 			}
+	// 		]
+	// 	}
+	// ];
 
-	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService) {
+	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private categoriasService: CategoriasService) {
 	}
 
 	ngOnInit() {
 
 		this.lancamentos$ = this.lancamentosService.dataObservable$;
+
+		//Atualiza as categorias do serviço
+		this.categoriasService.dataObservable$.subscribe(categorias => {
+			this.categorias = categorias;
+			this.tree.treeModel.update();
+		});
 
 		this.filtroLancamentoService.competenciaLancamento$
 			.debounceTime(500)
@@ -81,8 +93,9 @@ export class LancamentosListComponent implements OnInit {
 			)
 
 		let competenciaAtual = moment().format('YYYYMM')
-		console.log('*** competenciaAtual', competenciaAtual);
 		this.lancamentosService.getByCompetencia(competenciaAtual);
+
+		this.categoriasService.retrieve();
 	}
 
 	onSelect(lancamento: Lancamento) {
@@ -92,6 +105,8 @@ export class LancamentosListComponent implements OnInit {
 	add(node, indexNode) {
 		node.data.operation = 'add';
 		this.toogleEdit(node);
+
+		Log.log('this.tree.treeModel.activeNodes = ', this.tree.treeModel.activeNodes);
 
 	}
 
@@ -108,12 +123,20 @@ export class LancamentosListComponent implements OnInit {
 				node.data.children = [];
 			}
 
-			let newNode = { id: this.newIndex++, name: node.data.newName };
+			let newNode: any = { nome: node.data.novoNome, pai: node.data.nome };
+			newNode.ancestrais = [];
+			let parent = node;
+			while (parent.data.nome) {
+				newNode.ancestrais.push(parent.data.nome);
+				parent = parent.parent;
+			}
+
+			this.categoriasService.create({ novaCategoria: newNode });
 
 			Log.log('saveNode newNode: ', newNode);
 			node.data.children.push(newNode);
 		} else if (node.data.operation === 'edit') {
-			node.data.name = node.data.newName;
+			node.data.nome = node.data.novoNome;
 		}
 
 		this.toogleEdit(node);
@@ -125,10 +148,12 @@ export class LancamentosListComponent implements OnInit {
 		parent.data.children.splice(indexNode, 1);
 
 		this.tree.treeModel.update();
+
+		this.categoriasService.remove(node.data._id);
 	}
 
 	clearTempData(node) {
-		node.data.newName = '';
+		node.data.novoNome = '';
 		node.data.operation = '';
 	}
 

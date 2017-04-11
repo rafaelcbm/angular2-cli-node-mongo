@@ -11,6 +11,10 @@ export class MessagesService {
 	SUCCESS_CREATE_LANCAMENTO: string = "SUCCESS_CREATE_LANCAMENTO";
 	SUCCESS_DELETE_LANCAMENTO: string = "SUCCESS_DELETE_LANCAMENTO";
 	SUCCESS_UPDATE_LANCAMENTO: string = "SUCCESS_UPDATE_LANCAMENTO";
+	SUCCESS_CREATE_CATEGORIA: string = "SUCCESS_CREATE_CATEGORIA";
+	SUCCESS_DELETE_CATEGORIA: string = "SUCCESS_DELETE_CATEGORIA";
+	SUCCESS_UPDATE_CATEGORIA: string = "SUCCESS_UPDATE_CATEGORIA";
+
 
 	public getMessage(key: string, ...argumentos): string {
 		//Máximo suportado: 3 param
@@ -27,7 +31,11 @@ export class MessagesService {
 
 			SUCCESS_CREATE_LANCAMENTO: `Lancamento criado com sucesso.`,
 			SUCCESS_DELETE_LANCAMENTO: `Lancamento apagado com sucesso.`,
-			SUCCESS_UPDATE_LANCAMENTO: `Lancamento atualizado com sucesso.`
+			SUCCESS_UPDATE_LANCAMENTO: `Lancamento atualizado com sucesso.`,
+
+			SUCCESS_CREATE_CATEGORIA: `Categoria criada com sucesso.`,
+			SUCCESS_DELETE_CATEGORIA: `Categoria apagada com sucesso.`,
+			SUCCESS_UPDATE_CATEGORIA: `Categoria atualizada com sucesso.`
 		}
 
 		return messages.hasOwnProperty(key) ? messages[key] : key;

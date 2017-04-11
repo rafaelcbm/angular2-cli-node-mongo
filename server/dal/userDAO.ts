@@ -8,28 +8,28 @@ import { DataAccess } from "./abstractDAO";
 @Service()
 export class UserDAO {
 
-    @Inject()
-    private _dataAccess: DataAccess;
+	@Inject()
+	private _dataAccess: DataAccess;
 
-    // Get a new Student based on the user name.
-    public getUser(userName: string): any {
-        return this._dataAccess.getDocument('users', { userName: userName });
-    }
+	// Get a new Student based on the user name.
+	public getUser(userName: string): any {
+		return this._dataAccess.getDocument('users', { userName: userName });
+	}
 
-    public insertUser(user: any): any {
-        return this._dataAccess.insertDocument(user, 'users');
-    }
+	public insertUser(user: any): any {
+		return this._dataAccess.insertDocument(user, 'users');
+	}
 
-    // Return a promise of an array of users
-    public getAllUsers(): any {
-        return this._dataAccess.getDocuments('users');
-    }
+	// Return a promise of an array of users
+	public getAllUsers(): any {
+		return this._dataAccess.getDocuments('users');
+	}
 
-    public addConta(idUser: string, idConta: string): any {
-        return this._dataAccess.dbConnection.collection('users').update({ _id: idUser }, { $push: { contas: idConta } });
-    }
+	public addConta(idUser: string, idConta: string): any {
+		return this._dataAccess.dbConnection.collection('users').update({ _id: idUser }, { $push: { contas: idConta } });
+	}
 
-    public removeConta(idUser: string, idConta: string): any {
-        return this._dataAccess.dbConnection.collection('users').update({ _id: idUser }, { $pull: { contas: { $in: [idConta] } } }, { multi: true });        
-    }
+	public removeConta(idUser: string, idConta: string): any {
+		return this._dataAccess.dbConnection.collection('users').update({ _id: idUser }, { $pull: { contas: { $in: [idConta] } } }, { multi: true });
+	}
 }
