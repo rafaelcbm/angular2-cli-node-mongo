@@ -33,6 +33,14 @@ export class CategoriaDAO {
 		return this._dataAccess.getDocuments(this.CATEGORIA_COLLECTION, { _idUser: idUser });
 	}
 
+	public getCategoriasRaiz(idUser: string): any {
+		return this._dataAccess.getDocuments(this.CATEGORIA_COLLECTION, { _idUser: idUser, pai: null });
+	}
+
+	public getCategoriasFilhas(idUser: string, pai: string): any {
+		return this._dataAccess.getDocuments(this.CATEGORIA_COLLECTION, { _idUser: idUser, pai: pai });
+	}
+
 	public getCategoriaByNome(nome: string): any {
 		return this._dataAccess.getDocument(this.CATEGORIA_COLLECTION, { nome });
 	}

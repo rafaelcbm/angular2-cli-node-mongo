@@ -1,12 +1,16 @@
 # - TODO List
 ---
+## *GERAL*
+```
+- Na criação de um novo usuário inserir 2 categorias padrão ('Sem Categoria' e 'Todas'), que não podem ser alteradas pelo usuario.
+```
 ## *SERVER*
 ```
-
+- Implementar busca de categorias montando a arvore.
 ```
 ## *CLIENT*
 ```
 - Geral: Remover referencia a modulos/componentes do template, não utilizados no commons-pages module
 - Incluir componente de breadcrump
-- Filtrar Competencias de lancamentos (queryex.:  db.lancamentos.find( {$and: [{data:{"$gte":ISODate("2015-01-01 10:03:46.000Z")}},{data:{"$lte":ISODate("2018-01-01 10:03:46.000Z")}}]}).pretty();)
+
 ```
