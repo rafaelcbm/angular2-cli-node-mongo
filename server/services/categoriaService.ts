@@ -25,7 +25,7 @@ export class CategoriaService {
 				nome: 'Despesas',
 				isExpanded: true,
 				children: [
-					{ _id: '58ed3bb27343cc201c726af4', nome: 'Alimentação' },
+					{ _id: '58ed8cc5c04de60c30e1a608', nome: 'Alimentação' },
 					{ _id: 3, nome: 'Lazer' },
 					{ _id: 4, nome: 'Transporte' }
 				]

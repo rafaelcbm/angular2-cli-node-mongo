@@ -1,3 +1,4 @@
+import { length } from './../config';
 import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
 import * as co from "co";
@@ -52,17 +53,17 @@ categoriaRouter.post("/", function (request: Request & { userName: string }, res
 
 		let user = yield userDAO.getUser(userName);
 		assert.ok(user);
-		logger.info("** USER: %j", user);
 
 		let categorias = yield categoriaDAO.getCategoriasByUser(user._id.toString());
 		logger.info("** categorias: %j", categorias);
-		if (!categorias || categorias.find(categoria => categoria.nome === novaCategoria.nome)) {
+		if (categorias.length > 0 && categorias.find(categoria => categoria.nome === novaCategoria.nome)) {
 			return response.json({
 				"status": "erro",
 				"message": `Usuário já possui categoria com o nome informado: "${novaCategoria.nome}".`
 			});
 		}
 
+		novaCategoria._idUser = user._id.toString();
 		let daoReturn = yield categoriaDAO.insertCategoria(novaCategoria);
 		assert.equal(daoReturn.result.n, 1);
 
@@ -93,10 +94,9 @@ categoriaRouter.delete("/:idCategoria", function (request: Request & { userName:
 		let user = yield userDAO.getUser(userName);
 		assert.ok(user);
 
-		let categorias = yield categoriaDAO.getCategoriasByUser(user._id.toString());
-		logger.info("** categorias: %j", categorias);
-		//TODO: Verificar essa condição
-		if (!categorias || categorias.find(categoria => categoria._id.toString() === idCategoria)) {
+		let categoria = yield categoriaDAO.getCategoriaById(idCategoria);
+
+		if (categoria && categoria._idUser !== user._id.toString()) {
 			return response.json({
 				"status": "erro",
 				"message": `Categoria não pertence ao usuário informado!`
@@ -134,10 +134,10 @@ categoriaRouter.put("/:idCategoria", function (request: Request & { userName: st
 		assert.ok(user);
 
 		let categorias = yield categoriaDAO.getCategoriasByUser(user._id.toString());
-		if (categorias.find(categoria => categoria._id.toString() === idCategoria)) {
+		if (categorias.length > 0 && !categorias.find(categoria => categoria._id.toString() === idCategoria)) {
 			return response.json({
 				"status": "erro",
-				"message": `Categoria não pertence ao usuário informado!`
+				"message": `Categoria não encontrada para o usuário informado!`
 			});
 		}
 

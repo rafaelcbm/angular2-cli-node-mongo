@@ -4,7 +4,7 @@
 		<tree-root #tree [nodes]="categorias" [options]="options">
 			<template #treeNodeTemplate let-node="node" let-index="index">
 				<span>{{ node.data.nome }}</span>
-				<div *ngIf="node.isActive || node.data.operation" style="display: inline">
+				<div *ngIf="node.isActive || node.data.operacao" style="display: inline">
 					<button (click)="edit(node, index)" style="background-color: rgba(245, 199, 79, 0.33);    border: 0;"><i class="fa fa-pencil"></i></button>
 					<button (click)="remove(node, index)" style="background-color: rgba(79, 245, 82, 0.33);    border: 0;"><i class="fa fa-remove"></i></button>
 					<button (click)="add(node, index)" style="background-color: rgba(41, 87, 142, 0.33);   border: 0;"><i class="fa fa-plus"></i></button>

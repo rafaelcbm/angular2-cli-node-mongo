@@ -19,6 +19,8 @@ export class LancamentosListComponent implements OnInit {
 
 	@Output() onSelectLancamento = new EventEmitter<Lancamento>();
 
+	lancamentos$: Observable<Lancamento[]>;
+
 	@ViewChild(TreeComponent)
 	private tree: TreeComponent;
 
@@ -28,10 +30,6 @@ export class LancamentosListComponent implements OnInit {
 		}
 	}
 
-
-
-	lancamentos$: Observable<Lancamento[]>;
-
 	options = {
 		actionMapping: this.actionMapping,
 		idField: '_id',
@@ -39,38 +37,9 @@ export class LancamentosListComponent implements OnInit {
 		//childrenField: 'subCategorias'
 	};
 
-	//Temp data
-	newIndex = Math.floor(Math.random() * 1000) + 1;
-	categorias = [];
-	// categorias: any = [
-	// 	{
-	// 		_id: 1,
-	// 		nome: 'Despesas',
-	// 		isExpanded: true,
-	// 		children: [
-	// 			{ _id: 2, nome: 'Alimentação' },
-	// 			{ _id: 3, nome: 'Lazer' },
-	// 			{ _id: 4, nome: 'Transporte' }
-	// 		]
-	// 	},
-	// 	{
-	// 		_id: 5,
-	// 		nome: 'Receitas',
-	// 		children: [
-	// 			{ _id: 6, nome: 'Salário' },
-	// 			{
-	// 				_id: 7, nome: 'Ticket',
-	// 				children: [
-	// 					{ _id: 8, nome: 'Alimentação' },
-	// 					{ _id: 9, nome: 'Refeição' }
-	// 				]
-	// 			}
-	// 		]
-	// 	}
-	// ];
+	categorias: any[];
 
-	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private categoriasService: CategoriasService) {
-	}
+	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private categoriasService: CategoriasService) { }
 
 	ngOnInit() {
 
@@ -103,7 +72,7 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 	add(node, indexNode) {
-		node.data.operation = 'add';
+		node.data.operacao = 'add';
 		this.toogleEdit(node);
 
 		Log.log('this.tree.treeModel.activeNodes = ', this.tree.treeModel.activeNodes);
@@ -111,14 +80,14 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 	edit(node, indexNode) {
-		node.data.operation = 'edit';
+		node.data.operacao = 'edit';
 		this.toogleEdit(node);
 	}
 
 	saveNode(node, indexNode) {
 		Log.log('saveNode node: ', node);
 
-		if (node.data.operation === 'add') {
+		if (node.data.operacao === 'add') {
 			if (!node.data.children) {
 				node.data.children = [];
 			}
@@ -130,31 +99,32 @@ export class LancamentosListComponent implements OnInit {
 				newNode.ancestrais.push(parent.data.nome);
 				parent = parent.parent;
 			}
+			newNode.ancestrais.reverse();
 
 			this.categoriasService.create({ novaCategoria: newNode });
 
 			Log.log('saveNode newNode: ', newNode);
-			node.data.children.push(newNode);
-		} else if (node.data.operation === 'edit') {
+			//node.data.children.push(newNode);
+		} else if (node.data.operacao === 'edit') {
 			node.data.nome = node.data.novoNome;
+			this.categoriasService.update(node.data._id, { nomeCategoria: node.data.nome });
 		}
 
 		this.toogleEdit(node);
-		this.tree.treeModel.update();
+		// this.tree.treeModel.update();
 	}
 
 	remove(node, indexNode) {
-		let parent = node.parent;
-		parent.data.children.splice(indexNode, 1);
-
-		this.tree.treeModel.update();
+		// let parent = node.parent;
+		// parent.data.children.splice(indexNode, 1);
+		// this.tree.treeModel.update();
 
 		this.categoriasService.remove(node.data._id);
 	}
 
 	clearTempData(node) {
 		node.data.novoNome = '';
-		node.data.operation = '';
+		node.data.operacao = '';
 	}
 
 	toogleEdit(node) {

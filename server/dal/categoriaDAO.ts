@@ -45,13 +45,12 @@ export class CategoriaDAO {
 		return this._dataAccess.removeDocumentById(this.CATEGORIA_COLLECTION, idCategoria);
 	}
 
-	public updateCategoria(idCategoria: any, categoria: any): any {
+	public updateCategoria(idCategoria: any, nomeCategoria: any): any {
 
 		let query = { _id: new ObjectID(idCategoria) }
 
 		let updateData = {
-			nome: categoria.nome,
-			ancestrais: categoria.ancestrais
+			nome: nomeCategoria
 		}
 
 		return this._dataAccess.dbConnection.collection(this.CATEGORIA_COLLECTION).update(query, { $set: updateData }, { w: 1 });
