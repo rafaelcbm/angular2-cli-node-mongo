@@ -53,6 +53,10 @@ export class CategoriaDAO {
 		return this._dataAccess.removeDocumentById(this.CATEGORIA_COLLECTION, idCategoria);
 	}
 
+	public removeCategoriasFilhas(nome: string): any {
+		return this._dataAccess.removeDocuments(this.CATEGORIA_COLLECTION, { ancestrais: nome });
+	}
+
 	public updateCategoria(idCategoria: any, nomeCategoria: any): any {
 
 		let query = { _id: new ObjectID(idCategoria) }

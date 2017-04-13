@@ -26,28 +26,25 @@ categoriaRouter.get("/", function (request: Request & { userName: string }, resp
 
 		let raizes = yield categoriaDAO.getCategoriasRaiz(user._id.toString());
 		assert.ok(raizes);
-		let categorias = [];
 
-		categorias = categorias.concat(raizes);
+		let categorias = [].concat(raizes);
+		let arvoreCategorias = [].concat(raizes);
 
 		for (var i = 0; i < categorias.length; i++) {
 
-			let filhas = yield categoriaDAO.getCategoriasFilhas(user._id.toString(), categorias[i].nome);
-			assert.ok(filhas);
+			let categoriaAtual = categorias[i];
+
+			let filhas = yield categoriaDAO.getCategoriasFilhas(user._id.toString(), categoriaAtual.nome);
 			if (filhas.length > 0) {
-				categorias[i].children = new Array(filhas);
+				categoriaAtual.children = [];
+				filhas.forEach(filha => categoriaAtual.children.push(filha));
 				categorias = categorias.concat(filhas);
 			}
 		}
 
-		console.log('** Arvore de categorias = ', categorias);
-
-
-		//let arvoreCategorias = yield categoriaService.getArvoreCategoriasByUser(user._id.toString());
-
 		response.json({
 			"status": "sucesso",
-			"data": categorias
+			"data": arvoreCategorias
 		});
 
 	}).catch((e) => {
@@ -60,129 +57,195 @@ categoriaRouter.get("/", function (request: Request & { userName: string }, resp
 	});
 });
 
-// categoriaRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+// function buscarCategoria(raiz, nome) {
 
-// 	let userName = request.userName;
-// 	let novaCategoria = request.body.novaCategoria;
-
-// 	logger.info("** categoriaRouter.userName = ", userName);
-// 	logger.info("** categoriaRouter.novaCategoria = ", novaCategoria);
-
-// 	co(function* () {
-
-// 		let user = yield userDAO.getUser(userName);
-// 		assert.ok(user);
-
-// 		let categorias = yield categoriaDAO.getCategoriasByUser(user._id.toString());
-// 		logger.info("** categorias: %j", categorias);
-// 		if (categorias.length > 0 && categorias.find(categoria => categoria.nome === novaCategoria.nome)) {
-// 			return response.json({
-// 				"status": "erro",
-// 				"message": `Usuário já possui categoria com o nome informado: "${novaCategoria.nome}".`
-// 			});
+// 	if (raiz.nome === nome)
+// 		return raiz;
+// 	else {
+// 		if (raiz.children && raiz.children.length > 0) {
+// 			for (let i = 0; i < raiz.children.length; i++) {
+// 				buscarCategoria(raiz.children[i], nome);
+// 			}
 // 		}
+// 	}
+// }
 
-// 		novaCategoria._idUser = user._id.toString();
-// 		let daoReturn = yield categoriaDAO.insertCategoria(novaCategoria);
-// 		assert.equal(daoReturn.result.n, 1);
+categoriaRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-// 		let arvoreCategorias = yield categoriaService.getArvoreCategoriasByUser(user._id.toString());
+	let userName = request.userName;
+	let novaCategoria = request.body.novaCategoria;
 
-// 		response.status(201).json({
-// 			"status": "sucesso",
-// 			"data": arvoreCategorias
-// 		});
-// 	}).catch((e) => {
-// 		logger.info("** Error = ", e);
+	logger.info("** categoriaRouter.userName = ", userName);
+	logger.info("** categoriaRouter.novaCategoria = ", novaCategoria);
 
-// 		return response.json({
-// 			"status": "erro",
-// 			"message": "Erro ao inserir categoria do usuário!"
-// 		});
-// 	});
-// });
+	co(function* () {
 
-// categoriaRouter.delete("/:idCategoria", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-// 	let userName = request.userName;
-// 	let idCategoria = request.params.idCategoria;
-// 	logger.info("** categoriaRouter.idCategoria = ", idCategoria);
+		let categorias = yield categoriaDAO.getCategoriasByUser(user._id.toString());
+		logger.info("** categorias: %j", categorias);
+		if (categorias.length > 0 && categorias.find(categoria => categoria.nome === novaCategoria.nome)) {
+			return response.json({
+				"status": "erro",
+				"message": `Usuário já possui categoria com o nome informado: "${novaCategoria.nome}".`
+			});
+		}
 
-// 	co(function* () {
+		novaCategoria._idUser = user._id.toString();
+		let daoReturn = yield categoriaDAO.insertCategoria(novaCategoria);
+		assert.equal(daoReturn.result.n, 1);
 
-// 		let user = yield userDAO.getUser(userName);
-// 		assert.ok(user);
+		let raizes = yield categoriaDAO.getCategoriasRaiz(user._id.toString());
+		assert.ok(raizes);
 
-// 		let categoria = yield categoriaDAO.getCategoriaById(idCategoria);
+		categorias = [].concat(raizes);
+		let arvoreCategorias = [].concat(raizes);
 
-// 		if (categoria && categoria._idUser !== user._id.toString()) {
-// 			return response.json({
-// 				"status": "erro",
-// 				"message": `Categoria não pertence ao usuário informado!`
-// 			});
-// 		}
+		for (var i = 0; i < categorias.length; i++) {
 
-// 		let daoReturn = yield categoriaDAO.removeCategoriaById(idCategoria);
-// 		assert.equal(daoReturn.result.n, 1);
+			let categoriaAtual = categorias[i];
 
-// 		let arvoreCategorias = yield categoriaService.getArvoreCategoriasByUser(user._id.toString());
+			let filhas = yield categoriaDAO.getCategoriasFilhas(user._id.toString(), categoriaAtual.nome);
+			if (filhas.length > 0) {
+				categoriaAtual.children = [];
+				filhas.forEach(filha => categoriaAtual.children.push(filha));
+				categorias = categorias.concat(filhas);
+			}
+		}
 
-// 		response.status(201).json({
-// 			"status": "sucesso",
-// 			"data": arvoreCategorias
-// 		});
-// 	}).catch((e) => {
-// 		logger.info("** Error = ", e);
+		response.json({
+			"status": "sucesso",
+			"data": arvoreCategorias
+		});
+	}).catch((e) => {
+		logger.info("** Error = ", e);
 
-// 		return response.json({
-// 			"status": "erro",
-// 			"message": "Erro ao remover categoria do usuário!"
-// 		});
-// 	});
-// });
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao inserir categoria do usuário!"
+		});
+	});
+});
 
-// categoriaRouter.put("/:idCategoria", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+categoriaRouter.delete("/:idCategoria", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-// 	let userName = request.userName;
-// 	let idCategoria = request.params.idCategoria;
-// 	let nomeCategoria = request.body.nomeCategoria;
+	let userName = request.userName;
+	let idCategoria = request.params.idCategoria;
+	logger.info("** categoriaRouter.idCategoria = ", idCategoria);
 
-// 	co(function* () {
+	co(function* () {
 
-// 		let user = yield userDAO.getUser(userName);
-// 		assert.ok(user);
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
 
-// 		let categorias = yield categoriaDAO.getCategoriasByUser(user._id.toString());
-// 		if (categorias.length > 0 && !categorias.find(categoria => categoria._id.toString() === idCategoria)) {
-// 			return response.json({
-// 				"status": "erro",
-// 				"message": `Categoria não encontrada para o usuário informado!`
-// 			});
-// 		}
+		let categoria = yield categoriaDAO.getCategoriaById(idCategoria);
 
-// 		if (categorias.find(categoria => categoria.nome === nomeCategoria)) {
-// 			return response.json({
-// 				"status": "erro",
-// 				"message": `Usuário já possui categoria com o nome informado: "${nomeCategoria}".`
-// 			});
-// 		}
+		if (categoria && categoria._idUser !== user._id.toString()) {
+			return response.json({
+				"status": "erro",
+				"message": `Categoria não pertence ao usuário informado!`
+			});
+		}
 
-// 		let daoReturn = yield categoriaDAO.updateCategoria(idCategoria, nomeCategoria);
-// 		assert.equal(daoReturn.result.n, 1);
+		let catFilhas = yield categoriaDAO.getCategoriasFilhas(user._id.toString(), categoria.nome);
+		if (catFilhas.length > 0) {
+			let daoReturn = yield categoriaDAO.removeCategoriasFilhas(categoria.nome);
+		}
 
-// 		let arvoreCategorias = yield categoriaService.getArvoreCategoriasByUser(user._id.toString());
+		let daoReturn = yield categoriaDAO.removeCategoriaById(idCategoria);
+		assert.equal(daoReturn.result.n, 1);
 
-// 		response.status(201).json({
-// 			"status": "sucesso",
-// 			"data": arvoreCategorias
-// 		});
+		let raizes = yield categoriaDAO.getCategoriasRaiz(user._id.toString());
+		assert.ok(raizes);
 
-// 	}).catch((e) => {
-// 		logger.info("** Error = ", e);
+		let categorias = [].concat(raizes);
+		let arvoreCategorias = [].concat(raizes);
 
-// 		return response.json({
-// 			"status": "erro",
-// 			"message": "Erro ao alterar categoria do usuário!"
-// 		});
-// 	});
-//});
+		for (var i = 0; i < categorias.length; i++) {
+
+			let categoriaAtual = categorias[i];
+
+			let filhas = yield categoriaDAO.getCategoriasFilhas(user._id.toString(), categoriaAtual.nome);
+			if (filhas.length > 0) {
+				categoriaAtual.children = [];
+				filhas.forEach(filha => categoriaAtual.children.push(filha));
+				categorias = categorias.concat(filhas);
+			}
+		}
+
+		response.json({
+			"status": "sucesso",
+			"data": arvoreCategorias
+		});
+	}).catch((e) => {
+		logger.info("** Error = ", e);
+
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao remover categoria do usuário!"
+		});
+	});
+});
+
+categoriaRouter.put("/:idCategoria", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+
+	let userName = request.userName;
+	let idCategoria = request.params.idCategoria;
+	let nomeCategoria = request.body.nomeCategoria;
+
+	co(function* () {
+
+		let user = yield userDAO.getUser(userName);
+		assert.ok(user);
+
+		let categorias = yield categoriaDAO.getCategoriasByUser(user._id.toString());
+		if (categorias.length > 0 && !categorias.find(categoria => categoria._id.toString() === idCategoria)) {
+			return response.json({
+				"status": "erro",
+				"message": `Categoria não encontrada para o usuário informado!`
+			});
+		}
+
+		if (categorias.find(categoria => categoria.nome === nomeCategoria)) {
+			return response.json({
+				"status": "erro",
+				"message": `Usuário já possui categoria com o nome informado: "${nomeCategoria}".`
+			});
+		}
+
+		let daoReturn = yield categoriaDAO.updateCategoria(idCategoria, nomeCategoria);
+		assert.equal(daoReturn.result.n, 1);
+
+		let raizes = yield categoriaDAO.getCategoriasRaiz(user._id.toString());
+		assert.ok(raizes);
+
+		categorias = [].concat(raizes);
+		let arvoreCategorias = [].concat(raizes);
+
+		for (var i = 0; i < categorias.length; i++) {
+
+			let categoriaAtual = categorias[i];
+
+			let filhas = yield categoriaDAO.getCategoriasFilhas(user._id.toString(), categoriaAtual.nome);
+			if (filhas.length > 0) {
+				categoriaAtual.children = [];
+				filhas.forEach(filha => categoriaAtual.children.push(filha));
+				categorias = categorias.concat(filhas);
+			}
+		}
+
+		response.json({
+			"status": "sucesso",
+			"data": arvoreCategorias
+		});
+
+	}).catch((e) => {
+		logger.info("** Error = ", e);
+
+		return response.json({
+			"status": "erro",
+			"message": "Erro ao alterar categoria do usuário!"
+		});
+	});
+});

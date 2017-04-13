@@ -18,32 +18,6 @@ export class CategoriaService {
 	//TODO
 	public getArvoreCategoriasByUser(userId: string): any {
 
-		let categorias = [];
-
-	
-
-		// co(function* () {
-	let raizes = this.categoriaDAO.getCategoriasRaiz(userId);
-		assert.ok(raizes);
-
-		// 	categorias = categorias.concat(raizes);
-
-		// 	for (var i = 0; i < categorias.length; i++) {
-
-		// 		let filhas = yield this.categoriaDAO.getCategoriasFilhas(userId, categorias[i].nome);
-		// 		assert.ok(filhas);
-		// 		if (filhas.length > 0) {
-		// 			categorias[i].children = new Array(filhas);
-		// 			categorias = categorias.concat(filhas);
-		// 		}
-		// 	}
-
-		// 	console.log('** Arvore de categorias = ', categorias);
-		// 	return categorias;
-		// }).catch((e) => {
-		// 	logger.error("** Error = ", e);
-		// });
-
 		// let categorias: any = [
 		// 	{
 		// 		_id: 0,

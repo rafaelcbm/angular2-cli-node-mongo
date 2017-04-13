@@ -71,12 +71,13 @@ export class LancamentosListComponent implements OnInit {
 		this.onSelectLancamento.emit(lancamento);
 	}
 
+
+/** Trecho relativo a categorias */
 	add(node, indexNode) {
 		node.data.operacao = 'add';
 		this.toogleEdit(node);
-
+		//TODO: Filtrar nós para exibicao atraves dessa propriedade
 		Log.log('this.tree.treeModel.activeNodes = ', this.tree.treeModel.activeNodes);
-
 	}
 
 	edit(node, indexNode) {
@@ -111,7 +112,6 @@ export class LancamentosListComponent implements OnInit {
 		}
 
 		this.toogleEdit(node);
-		// this.tree.treeModel.update();
 	}
 
 	remove(node, indexNode) {

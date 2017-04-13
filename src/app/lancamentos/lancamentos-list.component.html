@@ -1,7 +1,8 @@
 <hr>
 <div class="row">
-	<div class="col-3">
+	<div class="col-2">
 		<tree-root #tree [nodes]="categorias" [options]="options">
+			<template #loadingTemplate></template>
 			<template #treeNodeTemplate let-node="node" let-index="index">
 				<span>{{ node.data.nome }}</span>
 				<div *ngIf="node.isActive || node.data.operacao" style="display: inline">
@@ -17,7 +18,7 @@
 		</tree-root>
 	</div>
 
-	<div class="col-9">
+	<div class="col-10">
 		<div class="card">
 			<div class="card-header">
 				<i class="fa fa-align-justify"></i> Lançamentos
