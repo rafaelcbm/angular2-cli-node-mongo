@@ -6,7 +6,13 @@
 ```
 ## *SERVER*
 ```
-- Implementar busca de categorias montando a arvore.
+- Refatorar todos os router's para ficar como o categoria router.
+- Completar a atualização de categorias. 
+Ex.: Realizar sequencia de updates:
+	- db.categorias.update( {pai:"Alimentacao"}, {$set:{pai:"Alimentacao-NOVO"}} , { multi: true })
+	- db.categorias.update( {pai:"Alimentacao-NOVO"}, { $pull: {ancestrais: "Alimentacao" } } , { multi: true }  )
+	- db.categorias.update( {pai:"Alimentacao-NOVO"}, { $push: {ancestrais: "Alimentacao-NOVO" } },  { multi: true } )
+
 ```
 ## *CLIENT*
 ```
