@@ -8,6 +8,7 @@ import * as logger from 'logops';
 import { UserDAO } from "../dal/userDAO";
 import { CategoriaDAO } from "../dal/categoriaDAO";
 import { CategoriaService } from '../services/categoriaService';
+import { BusinessError, handleError } from '../commons/businessError';
 
 const categoriaDAO: CategoriaDAO = Container.get(CategoriaDAO);
 const categoriaService: CategoriaService = Container.get(CategoriaService);
@@ -29,13 +30,8 @@ categoriaRouter.get("/", function (request: Request & { userName: string }, resp
 			"data": arvoreCategorias
 		});
 
-	}).catch((e:Error) => {
-		logger.error("** Error = ", e);
-		return response.json({
-			"status": "erro",
-			"message": e.message
-		});
-	});
+	}).catch((e: Error) => handleError(e, response));
+
 });
 
 categoriaRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
@@ -45,20 +41,14 @@ categoriaRouter.post("/", function (request: Request & { userName: string }, res
 
 	co(function* () {
 
-		let arvoreCategorias =  yield categoriaService.salvarCategoria(userName, novaCategoria);
+		let arvoreCategorias = yield categoriaService.salvarCategoria(userName, novaCategoria);
 		assert.ok(arvoreCategorias);
 
 		response.json({
 			"status": "sucesso",
 			"data": arvoreCategorias
 		});
-	}).catch((e:Error) => {
-		logger.error("** Error = ", e);
-		return response.json({
-			"status": "erro",
-			"message": e.message
-		});
-	});
+	}).catch((e: Error) => handleError(e, response));
 });
 
 categoriaRouter.delete("/:idCategoria", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
@@ -68,20 +58,14 @@ categoriaRouter.delete("/:idCategoria", function (request: Request & { userName:
 
 	co(function* () {
 
-		let arvoreCategorias =  yield categoriaService.removeCategoria(userName, idCategoria);
+		let arvoreCategorias = yield categoriaService.removeCategoria(userName, idCategoria);
 		assert.ok(arvoreCategorias);
 
 		response.json({
 			"status": "sucesso",
 			"data": arvoreCategorias
 		});
-	}).catch((e:Error) => {
-		logger.error("** Error = ", e);
-		return response.json({
-			"status": "erro",
-			"message": e.message
-		});
-	});
+	}).catch((e: Error) => handleError(e, response));
 });
 
 categoriaRouter.put("/:idCategoria", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
@@ -92,18 +76,12 @@ categoriaRouter.put("/:idCategoria", function (request: Request & { userName: st
 
 	co(function* () {
 
-		let arvoreCategorias =  yield categoriaService.updateCategoria(userName, idCategoria, nomeCategoria);
+		let arvoreCategorias = yield categoriaService.updateCategoria(userName, idCategoria, nomeCategoria);
 		assert.ok(arvoreCategorias);
 
 		response.json({
 			"status": "sucesso",
 			"data": arvoreCategorias
 		});
-	}).catch((e:Error) => {
-		logger.error("** Error = ", e);
-		return response.json({
-			"status": "erro",
-			"message": e.message
-		});
-	});
+	}).catch((e: Error) => handleError(e, response));
 });

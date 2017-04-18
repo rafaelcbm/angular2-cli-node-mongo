@@ -1,3 +1,4 @@
+import { BusinessError } from './../commons/businessError';
 import { length } from './../config';
 import { ObjectID } from "mongodb";
 import { Service, Inject } from 'typedi';
@@ -50,7 +51,7 @@ export class CategoriaService {
 
 		let categorias = yield this.categoriaDAO.getCategoriasByUser(user._id.toString());
 		if (categorias.length > 0 && categorias.find(categoria => categoria.nome === novaCategoria.nome)) {
-			throw new Error(`Usuário já possui categoria com o nome informado: "${novaCategoria.nome}".`);
+			throw new BusinessError(`Usuário já possui categoria com o nome informado: "${novaCategoria.nome}".`);
 		}
 
 		novaCategoria._idUser = user._id.toString();
@@ -68,7 +69,7 @@ export class CategoriaService {
 		let categoria = yield this.categoriaDAO.getCategoriaById(idCategoria);
 
 		if (categoria && categoria._idUser !== user._id.toString()) {
-			throw new Error(`Categoria não pertence ao usuário informado!`);
+			throw new BusinessError(`Categoria não pertence ao usuário informado!`);
 		}
 
 		let catFilhas = yield this.categoriaDAO.getCategoriasFilhas(user._id.toString(), categoria.nome);
@@ -90,10 +91,10 @@ export class CategoriaService {
 		let categorias = yield this.categoriaDAO.getCategoriasByUser(user._id.toString());
 
 		if (categorias.length > 0 && !categorias.find(categoria => categoria._id.toString() === idCategoria))
-			throw new Error(`Categoria não encontrada para o usuário informado!`);
+			throw new BusinessError(`Categoria não encontrada para o usuário informado!`);
 
 		if (categorias.find(categoria => categoria.nome === nomeCategoria))
-			throw new Error(`Usuário já possui categoria com o nome informado: "${nomeCategoria}".`);
+			throw new BusinessError(`Usuário já possui categoria com o nome informado: "${nomeCategoria}".`);
 
 		let daoReturn = yield this.categoriaDAO.updateCategoria(idCategoria, nomeCategoria);
 		assert.equal(daoReturn.result.n, 1);

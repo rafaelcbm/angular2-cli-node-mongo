@@ -44,6 +44,8 @@ export class DataService<T extends Model> {
 				if (jsonData.status === "sucesso") {
 					this._dataStore.dataList = jsonData.data;
 					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+				} else if (jsonData.status === "erro") {
+					this._notificationsService.error('Erro', jsonData.message);
 				}
 			},
 			error => {
