@@ -83,21 +83,36 @@ export class CategoriaService {
 		return yield this.obterArvoreCategorias(userName);
 	}
 
-	public *updateCategoria(userName: string, idCategoria: any, nomeCategoria: string) {
+	public *updateCategoria(userName: string, idCategoria: any, novoNomeCategoria: string) {
 
 		let user = yield this.userDAO.getUser(userName);
 		assert.ok(user);
 
 		let categorias = yield this.categoriaDAO.getCategoriasByUser(user._id.toString());
 
-		if (categorias.length > 0 && !categorias.find(categoria => categoria._id.toString() === idCategoria))
+		let categoria = categorias.find(categoria => categoria._id.toString() === idCategoria);
+
+		if (categorias.length > 0 && !categoria)
 			throw new BusinessError(`Categoria não encontrada para o usuário informado!`);
 
-		if (categorias.find(categoria => categoria.nome === nomeCategoria))
-			throw new BusinessError(`Usuário já possui categoria com o nome informado: "${nomeCategoria}".`);
+		if (categorias.find(categoria => categoria.nome === novoNomeCategoria))
+			throw new BusinessError(`Usuário já possui categoria com o nome informado: "${novoNomeCategoria}".`);
 
-		let daoReturn = yield this.categoriaDAO.updateCategoria(idCategoria, nomeCategoria);
+		// Adiciona referencias nos filhos do novo nome
+		let query: any = { ancestrais: categoria.nome };
+		yield this.categoriaDAO.updateCategoria(query, { $push: { ancestrais: novoNomeCategoria } });
+
+		// Remove referencias nos filhos do nome antigo
+		query = { _idUser: user._id.toString() };
+		yield this.categoriaDAO.updateCategoria(query, { $pull: { ancestrais: categoria.nome } });
+		query = { pai: categoria.nome };
+		yield this.categoriaDAO.updateCategoria(query, { $set: { pai: novoNomeCategoria } });
+
+		// Atualiza de fato o nome da categoria
+		query = { _id: new ObjectID(idCategoria) };
+		let daoReturn = yield this.categoriaDAO.updateCategoria(query, { $set: { nome: novoNomeCategoria } });
 		assert.equal(daoReturn.result.n, 1);
+
 
 		return yield this.obterArvoreCategorias(userName);
 	}

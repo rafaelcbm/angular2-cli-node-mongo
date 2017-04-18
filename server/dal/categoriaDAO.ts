@@ -57,14 +57,8 @@ export class CategoriaDAO {
 		return this._dataAccess.removeDocuments(this.CATEGORIA_COLLECTION, { ancestrais: nome });
 	}
 
-	public updateCategoria(idCategoria: any, nomeCategoria: any): any {
+	public updateCategoria(query: any, updateObj: any, options: any = { multi: true }): any {
 
-		let query = { _id: new ObjectID(idCategoria) }
-
-		let updateData = {
-			nome: nomeCategoria
-		}
-
-		return this._dataAccess.dbConnection.collection(this.CATEGORIA_COLLECTION).update(query, { $set: updateData }, { w: 1 });
+		return this._dataAccess.dbConnection.collection(this.CATEGORIA_COLLECTION).update(query, updateObj, options);
 	}
 }
