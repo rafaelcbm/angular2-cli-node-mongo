@@ -28,8 +28,6 @@ loginRouter.post("/signup", function(request: Request, response: Response, next:
     userDAO.getUser(user.userName).then((document) => {
 
         if (document) {
-            // let err = new Error("Usuário já existente!");
-            // return next(err);
             return response.json({
                 status: "erro",
                 message: "Usuário já existente!"

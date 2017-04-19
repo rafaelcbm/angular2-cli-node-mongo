@@ -1,28 +1,26 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { Container } from 'typedi';
-import * as logger from 'logops';
+import * as co from "co";
 
+import { UserService } from './../services/userService';
 import { UserDAO } from "../dal/userDAO";
+import { handleError } from "../commons/businessError";
 
 export const userRouter: Router = Router();
 
-const userDAO: UserDAO = Container.get(UserDAO);
+const userService: UserService = Container.get(UserService);
 
-userRouter.get("/all", function(request: Request, response: Response, next: NextFunction) {
-    logger.info("**UserRouter - getAllUsers - request: %j", request.body);
+userRouter.get("/all", function (request: Request, response: Response, next: NextFunction) {
 
-    userDAO.getAllUsers().then(users => {
-        return response.json({
-            "status": "sucesso",
-            "users": users
-        });
-    }).catch((e) => {
-        logger.info("** Error = %j", e);
+	co(function* () {
 
-        return response.json({
-            "status": "erro",
-            "message": "Erro ao obter usuários!"
-        });
-    });
+		let users = yield userService.getUsers();
+
+		response.json({
+			"status": "sucesso",
+			"data": users
+		});
+
+	}).catch((e: Error) => handleError(e, response));
 });
 

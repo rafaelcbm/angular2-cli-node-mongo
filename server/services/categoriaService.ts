@@ -1,13 +1,10 @@
-import { BusinessError } from './../commons/businessError';
-import { length } from './../config';
 import { ObjectID } from "mongodb";
-import { Service, Inject } from 'typedi';
+import { Service } from 'typedi';
 import * as logger from 'logops';
 import { Container } from 'typedi';
-import * as co from "co";
 import * as assert from "assert";
-import * as _ from "lodash";
 
+import { BusinessError } from './../commons/businessError';
 import { UserDAO } from '../dal/userDAO';
 import { CategoriaDAO } from "../dal/categoriaDAO";
 
@@ -17,7 +14,7 @@ export class CategoriaService {
 	categoriaDAO = Container.get(CategoriaDAO);
 	userDAO = Container.get(UserDAO);
 
-	public *obterArvoreCategorias(userName: string) {
+	public *getArvoreCategorias(userName: string) {
 
 		let user = yield this.userDAO.getUser(userName);
 		assert.ok(user);
@@ -44,7 +41,7 @@ export class CategoriaService {
 		return arvoreCategorias;
 	}
 
-	public *salvarCategoria(userName: string, novaCategoria: any) {
+	public *insertCategoria(userName: string, novaCategoria: any) {
 
 		let user = yield this.userDAO.getUser(userName);
 		assert.ok(user);
@@ -58,7 +55,7 @@ export class CategoriaService {
 		let daoReturn = yield this.categoriaDAO.insertCategoria(novaCategoria);
 		assert.equal(daoReturn.result.n, 1);
 
-		return yield this.obterArvoreCategorias(userName);
+		return yield this.getArvoreCategorias(userName);
 	}
 
 	public *removeCategoria(userName: string, idCategoria: any) {
@@ -80,7 +77,7 @@ export class CategoriaService {
 		let daoReturn = yield this.categoriaDAO.removeCategoriaById(idCategoria);
 		assert.equal(daoReturn.result.n, 1);
 
-		return yield this.obterArvoreCategorias(userName);
+		return yield this.getArvoreCategorias(userName);
 	}
 
 	public *updateCategoria(userName: string, idCategoria: any, novoNomeCategoria: string) {
@@ -114,6 +111,6 @@ export class CategoriaService {
 		assert.equal(daoReturn.result.n, 1);
 
 
-		return yield this.obterArvoreCategorias(userName);
+		return yield this.getArvoreCategorias(userName);
 	}
 }

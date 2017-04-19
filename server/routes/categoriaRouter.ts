@@ -1,18 +1,13 @@
-import { length } from './../config';
 import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
 import * as co from "co";
 import { Container } from 'typedi';
 import * as logger from 'logops';
 
-import { UserDAO } from "../dal/userDAO";
-import { CategoriaDAO } from "../dal/categoriaDAO";
 import { CategoriaService } from '../services/categoriaService';
-import { BusinessError, handleError } from '../commons/businessError';
+import { handleError } from '../commons/businessError';
 
-const categoriaDAO: CategoriaDAO = Container.get(CategoriaDAO);
 const categoriaService: CategoriaService = Container.get(CategoriaService);
-const userDAO: UserDAO = Container.get(UserDAO);
 
 export const categoriaRouter: Router = Router();
 
@@ -22,7 +17,7 @@ categoriaRouter.get("/", function (request: Request & { userName: string }, resp
 
 	co(function* () {
 
-		let arvoreCategorias = yield categoriaService.obterArvoreCategorias(userName);
+		let arvoreCategorias = yield categoriaService.getArvoreCategorias(userName);
 		assert.ok(arvoreCategorias);
 
 		response.json({
@@ -41,13 +36,14 @@ categoriaRouter.post("/", function (request: Request & { userName: string }, res
 
 	co(function* () {
 
-		let arvoreCategorias = yield categoriaService.salvarCategoria(userName, novaCategoria);
+		let arvoreCategorias = yield categoriaService.insertCategoria(userName, novaCategoria);
 		assert.ok(arvoreCategorias);
 
-		response.json({
+		response.status(201).json({
 			"status": "sucesso",
 			"data": arvoreCategorias
 		});
+
 	}).catch((e: Error) => handleError(e, response));
 });
 
@@ -65,6 +61,7 @@ categoriaRouter.delete("/:idCategoria", function (request: Request & { userName:
 			"status": "sucesso",
 			"data": arvoreCategorias
 		});
+
 	}).catch((e: Error) => handleError(e, response));
 });
 
@@ -83,5 +80,6 @@ categoriaRouter.put("/:idCategoria", function (request: Request & { userName: st
 			"status": "sucesso",
 			"data": arvoreCategorias
 		});
+
 	}).catch((e: Error) => handleError(e, response));
 });
