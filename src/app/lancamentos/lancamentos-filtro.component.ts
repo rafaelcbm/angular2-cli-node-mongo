@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
 
+import { Log } from './../util/log';
 import { Lancamento } from "../models/models.module";
 import { FiltroLancamentoService } from './filtro-lancamento.service';
 
@@ -11,7 +12,7 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 	templateUrl: './lancamentos-filtro.component.html',
 	styleUrls: ['./lancamentos-filtro.component.scss']
 })
-export class LancamentosFiltroComponent {
+export class LancamentosFiltroComponent implements OnInit {
 
 	@Output() onAdicionar = new EventEmitter<Lancamento>();
 
@@ -19,6 +20,19 @@ export class LancamentosFiltroComponent {
 	mesCompetencia: any = new Date().toISOString();
 
 	constructor(private filtroLancamentoService: FiltroLancamentoService) { }
+
+	ngOnInit() {
+
+		this.filtroLancamentoService.competenciaLancamento$
+			.distinctUntilChanged()
+			.subscribe(
+			novaCompetencia => {
+				Log.info('Nova competência informada:', novaCompetencia)
+
+				this.mesCompetencia = moment(novaCompetencia, 'YYYYMM').toDate();
+			}
+			)
+	}
 
 	adicionar() {
 		this.onAdicionar.emit(new Lancamento());
