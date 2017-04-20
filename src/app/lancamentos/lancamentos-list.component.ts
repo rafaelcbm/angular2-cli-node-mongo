@@ -72,12 +72,12 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 
-/** Trecho relativo a categorias */
+	/** Trecho relativo a categorias */
 	add(node, indexNode) {
 		node.data.operacao = 'add';
 		this.toogleEdit(node);
 		//TODO: Filtrar nós para exibicao atraves dessa propriedade
-		Log.log('this.tree.treeModel.activeNodes = ', this.tree.treeModel.activeNodes);
+		//Log.log('this.tree.treeModel.activeNodes = ', this.tree.treeModel.activeNodes);
 	}
 
 	edit(node, indexNode) {
@@ -112,13 +112,10 @@ export class LancamentosListComponent implements OnInit {
 		}
 
 		this.toogleEdit(node);
+		this.toogleOptions(node);
 	}
 
 	remove(node, indexNode) {
-		// let parent = node.parent;
-		// parent.data.children.splice(indexNode, 1);
-		// this.tree.treeModel.update();
-
 		this.categoriasService.remove(node.data._id);
 	}
 
@@ -131,6 +128,23 @@ export class LancamentosListComponent implements OnInit {
 		node.data.showEdit = !node.data.showEdit;
 		if (!node.data.showEdit) {
 			this.clearTempData(node);
+		}
+	}
+
+	toogleOptions(node) {
+		//node.data.showBars = !node.data.showOptions;
+	}
+
+	clickBars(node) {
+		node.data.showBars = false;
+		node.data.showOptions = true;
+	}
+
+	onDeactivate($event) {
+
+		if (!$event.node.data.showEdit) {
+			$event.node.data.showOptions = false;
+			$event.node.data.showBars = true;
 		}
 	}
 }
