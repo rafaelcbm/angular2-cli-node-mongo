@@ -18,13 +18,15 @@ import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
 import { CategoriasService } from './../services/categorias.service';
+import { CategoriasTreeComponent } from '../categorias/categorias-tree.component';
 
 @NgModule({
     declarations: [
         ManageLancamentosComponent,
         LancamentosListComponent,
         LancamentosDetailComponent,
-		LancamentosFiltroComponent
+		LancamentosFiltroComponent,
+		CategoriasTreeComponent
     ],
     imports: [
         CommonModule,

@@ -14,8 +14,10 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 })
 export class LancamentosFiltroComponent implements OnInit {
 
+	@Output() onShowCategoriaChange = new EventEmitter<Lancamento>();
 	@Output() onAdicionar = new EventEmitter<Lancamento>();
 
+	showCategorias = true;
 	showDatePicker = false;
 	mesCompetencia: any = new Date().toISOString();
 
@@ -69,5 +71,10 @@ export class LancamentosFiltroComponent implements OnInit {
 
 	notificaNovaCompetencia() {
 		this.filtroLancamentoService.novaCompetencia(moment(this.mesCompetencia, 'YYYY-MM-DD').format('YYYYMM'));
+	}
+
+	categoriaChange() {
+		this.showCategorias = !this.showCategorias;
+		this.onShowCategoriaChange.emit(this.showCategorias);
 	}
 }

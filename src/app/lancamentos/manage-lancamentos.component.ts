@@ -11,13 +11,18 @@ export class ManageLancamentosComponent {
 	constructor() { }
 
 	lancamento: Lancamento;
+	showCategorias = true;
 
 	onSelectLancamento(lancamento: Lancamento) {
 		this.lancamento = lancamento;
 	}
 
 	onAdicionar(lancamento: Lancamento) {
-		Log.info('Chamou on Adicionar');
 		this.lancamento = new Lancamento();
+	}
+
+	onShowCategoriaChange(showCategorias: boolean) {
+		Log.info('onShowCategoriaChange:', showCategorias);
+		this.showCategorias = showCategorias;
 	}
 }
