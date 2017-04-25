@@ -1,12 +1,28 @@
-.input-group-addon-white{
-	background-color: #fff;
+.datepicker-popup {
+    position: absolute;
+    top: 35px;
+    z-index: 10;
+    min-height: 290px;
 }
 
-.fa{
-	&.fa-calendar{
-		color: #3a9d5d;
-	}
-	&.fa-tags{
-		color: #ff4d4d;
-	}
+.input-group-addon-white {
+    background-color: #fff;
+}
+
+.fa {
+    &.fa-calendar {
+        color: #3a9d5d;
+    }
+    &.fa-tags {
+        color: rgba(255, 77, 77, 0.82);
+    }
+}
+
+.btn-show-categoria-on {
+    background-color: rgba(255, 77, 77, 0.82);
+    .fa {
+        &.fa-tags {
+            color: #fff;
+        }
+    }
 }

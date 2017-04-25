@@ -17,6 +17,7 @@ export class LancamentosFiltroComponent implements OnInit {
 	@Output() onShowCategoriaChange = new EventEmitter<Lancamento>();
 	@Output() onAdicionar = new EventEmitter<Lancamento>();
 
+	categoryClass: {};
 	showCategorias = true;
 	showDatePicker = false;
 	mesCompetencia: any = new Date().toISOString();
@@ -24,6 +25,8 @@ export class LancamentosFiltroComponent implements OnInit {
 	constructor(private filtroLancamentoService: FiltroLancamentoService) { }
 
 	ngOnInit() {
+
+		this.setCategoryClass();
 
 		this.filtroLancamentoService.competenciaLancamento$
 			.distinctUntilChanged()
@@ -76,5 +79,15 @@ export class LancamentosFiltroComponent implements OnInit {
 	categoriaChange() {
 		this.showCategorias = !this.showCategorias;
 		this.onShowCategoriaChange.emit(this.showCategorias);
+
+		this.setCategoryClass();
+	}
+
+	setCategoryClass() {
+		this.categoryClass = {
+			"btn": true,
+			"btn-secondary": !this.showCategorias,
+			"btn-show-categoria-on": this.showCategorias
+		}
 	}
 }

@@ -7,7 +7,8 @@ import { CategoriasService } from './../services/categorias.service';
 
 @Component({
 	selector: 'categorias-tree',
-	templateUrl: './categorias-tree.component.html'
+	templateUrl: './categorias-tree.component.html',
+	styleUrls: ['./categorias-tree.component.scss']
 })
 export class CategoriasTreeComponent implements OnInit {
 

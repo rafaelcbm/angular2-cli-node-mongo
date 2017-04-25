@@ -6,16 +6,16 @@
 		<div class="input-group">
 			<span class="input-group-addon p-0" (click)="showDatePicker=(!showDatePicker)"><i class="fa fa-calendar"></i></span>
 			<span class="input-group-addon input-group-addon-white p-0 text-primary" (click)="previousMonth()"><i class="fa fa-chevron-left fa-lg"></i></span>
-			<div *ngIf="showDatePicker" style="position:absolute; top:35px; z-index:10; min-height:290px;">
+			<div *ngIf="showDatePicker" class="datepicker-popup">
 				<datepicker [(ngModel)]="mesCompetencia" (selectionDone)="onSelectionDone($event)" [ngModelOptions]="{standalone: true}"
 				 [datepickerMode]="'month'" [maxMode]="'month'" [minMode]="'month'"></datepicker>
 			</div>
-			<input [ngModel]="mesCompetencia | date:'MM/yyyy'" class="form-control form-control" style="text-align: center;" id="data"
+			<input [ngModel]="mesCompetencia | date:'MM/yyyy'" class="form-control form-control text-center" id="data"
 			 name="data" placeholder="Mês/Ano" [input-mask]="'00/0000'" #inputCompetencia (keyup)="onCompetenciaChanged(inputCompetencia.value)">
 			<span class="input-group-addon input-group-addon-white p-0 text-primary" (click)="nextMonth()"><i class="fa fa-chevron-right fa-lg"></i></span>
 		</div>
 	</div>
 	<div class="col-1">
-		<button (click)="categoriaChange()" type="button" class="btn btn btn-secondary"><i class="fa fa-tags"></i></button>
+		<button (click)="categoriaChange()" type="button" [ngClass]="categoryClass"><i class="fa fa-tags"></i></button>
 	</div>
 </div>
