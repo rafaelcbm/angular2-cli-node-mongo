@@ -35,20 +35,28 @@ export class AuthService {
         return tokenNotExpired();
     }
 
-    getToken() {
-        // let jwtHelper: JwtHelper = new JwtHelper();
-
-        // var token = localStorage.getItem('id_token');
-
-        // if (token) {
-        //     console.log("* Token utils:");
-        //     console.log(
-        //         jwtHelper.decodeToken(token),
-        //         jwtHelper.getTokenExpirationDate(token),
-        //         jwtHelper.isTokenExpired(token)
-        //     );
-        // }
+    getToken() {     
         return localStorage.getItem('id_token');
+    }
+
+    getUserName() {
+        let jwtHelper: JwtHelper = new JwtHelper();
+
+        var token = localStorage.getItem('id_token');
+
+        if (token) {
+            console.log("* Token utils:");
+            console.log(
+                jwtHelper.decodeToken(token),
+                jwtHelper.getTokenExpirationDate(token),
+                jwtHelper.isTokenExpired(token)
+            );
+
+            let userName = jwtHelper.decodeToken(token).userName;
+            return userName;
+        }
+        
+        return null;
     }
 
     login(userCredential) {

@@ -1,4 +1,8 @@
 <div *ngIf="lancamento">
+	<p>lancamento: {{lancamento|json}}</p>
+	<p>lancamentoForm: {{lancamentoForm.value|json}}</p>
+	<p>categorias: {{categorias|json}}</p>
+
 	<form (ngSubmit)="salvarLancamento(lancamentoForm.value)" #lancamentoForm="ngForm">
 		<div class="row">
 			<div class="col-sm">
@@ -19,7 +23,7 @@
 											 required [input-mask]="'00/00/0000'">
 										</div>
 									</div>
-									<div class="form-group col-sm-3">
+									<div class="form-group col-sm-2">
 										<label for="company">Descrição</label>
 										<input [ngModel]="lancamento.descricao" required type="text" class="form-control form-control-sm" id="descricao" name="descricao"
 										 placeholder="Descrição" [focus]="lancamento">
@@ -28,12 +32,26 @@
 										<label for="street">Conta</label>
 										<select [ngModel]="lancamento.conta" class="form-control form-control-sm" id="conta" name="conta" (ngModelChange)="contasChanged($event)">
                                             <!-- Outra forma seria passar através do $event: (change)="contasChanged($event.target.value)" -->
-                                            <option *ngFor="let c of contas" [ngValue]="c">
+                                            <option [ngValue]="undefined">
+												Selecione
+											</option>
+											<option *ngFor="let c of contas" [ngValue]="c">
                                                 {{c?.nome}}
                                             </option>
                                         </select>
 									</div>
 									<div class="form-group col-sm-2">
+										<label for="street">Catagoria</label>
+										<select [ngModel]="lancamento.categoria" class="form-control form-control-sm" id="categoria" name="categoria" (ngModelChange)="categoriasChanged($event)">                                            
+                                            <option [ngValue]="undefined">
+												Selecione
+											</option>
+											<option *ngFor="let cat of categorias" [ngValue]="cat">
+                                                {{cat?.nome}}
+                                            </option>
+                                        </select>
+									</div>
+									<div class="form-group col-sm-1">
 										<label for="city">Valor</label>
 										<input [ngModel]="lancamento.valor" required class="form-control form-control-sm" id="valor" name="valor" [input-mask]="'000.000,00'"
 										 [input-mask-options]="{reverse: true}" autocomplete="off">

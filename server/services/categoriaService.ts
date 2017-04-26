@@ -41,6 +41,17 @@ export class CategoriaService {
 		return arvoreCategorias;
 	}
 
+	public *getCategorias(userName: string) {
+
+		let user = yield this.userDAO.getUser(userName);
+		assert.ok(user);
+
+		let userId = user._id.toString();
+		let categorias = yield this.categoriaDAO.getCategoriasByUser(user._id.toString());
+
+		return categorias;
+	}
+
 	public *insertCategoria(userName: string, novaCategoria: any) {
 
 		let user = yield this.userDAO.getUser(userName);

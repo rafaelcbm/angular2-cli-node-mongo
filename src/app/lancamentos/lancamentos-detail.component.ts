@@ -3,11 +3,14 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import 'rxjs/add/operator/map';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import { NotificationsService } from "angular2-notifications";
 
 import { Log } from './../util/log';
 import { Util } from './../util/util';
+import { Categoria } from './../models/categoria.model';
 import { Lancamento, Conta } from "../models/models.module";
+import { CategoriasService } from './../services/categorias.service';
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
 
@@ -21,21 +24,24 @@ export class LancamentosDetailComponent implements OnInit {
 
 	showDatePicker = false;
 	contas: Conta[];
+	categorias: Categoria[];
 	dataLancamento = new Date().toISOString();
 
 	//Apenas para testar o drop de contas
 	contaSelectionada = new Conta();
+	categoriaSelectionada: any = {};
 
 	constructor(
 		private route: ActivatedRoute,
 		private router: Router,
 		private lancamentosService: LancamentosService,
 		private contasService: ContasService,
-		private _notificationsService: NotificationsService
+		private categoriasService: CategoriasService
 	) { }
 
 	ngOnInit() {
 		this.carregarContas();
+		this.carregarCategorias();
 	}
 
 	carregarContas() {
@@ -46,6 +52,16 @@ export class LancamentosDetailComponent implements OnInit {
 			});
 
 		this.contasService.retrieve();
+	}
+
+	carregarCategorias() {
+		this.categoriasService.flatCategorias$.subscribe(
+			categorias => {
+				this.categorias = categorias;
+				this.associaCategoriaDoLancamento();
+			});
+
+		this.categoriasService.getAll();
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -70,6 +86,9 @@ export class LancamentosDetailComponent implements OnInit {
 			if (this.contas) {
 				this.associaContaDoLancamento();
 			}
+			if (this.categorias) {
+				this.associaCategoriaDoLancamento();
+			}
 		}
 	}
 
@@ -79,6 +98,16 @@ export class LancamentosDetailComponent implements OnInit {
 
 			if (contaEncontrada) {
 				this.lancamento.conta = contaEncontrada;
+			}
+		}
+	}
+
+	associaCategoriaDoLancamento() {
+		if (this.lancamento.categoria) {
+			let categoriaEncontrada = this.categorias.find(categoria => categoria._id === this.lancamento.categoria._id);
+
+			if (categoriaEncontrada) {
+				this.lancamento.categoria = categoriaEncontrada;
 			}
 		}
 	}
@@ -115,5 +144,11 @@ export class LancamentosDetailComponent implements OnInit {
 	contasChanged(contaChanged) {
 		Log.log("contaChanged = ", contaChanged);
 		this.contaSelectionada = contaChanged;
+	}
+
+	//Apenas teste de como obter o valor do select através ngModelChange
+	categoriasChanged(categoriaChanged) {
+		Log.log("categoriaChanged = ", categoriaChanged);
+		this.categoriaSelectionada = categoriaChanged;
 	}
 }

@@ -29,6 +29,25 @@ categoriaRouter.get("/", function (request: Request & { userName: string }, resp
 
 });
 
+categoriaRouter.get("/flat", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+
+	let userName = request.userName;
+	logger.info('****** CATEGORIA FLAT', userName);
+
+	co(function* () {
+
+		let categorias = yield categoriaService.getCategorias(userName);
+		assert.ok(categorias);
+
+		response.json({
+			"status": "sucesso",
+			"data": categorias
+		});
+
+	}).catch((e: Error) => handleError(e, response));
+
+});
+
 categoriaRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
 	let userName = request.userName;
