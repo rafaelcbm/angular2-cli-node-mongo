@@ -8,7 +8,6 @@ import { DataAccess } from "./abstractDAO";
 export class CategoriaDAO {
 
 	@Inject() private _dataAccess: DataAccess;
-
 	CATEGORIA_COLLECTION = 'categorias';
 
 	public getCategoriaByIds(idsCategorias: any): any {

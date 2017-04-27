@@ -9,6 +9,7 @@ import { DataAccess } from "./abstractDAO";
 export class LancamentoDAO {
 
 	@Inject() private _dataAccess: DataAccess;
+	LANCAMENTO_COLLECTION = 'lancamentos';
 
 	public getLancamentoByIds(idsLancamentos: any): any {
 
@@ -16,20 +17,20 @@ export class LancamentoDAO {
 		let idsLancametosAsObjectID = [];
 		idsLancamentos.forEach(id => idsLancametosAsObjectID.push(ObjectID.createFromHexString(id)));
 
-		return this._dataAccess.getDocuments('lancamentos', { _id: { $in: idsLancametosAsObjectID } });
+		return this._dataAccess.getDocuments(this.LANCAMENTO_COLLECTION, { _id: { $in: idsLancametosAsObjectID } });
 	}
 
 	public getLancamentoById(idLancamento: string): any {
 
-		return this._dataAccess.getDocumentById('lancamentos', idLancamento);
+		return this._dataAccess.getDocumentById(this.LANCAMENTO_COLLECTION, idLancamento);
 	}
 
 	public getLancamentosByUser(idUser: string): any {
-		return this._dataAccess.getDocuments('lancamentos', { _idUser: idUser });
+		return this._dataAccess.getDocuments(this.LANCAMENTO_COLLECTION, { _idUser: idUser });
 	}
 
 	public getLancamentoByDescricao(descricaoLancamento: string): any {
-		return this._dataAccess.getDocument('lancamentos', { descricao: descricaoLancamento });
+		return this._dataAccess.getDocument(this.LANCAMENTO_COLLECTION, { descricao: descricaoLancamento });
 	}
 
 	public getLancamentoByCompetencia(idUser: string, competencia: string): any {
@@ -40,7 +41,7 @@ export class LancamentoDAO {
 		console.log('** dataFim = ', dataFim);
 		console.log('** idUser = ', idUser);
 
-		return this._dataAccess.getDocuments('lancamentos',
+		return this._dataAccess.getDocuments(this.LANCAMENTO_COLLECTION,
 			{ $and: [{ _idUser: idUser }, { data: { $gte: dataInicio } }, { data: { $lt: dataFim } }] });
 
 	}
@@ -49,14 +50,14 @@ export class LancamentoDAO {
 
 		//Parse data to Date
 		lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
-		return this._dataAccess.insertDocument(lancamento, 'lancamentos');
+		return this._dataAccess.insertDocument(lancamento, this.LANCAMENTO_COLLECTION);
 	}
 
 	public removeLancamentoById(idLancamento: string): any {
-		return this._dataAccess.removeDocumentById('lancamentos', idLancamento);
+		return this._dataAccess.removeDocumentById(this.LANCAMENTO_COLLECTION, idLancamento);
 	}
 
-	public updateLancamento(idLancamento: any, lancamento: any): any {
+	public updateLancamento2(idLancamento: any, lancamento: any): any {
 
 		if (this._dataAccess.dbConnection) {
 
@@ -72,7 +73,12 @@ export class LancamentoDAO {
 				isDebito: lancamento.isDebito,
 			}
 
-			return this._dataAccess.dbConnection.collection('lancamentos').update(query, { $set: updateData }, { w: 1 });
+			return this._dataAccess.dbConnection.collection(this.LANCAMENTO_COLLECTION).update(query, { $set: updateData }, { w: 1 });
 		}
+	}
+
+	public updateLancamento(query: any, updateObj: any, options: any = { multi: true }): any {
+
+		return this._dataAccess.dbConnection.collection(this.LANCAMENTO_COLLECTION).update(query, updateObj, options);
 	}
 }

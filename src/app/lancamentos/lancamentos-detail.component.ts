@@ -16,12 +16,13 @@ import { ContasService } from '../services/contas.service';
 
 @Component({
 	selector: 'lancamentos-detail',
-	templateUrl: './lancamentos-detail.component.html'
+	templateUrl: './lancamentos-detail.component.html',
+	styleUrls: ['./lancamentos-detail.component.scss']
 })
 export class LancamentosDetailComponent implements OnInit {
 
 	@Input() lancamento: Lancamento;
-
+	@Input() showLancamento;
 	showDatePicker = false;
 	contas: Conta[];
 	categorias: Categoria[];
@@ -29,7 +30,6 @@ export class LancamentosDetailComponent implements OnInit {
 
 	//Apenas para testar o drop de contas
 	contaSelectionada = new Conta();
-	categoriaSelectionada: any = {};
 
 	constructor(
 		private route: ActivatedRoute,
@@ -94,7 +94,7 @@ export class LancamentosDetailComponent implements OnInit {
 
 	associaContaDoLancamento() {
 		if (this.lancamento.conta) {
-			let contaEncontrada = this.contas.find(conta => conta.nome === this.lancamento.conta.nome);
+			let contaEncontrada = this.contas.find(conta => conta._id === this.lancamento.conta._id);
 
 			if (contaEncontrada) {
 				this.lancamento.conta = contaEncontrada;
@@ -129,6 +129,8 @@ export class LancamentosDetailComponent implements OnInit {
 		} else {
 			this.lancamentosService.create({ lancamento: novoLancamento });
 		}
+
+		this.voltar();
 	}
 
 	removerLancamento() {
@@ -138,17 +140,19 @@ export class LancamentosDetailComponent implements OnInit {
 
 	voltar() {
 		this.lancamento = null;
+		this.showLancamento = false;
+	}
+
+	isLancamentoValido(formValue) {
+		if (!formValue.conta || !formValue.categoria) {
+			return false;
+		}
+		return true;
 	}
 
 	//Apenas teste de como obter o valor do select através ngModelChange
 	contasChanged(contaChanged) {
 		Log.log("contaChanged = ", contaChanged);
 		this.contaSelectionada = contaChanged;
-	}
-
-	//Apenas teste de como obter o valor do select através ngModelChange
-	categoriasChanged(categoriaChanged) {
-		Log.log("categoriaChanged = ", categoriaChanged);
-		this.categoriaSelectionada = categoriaChanged;
 	}
 }

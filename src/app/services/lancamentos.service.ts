@@ -69,6 +69,14 @@ export class LancamentosService extends DataService<Lancamento> {
 			jsonData => {
 				if (jsonData.status === "sucesso") {
 
+					this._dataStore.dataList.forEach((dataItem, i) => {
+						if (dataItem._id === jsonData.data._id) {
+							this._dataStore.dataList[i] = jsonData.data;
+						}
+					});
+					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+
+					// Atualiza também para a nova competência, de acordo com a data alterada do lançamento.
 					this.filtroLancamentoService.novaCompetencia(moment(payLoad.lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
 
 					this._notificationsService.success('Sucesso', this.successPutMessage);

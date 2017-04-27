@@ -32,7 +32,6 @@ categoriaRouter.get("/", function (request: Request & { userName: string }, resp
 categoriaRouter.get("/flat", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
 	let userName = request.userName;
-	logger.info('****** CATEGORIA FLAT', userName);
 
 	co(function* () {
 

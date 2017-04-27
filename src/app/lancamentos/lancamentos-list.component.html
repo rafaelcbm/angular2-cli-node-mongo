@@ -6,20 +6,22 @@
 		<table class="table table-bordered table-striped table-condensed table-hover">
 			<thead>
 				<tr>
+					<th>Data</th>
 					<th>Descrição</th>
 					<th>Valor</th>
 					<th>Conta</th>
-					<th>Data</th>
+					<th>Categoria</th>
 					<th>Débito?</th>
 				</tr>
 			</thead>
 			<tbody>
 				<!-- Async pipe is used to bind an observable directly in our template -->
 				<tr *ngFor="let lancamento of lancamentos$ | async" (click)="onSelect(lancamento)">
+					<td>{{lancamento.data | date:"dd/MM/yyyy"}}</td>
 					<td>{{lancamento.descricao}}</td>
 					<td>{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
 					<td>{{lancamento.conta.nome}}</td>
-					<td>{{lancamento.data | date:"dd/MM/yyyy"}}</td>
+					<td>{{lancamento.categoria.nome}}</td>
 					<td>{{lancamento.isDebito | boolean}}</td>
 				</tr>
 			</tbody>

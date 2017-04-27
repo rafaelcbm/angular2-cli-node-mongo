@@ -1,4 +1,4 @@
-<div *ngIf="lancamento">
+<div *ngIf="showLancamento">
 	<p>lancamento: {{lancamento|json}}</p>
 	<p>lancamentoForm: {{lancamentoForm.value|json}}</p>
 	<p>categorias: {{categorias|json}}</p>
@@ -23,11 +23,19 @@
 											 required [input-mask]="'00/00/0000'">
 										</div>
 									</div>
+
 									<div class="form-group col-sm-2">
 										<label for="company">Descrição</label>
 										<input [ngModel]="lancamento.descricao" required type="text" class="form-control form-control-sm" id="descricao" name="descricao"
 										 placeholder="Descrição" [focus]="lancamento">
 									</div>
+
+									<div class="form-group col-sm-1">
+										<label for="city">Valor</label>
+										<input [ngModel]="lancamento.valor" required class="form-control form-control-sm" id="valor" name="valor" [input-mask]="'000.000,00'"
+										 [input-mask-options]="{reverse: true}" autocomplete="off">
+									</div>
+
 									<div class="form-group col-sm-2">
 										<label for="street">Conta</label>
 										<select [ngModel]="lancamento.conta" class="form-control form-control-sm" id="conta" name="conta" (ngModelChange)="contasChanged($event)">
@@ -40,9 +48,10 @@
                                             </option>
                                         </select>
 									</div>
+
 									<div class="form-group col-sm-2">
 										<label for="street">Catagoria</label>
-										<select [ngModel]="lancamento.categoria" class="form-control form-control-sm" id="categoria" name="categoria" (ngModelChange)="categoriasChanged($event)">                                            
+										<select [ngModel]="lancamento.categoria" class="form-control form-control-sm" id="categoria" name="categoria" (ngModelChange)="categoriasChanged($event)">
                                             <option [ngValue]="undefined">
 												Selecione
 											</option>
@@ -51,11 +60,7 @@
                                             </option>
                                         </select>
 									</div>
-									<div class="form-group col-sm-1">
-										<label for="city">Valor</label>
-										<input [ngModel]="lancamento.valor" required class="form-control form-control-sm" id="valor" name="valor" [input-mask]="'000.000,00'"
-										 [input-mask-options]="{reverse: true}" autocomplete="off">
-									</div>
+
 									<div class="form-group col-sm-3">
 										<label class="col-sm-8 form-control-label" for="isDebito">Débito?: </label>
 										<div class="col-sm-4">
@@ -69,7 +74,7 @@
 								</div>
 							</div>
 							<div class="card-footer">
-								<button [disabled]="!lancamentoForm.form.valid" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Salvar</button>
+								<button [disabled]="!lancamentoForm.form.valid || !isLancamentoValido(lancamentoForm.value)" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Salvar</button>
 								<button [hidden]="!lancamento._id" (click)="removerLancamento()" type="button" class="btn btn-sm btn-danger"><i class="fa fa-close"></i> Remover
                                 </button>
 								<button (click)="voltar()" type="button" class="btn btn-sm btn-warning"><i class="fa fa-ban"></i> Voltar</button>
