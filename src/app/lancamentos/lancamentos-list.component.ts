@@ -13,8 +13,6 @@ import { Lancamento } from "../models/models.module";
 })
 export class LancamentosListComponent implements OnInit {
 
-	@Output() onSelectLancamento = new EventEmitter<Lancamento>();
-
 	lancamentos$: Observable<Lancamento[]>;
 
 	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService) { }
@@ -33,6 +31,6 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 	onSelect(lancamento: Lancamento) {
-		this.onSelectLancamento.emit(lancamento);
+		this.filtroLancamentoService.selectLancamento(lancamento);
 	}
 }

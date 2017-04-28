@@ -15,7 +15,6 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 export class LancamentosFiltroComponent implements OnInit {
 
 	@Output() onShowCategoriaChange = new EventEmitter<Lancamento>();
-	@Output() onAdicionar = new EventEmitter<Lancamento>();
 
 	categoryClass: {};
 	showCategorias = true;
@@ -40,7 +39,7 @@ export class LancamentosFiltroComponent implements OnInit {
 	}
 
 	adicionar() {
-		this.onAdicionar.emit(new Lancamento());
+		this.filtroLancamentoService.selectLancamento(new Lancamento());
 	}
 
 	previousMonth() {

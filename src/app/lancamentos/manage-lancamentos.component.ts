@@ -10,19 +10,9 @@ import { Lancamento } from "../models/models.module";
 export class ManageLancamentosComponent {
 	constructor() { }
 
-	lancamento: Lancamento;
 	showCategorias = true;
 
-	onSelectLancamento(lancamento: Lancamento) {
-		this.lancamento = lancamento;
-	}
-
-	onAdicionar(lancamento: Lancamento) {
-		this.lancamento = new Lancamento();
-	}
-
 	onShowCategoriaChange(showCategorias: boolean) {
-		Log.info('onShowCategoriaChange:', showCategorias);
 		this.showCategorias = showCategorias;
 	}
 }

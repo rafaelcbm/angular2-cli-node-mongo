@@ -13,6 +13,7 @@ import { Lancamento, Conta } from "../models/models.module";
 import { CategoriasService } from './../services/categorias.service';
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
+import { FiltroLancamentoService } from './filtro-lancamento.service';
 
 @Component({
 	selector: 'lancamentos-detail',
@@ -21,8 +22,8 @@ import { ContasService } from '../services/contas.service';
 })
 export class LancamentosDetailComponent implements OnInit {
 
-	@Input() lancamento: Lancamento;
-	@Input() showLancamento;
+	lancamento: Lancamento = new Lancamento();
+	showLancamento = false;
 	showDatePicker = false;
 	contas: Conta[];
 	categorias: Categoria[];
@@ -36,12 +37,25 @@ export class LancamentosDetailComponent implements OnInit {
 		private router: Router,
 		private lancamentosService: LancamentosService,
 		private contasService: ContasService,
-		private categoriasService: CategoriasService
+		private categoriasService: CategoriasService,
+		private filtroLancamentoService: FiltroLancamentoService,
 	) { }
 
 	ngOnInit() {
+		console.debug('LancamentosDetailComponent:ngOnInit');
 		this.carregarContas();
 		this.carregarCategorias();
+		this.carregarLancamento();
+	}
+
+	carregarLancamento() {
+		this.filtroLancamentoService.selectedLancamento$.subscribe(
+			lancamento => {
+				console.debug('subscribe lancamento=', lancamento);
+				this.lancamento = lancamento;
+				this.onLancamentoChange();
+				this.showLancamento = true;
+			});
 	}
 
 	carregarContas() {
@@ -64,10 +78,7 @@ export class LancamentosDetailComponent implements OnInit {
 		this.categoriasService.getAll();
 	}
 
-	ngOnChanges(changes: SimpleChanges) {
-		Log.debug("ngOnChanges: novo lancamento = ", changes['lancamento'].currentValue);
-		this.lancamento = changes['lancamento'].currentValue;
-
+	onLancamentoChange() {
 		// Se novo Lancamento
 		if (!this.lancamento._id) {
 			this.dataLancamento = moment().format('YYYY-MM-DD');
@@ -126,11 +137,11 @@ export class LancamentosDetailComponent implements OnInit {
 
 		if (this.lancamento._id) {
 			this.lancamentosService.update(this.lancamento._id, { lancamento: novoLancamento });
+			this.voltar();
 		} else {
 			this.lancamentosService.create({ lancamento: novoLancamento });
 		}
 
-		this.voltar();
 	}
 
 	removerLancamento() {
@@ -139,7 +150,7 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	voltar() {
-		this.lancamento = null;
+		this.lancamento = new Lancamento();
 		this.showLancamento = false;
 	}
 

@@ -17,7 +17,7 @@ export class LancamentosService extends DataService<Lancamento> {
 
 	static baseUrl = '/api/lancamentos';
 
-	constructor(apiHttp: ApiHttpService, _notificationsService: NotificationsService, private msgService: MessagesService, private filtroLancamentoService:FiltroLancamentoService) {
+	constructor(apiHttp: ApiHttpService, _notificationsService: NotificationsService, private msgService: MessagesService, private filtroLancamentoService: FiltroLancamentoService) {
 		super(apiHttp, _notificationsService, LancamentosService.baseUrl);
 		this.successPostMessage = this.msgService.getMessage(this.msgService.SUCCESS_CREATE_LANCAMENTO);
 		this.successDeleteMessage = this.msgService.getMessage(this.msgService.SUCCESS_DELETE_LANCAMENTO);
@@ -47,6 +47,8 @@ export class LancamentosService extends DataService<Lancamento> {
 			.subscribe(
 			jsonData => {
 				if (jsonData.status === "sucesso") {
+					this._dataStore.dataList.push(jsonData.data);
+					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
 					this.filtroLancamentoService.novaCompetencia(moment(payLoad.lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
 

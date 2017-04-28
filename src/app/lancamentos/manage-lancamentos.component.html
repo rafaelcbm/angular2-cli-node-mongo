@@ -2,14 +2,12 @@
 <hr>
 <div class="row">
 	<div class="col-12">
-		<lancamentos-filtro (onAdicionar)="onAdicionar($event)" (onShowCategoriaChange)="onShowCategoriaChange($event)"></lancamentos-filtro>
+		<lancamentos-filtro (onShowCategoriaChange)="onShowCategoriaChange($event)"></lancamentos-filtro>
 	</div>
 </div>
 <div class="row">
 	<div class="col-12">
-		<div *ngIf="lancamento">
-			<lancamentos-detail [lancamento]="lancamento" [showLancamento]="true"></lancamentos-detail>
-		</div>
+		<lancamentos-detail></lancamentos-detail>
 	</div>
 </div>
 <div class="row">
@@ -17,6 +15,6 @@
 		<categorias-tree></categorias-tree>
 	</div>
 	<div [class.col-12]="!showCategorias" [class.col-10]="showCategorias">
-		<lancamentos-list (onSelectLancamento)="onSelectLancamento($event)"></lancamentos-list>
+		<lancamentos-list></lancamentos-list>
 	</div>
 </div>
