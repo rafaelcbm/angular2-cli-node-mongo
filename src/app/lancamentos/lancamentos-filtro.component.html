@@ -10,12 +10,15 @@
 				<datepicker [(ngModel)]="mesCompetencia" (selectionDone)="onSelectionDone($event)" [ngModelOptions]="{standalone: true}"
 				 [datepickerMode]="'month'" [maxMode]="'month'" [minMode]="'month'"></datepicker>
 			</div>
-			<input [ngModel]="mesCompetencia | date:'MM/yyyy'" class="form-control form-control text-center" id="data"
-			 name="data" placeholder="Mês/Ano" [input-mask]="'00/0000'" #inputCompetencia (keyup)="onCompetenciaChanged(inputCompetencia.value)">
+			<input [ngModel]="mesCompetencia | date:'MM/yyyy'" class="form-control form-control text-center" id="data" name="data" placeholder="Mês/Ano"
+			 [input-mask]="'00/0000'" #inputCompetencia (keyup)="onCompetenciaChanged(inputCompetencia.value)">
 			<span class="input-group-addon input-group-addon-white p-0 text-primary" (click)="nextMonth()"><i class="fa fa-chevron-right fa-lg"></i></span>
 		</div>
 	</div>
 	<div class="col-1">
-		<button (click)="categoriaChange()" type="button" [ngClass]="categoryClass"><i class="fa fa-tags"></i></button>
+		<div class="row">
+			<button (click)="categoriaChange()" type="button" [ngClass]="categoryClass"><i class="fa fa-tags"></i></button>
+			<button (click)="contasChange()" type="button" [ngClass]="contasClass"><i class="fa fa-credit-card-alt"></i></button>
+		</div>
 	</div>
 </div>

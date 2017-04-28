@@ -16,6 +16,9 @@
     &.fa-tags {
         color: rgba(255, 77, 77, 0.82);
     }
+	&.credit-card-alt {
+        color: rgba(55, 90, 183, 0.76);
+    }
 }
 
 .btn-show-categoria-on {
@@ -26,3 +29,13 @@
         }
     }
 }
+
+.btn-show-contas-on {
+    background-color: rgba(55, 90, 183, 0.76);
+    .fa {
+        &.fa-credit-card-alt {
+            color: #fff;
+        }
+    }
+}
+

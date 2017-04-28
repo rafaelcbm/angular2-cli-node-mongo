@@ -37,6 +37,9 @@ export class CategoriasService extends DataService<Categoria> {
 					this._dataStore.dataList = jsonData.data;
 					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
+					//Atualiza a fonte de dados do dropdown de categorias
+					this.getAll();
+
 					this._notificationsService.success('Sucesso', this.successPostMessage);
 				} else if (jsonData.status === "erro") {
 					this._notificationsService.error('Erro', jsonData.message);
@@ -53,6 +56,9 @@ export class CategoriasService extends DataService<Categoria> {
 				if (jsonData.status === "sucesso") {
 					this._dataStore.dataList = jsonData.data;
 					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+
+					//Atualiza a fonte de dados do dropdown de categorias
+					this.getAll();
 
 					this._notificationsService.success('Sucesso', this.successDeleteMessage);
 				} else if (jsonData.status === "erro") {
@@ -71,6 +77,9 @@ export class CategoriasService extends DataService<Categoria> {
 					this._dataStore.dataList = jsonData.data;
 					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
+					//Atualiza a fonte de dados do dropdown de categorias
+					this.getAll();
+
 					this._notificationsService.success('Sucesso', this.successPutMessage);
 
 				} else if (jsonData.status === "erro") {
@@ -87,7 +96,7 @@ export class CategoriasService extends DataService<Categoria> {
 				console.log("Data return on service:", jsonData);
 
 				if (jsonData.status === "sucesso") {
-					
+
 					return this.flatCategoriasObserver.next(jsonData.data);
 
 				} else if (jsonData.status === "erro") {
