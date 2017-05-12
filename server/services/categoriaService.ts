@@ -111,7 +111,7 @@ export class CategoriaService {
 		yield this.categoriaDAO.updateCategoria(query, { $push: { ancestrais: novoNomeCategoria } });
 
 		// Remove referencias nos filhos do nome antigo
-		query = { _idUser: user._id.toString() };
+		query = { $and: [{ _idUser: user._id.toString() }, { ancestrais: { $ne: null } }] };
 		yield this.categoriaDAO.updateCategoria(query, { $pull: { ancestrais: categoria.nome } });
 		query = { pai: categoria.nome };
 		yield this.categoriaDAO.updateCategoria(query, { $set: { pai: novoNomeCategoria } });
