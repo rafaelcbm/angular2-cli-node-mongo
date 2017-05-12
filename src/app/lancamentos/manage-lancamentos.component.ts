@@ -11,8 +11,13 @@ export class ManageLancamentosComponent {
 	constructor() { }
 
 	showCategorias = true;
+	showContas = true;
 
 	onShowCategoriaChange(showCategorias: boolean) {
 		this.showCategorias = showCategorias;
+	}
+
+	onShowContaChange(showContas: boolean) {
+		this.showContas = showContas;
 	}
 }

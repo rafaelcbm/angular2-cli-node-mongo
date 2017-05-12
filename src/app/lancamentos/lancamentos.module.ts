@@ -19,6 +19,7 @@ import { ContasService } from '../services/contas.service';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
 import { CategoriasService } from './../services/categorias.service';
 import { CategoriasTreeComponent } from '../categorias/categorias-tree.component';
+import { ContasTreeComponent } from "../contas/contas-tree.component";
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { CategoriasTreeComponent } from '../categorias/categorias-tree.component
         LancamentosListComponent,
         LancamentosDetailComponent,
 		LancamentosFiltroComponent,
-		CategoriasTreeComponent
+		CategoriasTreeComponent,
+		ContasTreeComponent
     ],
     imports: [
         CommonModule,

@@ -2,7 +2,7 @@
 <hr>
 <div class="row">
 	<div class="col-12">
-		<lancamentos-filtro (onShowCategoriaChange)="onShowCategoriaChange($event)"></lancamentos-filtro>
+		<lancamentos-filtro (onShowCategoriaChange)="onShowCategoriaChange($event)" (onShowContaChange)="onShowContaChange($event)"></lancamentos-filtro>
 	</div>
 </div>
 <div class="row">
@@ -11,10 +11,15 @@
 	</div>
 </div>
 <div class="row">
-	<div [class.hidden-xs-up]="!showCategorias" [class.col-2]="showCategorias">
-		<categorias-tree></categorias-tree>
+	<div class="row" [class.col-2]="showCategorias || showContas">
+		<div [class.hidden-xs-up]="!showCategorias" class="col-12">
+			<categorias-tree></categorias-tree>
+		</div>
+		<div [class.hidden-xs-up]="!showContas" class="col-12 mt-1">
+			<contas-tree></contas-tree>
+		</div>
 	</div>
-	<div [class.col-12]="!showCategorias" [class.col-10]="showCategorias">
+	<div class="ml-1" [class.col-12]="!showCategorias && !showContas" [class.col-10]="showCategorias || showContas">
 		<lancamentos-list></lancamentos-list>
 	</div>
 </div>

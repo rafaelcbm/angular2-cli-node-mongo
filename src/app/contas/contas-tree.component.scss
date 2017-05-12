@@ -1,0 +1,36 @@
+.block-tree-cat {
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 0px solid #000000;
+    padding: 2px;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(195, 196, 214, 1);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(195, 196, 214, 1);
+    box-shadow: 10px 10px 34px -9px rgba(19, 19, 255, 1);
+    background-color: rgba(0, 0, 255, 0.08);
+}
+
+.block-options {
+    display: inline;
+}
+
+.btn-add-cat {
+    background-color: rgba(79, 245, 82, 0.33);
+    border: 0;
+}
+
+.btn-remove-cat {
+    background-color: rgba(208, 9, 11, 0.33);
+    border: 0;
+}
+
+.btn-edit-cat {
+    background-color: rgba(41, 87, 142, 0.33);
+    border: 0;
+}
+
+.btn-save-cat {
+    background-color: rgba(245, 199, 79, 0.33);
+    border: 0;
+    margin-left: 5px;
+}
