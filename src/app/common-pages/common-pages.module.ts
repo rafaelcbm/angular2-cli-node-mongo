@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 /**** Inicio imports componentes do template ****/
-import { DropdownModule } from 'ng2-bootstrap/dropdown';
+import { BsDropdownModule } from 'ng2-bootstrap/dropdown';
 import { TabsModule } from 'ng2-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
@@ -31,7 +31,7 @@ import { CommonPagesRoutingModule } from './common-pages.routing';
 		FormsModule,
 		CommonPagesRoutingModule,
 		/* Imports do template */
-		DropdownModule.forRoot(),
+		BsDropdownModule.forRoot(),
 		TabsModule.forRoot(),
 		ChartsModule
 	],
