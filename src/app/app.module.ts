@@ -19,6 +19,7 @@ import { MessagesService } from './services/messages.service';
 	],
 	imports: [
 		BrowserModule,
+		BrowserAnimationsModule,
 		AuthenticationModule,
 		SimpleNotificationsModule.forRoot(),
 		CommonPagesModule,

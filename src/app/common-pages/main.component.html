@@ -13,11 +13,9 @@
 		</form>
 		<ul class="nav navbar-nav ml-auto">
 			<li class="nav-item dropdown hidden-md-down" dropdown placement="bottom right">
-				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle
-				 [addToggleClass]="false">
-					<i class="icon-bell"></i>
-					<span class="badge badge-pill badge-danger">5</span>
-				</a>
+				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle>
+        			<i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span>
+      			</a>
 				<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg" *dropdownMenu aria-labelledby="simple-dropdown">
 					<div class="dropdown-header text-center">
 						<strong>You have 5 notifications</strong>
@@ -72,13 +70,11 @@
 					</a>
 				</div>
 			</li>
-			<li class="nav-item dropdown hidden-md-down" dropdown (onToggle)="toggled($event)">
-				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle
-				 [addToggleClass]="false">
-					<i class="icon-list"></i>
+			<li class="nav-item dropdown hidden-md-down" dropdown placement="bottom right">
+				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle>>
 					<span class="badge badge-pill badge-warning">15</span>
 				</a>
-				<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg" dropdownMenu aria-labelledby="simple-dropdown">
+				<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg" *dropdownMenu aria-labelledby="simple-dropdown">
 					<div class="dropdown-header text-center">
 						<strong>You have 5 pending tasks</strong>
 					</div>
@@ -137,13 +133,12 @@
 					</a>
 				</div>
 			</li>
-			<li class="nav-item dropdown hidden-md-down" dropdown (onToggle)="toggled($event)">
-				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle
-				 [addToggleClass]="false">
+			<li class="nav-item dropdown hidden-md-down" dropdown>
+				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle>
 					<i class="icon-envelope-letter"></i>
 					<span class="badge badge-pill badge-info">7</span>
 				</a>
-				<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg" dropdownMenu aria-labelledby="simple-dropdown">
+				<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg" *dropdownMenu aria-labelledby="simple-dropdown">
 					<div class="dropdown-header text-center">
 						<strong>You have 4 messages</strong>
 					</div>
@@ -221,11 +216,10 @@
 				<a class="nav-link" href="#"><i class="icon-location-pin"></i></a>
 			</li>
 			<li class="nav-item dropdown" dropdown>
-				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle
-				 [addToggleClass]="false">
+				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle>
 					<i class="icon-settings"></i>
 				</a>
-				<div class="dropdown-menu dropdown-menu-right" dropdownMenu aria-labelledby="simple-dropdown">
+				<div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
 					<div class="dropdown-header text-center">
 						<strong>Account</strong>
 					</div>
@@ -347,8 +341,8 @@
 		<aside class="aside-menu">
 			<tabset>
 				<tab>
-					<template tabHeading><i class="icon-list"></i>
-					</template>
+					<ng-template tabHeading><i class="icon-list"></i>
+					</ng-template>
 					<div class="callout m-0 py-h text-muted text-center bg-faded text-uppercase">
 						<small><b>Today</b>
                     </small>
@@ -446,8 +440,8 @@
 					<hr class="mx-1 my-0">
 				</tab>
 				<tab>
-					<template tabHeading><i class="icon-speech"></i>
-					</template>
+					<ng-template tabHeading><i class="icon-speech"></i>
+					</ng-template>
 					<div class="p-1">
 						<div class="message">
 							<div class="py-1 pb-3 mr-1 float-left">
@@ -526,8 +520,8 @@
 					</div>
 				</tab>
 				<tab>
-					<template tabHeading><i class="icon-settings"></i>
-					</template>
+					<ng-template tabHeading><i class="icon-settings"></i>
+					</ng-template>
 					<div class="p-1">
 						<h6>Settings</h6>
 						<div class="aside-options">
@@ -623,6 +617,6 @@
 		<a href="">Corporation</a> &copy; 1754 labs.
 		<span class="float-right">
         Powered by <a href="">Corporation</a>
-    </span>
+    	</span>
 	</footer>
 </div>

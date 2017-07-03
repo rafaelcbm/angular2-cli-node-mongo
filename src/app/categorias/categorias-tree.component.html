@@ -1,7 +1,7 @@
 <div class="block-tree-cat">
 	<tree-root #tree [nodes]="categorias" [options]="options" (onDeactivate)="onDeactivate($event)" (onActivate)="onActivate($event)">
-		<template #loadingTemplate></template>
-		<template #treeNodeTemplate let-node="node" let-index="index">
+		<ng-template #loadingTemplate></ng-template>
+		<ng-template #treeNodeTemplate let-node="node" let-index="index">
 			<span>{{ node.data.nome }}</span>
 			<div *ngIf="node.data.showBars" style="display: inline">
 				<button (click)="clickBars(node)" style="background-color: rgba(0, 0, 0, 0);    border: 0;"><i class="fa fa-bars"></i></button>
@@ -15,6 +15,6 @@
 					<button (click)="saveNode(node, index)" class="btn-save-cat"><i class="fa fa-check"></i></button>
 				</div>
 			</div>
-		</template>
+		</ng-template>
 	</tree-root>
 </div>

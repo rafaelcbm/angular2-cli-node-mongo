@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { TabsModule }               from 'ng2-bootstrap/tabs';
-import { DatepickerModule } from 'ng2-bootstrap/datepicker';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TreeModule } from 'angular-tree-component';
 
 import { SharedDirectivesModule } from './../directives/shared-directives.module';

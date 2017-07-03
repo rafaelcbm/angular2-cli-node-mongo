@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import 'core-js/es7/reflect';
 import * as express from "express";
 import * as expressLogging from 'express-logging';
