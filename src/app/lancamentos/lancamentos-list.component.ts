@@ -26,6 +26,16 @@ export class LancamentosListComponent implements OnInit {
 			.distinctUntilChanged()
 			.subscribe(novaCompetencia => this.lancamentosService.getByCompetencia(novaCompetencia));
 
+		this.filtroLancamentoService.selectedContas$
+			.debounceTime(300)
+			.distinctUntilChanged()
+			.subscribe(contasSelecionadas => console.log('Contas selecionadas recebidas:', contasSelecionadas));
+
+		this.filtroLancamentoService.selectedCategorias$
+			.debounceTime(300)
+			.distinctUntilChanged()
+			.subscribe(categoriasSelecionadas => console.log('Categorias selecionadas recebidas:', categoriasSelecionadas));
+
 		let competenciaAtual = moment().format('YYYYMM');
 		this.lancamentosService.getByCompetencia(competenciaAtual);
 	}

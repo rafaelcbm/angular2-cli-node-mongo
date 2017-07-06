@@ -4,6 +4,7 @@ import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from "angular-tree-
 
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from './../services/contas.service';
+import { FiltroLancamentoService } from "../lancamentos/filtro-lancamento.service";
 
 @Component({
 	selector: 'contas-tree',
@@ -30,7 +31,7 @@ export class ContasTreeComponent implements OnInit {
 
 	contas: any[];
 
-	constructor(private contasService: ContasService) { }
+	constructor(private contasService: ContasService, private filtroLancamentoService: FiltroLancamentoService) { }
 
 	ngOnInit() {
 		//Atualiza as contas do serviço
@@ -40,5 +41,21 @@ export class ContasTreeComponent implements OnInit {
 		});
 
 		this.contasService.retrieve();
+	}
+
+	onActivate($event) {
+
+		let filtrados = this.tree.treeModel.activeNodes.map(item => item.data.nome);
+		this.filtroLancamentoService.onSelectedContas(filtrados);
+
+		console.log('onActivate activeNodes filtrados = ', filtrados);
+	}
+
+	onDeactivate($event) {
+
+		let filtrados = this.tree.treeModel.activeNodes.map(item => item.data.nome);
+		this.filtroLancamentoService.onSelectedContas(filtrados);
+
+		console.log('onDeactivate activeNodes filtrados = ', filtrados);
 	}
 }
