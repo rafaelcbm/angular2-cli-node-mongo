@@ -26,13 +26,12 @@ export class LoginComponent implements OnInit {
     }
 
     login(formValue) {
-        console.log("login.component.login.authService", this.authService);
         this.authService.login(formValue);
     }
 
     loginHandler(data) {
         if (data.status === "erro") {
-            console.log("Mensagem de erro =", data.message);            
+            console.log("Mensagem de erro =", data.message);
             return;
         }
 

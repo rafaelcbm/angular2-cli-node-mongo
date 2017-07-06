@@ -6,7 +6,7 @@
 					<div class="card-group">
 						<div class="card p-2">
 							<div class="card-block">
-								<form #formRef="ngForm" (ngSubmit)="signup(formRef.value)">
+								<form #formRef="ngForm" (ngSubmit)="login(formRef.value)">
 									<h1>Login</h1>
 									<p class="text-muted">Sign In to your account</p>
 									<div class="input-group mb-1">
@@ -21,12 +21,12 @@
 									</div>
 									<div class="row">
 										<div class="col-xs-3">
-											<button type="button" (click)="login(formRef.value)" class="btn btn-primary p-x-2">Login</button>
+											<button type="submit" class="btn btn-primary p-x-2">Login</button>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-xs-6 offset-xs-6 text-xs-right">
-											<button type="button" class="btn btn-link p-x-0">Forgot password?</button>
+											<button type="submit" class="btn btn-link p-x-0">Forgot password?</button>
 										</div>
 									</div>
 								</form>
