@@ -16,13 +16,13 @@
 			</thead>
 			<tbody>
 				<!-- Async pipe is used to bind an observable directly in our template -->
-				<tr *ngFor="let lancamento of lancamentos$ | async" (click)="onSelect(lancamento)">
-					<td>{{lancamento.data | date:"dd/MM/yyyy"}}</td>
-					<td>{{lancamento.descricao}}</td>
-					<td>{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
-					<td>{{lancamento.conta.nome}}</td>
-					<td>{{lancamento.categoria.nome}}</td>
-					<td>{{lancamento.isDebito | boolean}}</td>
+				<tr *ngFor="let lancamento of lancamentos" (click)="onSelect(lancamento)">
+					<td *ngIf="lancamento.show">{{lancamento.data | date:"dd/MM/yyyy"}}</td>
+					<td *ngIf="lancamento.show">{{lancamento.descricao}}</td>
+					<td *ngIf="lancamento.show">{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
+					<td *ngIf="lancamento.show">{{lancamento.conta.nome}}</td>
+					<td *ngIf="lancamento.show">{{lancamento.categoria.nome}}</td>
+					<td *ngIf="lancamento.show">{{lancamento.isDebito | boolean}}</td>
 				</tr>
 			</tbody>
 		</table>

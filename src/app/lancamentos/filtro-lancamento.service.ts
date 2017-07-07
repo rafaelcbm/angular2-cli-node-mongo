@@ -21,15 +21,14 @@ export class FiltroLancamentoService {
 	}
 
 	selectLancamento(lancamento: any) {
-		console.debug('selectLancamento lancamento=', lancamento);
 		this.selectedLancamentoSource.next(lancamento);
 	}
 
 	onSelectedContas(contas:any){
-		console.debug('onSelectedContas contas=', contas);
+		this.selectedContasSource.next(contas);
 	}
 
 	onSelectedCategorias(categorias:any){
-		console.debug('onSelectedCategorias categorias=', categorias);
+		this.selectedCategoriasSource.next(categorias);
 	}
 }

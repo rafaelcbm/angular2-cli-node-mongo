@@ -1,3 +1,4 @@
+import { length } from './../../../server/config';
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 
 import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from "angular-tree-component/dist/angular-tree-component";
@@ -44,18 +45,21 @@ export class ContasTreeComponent implements OnInit {
 	}
 
 	onActivate($event) {
-
-		let filtrados = this.tree.treeModel.activeNodes.map(item => item.data.nome);
-		this.filtroLancamentoService.onSelectedContas(filtrados);
-
-		console.log('onActivate activeNodes filtrados = ', filtrados);
+		this.notificarContasSelecionadas();
 	}
 
 	onDeactivate($event) {
+		this.notificarContasSelecionadas();
+	}
 
-		let filtrados = this.tree.treeModel.activeNodes.map(item => item.data.nome);
+	notificarContasSelecionadas() {
+
+		let filtrados;
+		if (this.tree.treeModel.activeNodes.length > 0) {
+			filtrados = this.tree.treeModel.activeNodes.map(item => item.data.nome);
+		} else {
+			filtrados = this.tree.treeModel.nodes.map(item => item.nome);
+		}
 		this.filtroLancamentoService.onSelectedContas(filtrados);
-
-		console.log('onDeactivate activeNodes filtrados = ', filtrados);
 	}
 }
