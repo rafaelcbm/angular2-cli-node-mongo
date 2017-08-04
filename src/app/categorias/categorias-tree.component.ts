@@ -98,32 +98,14 @@ export class CategoriasTreeComponent implements OnInit {
 		$event.node.data.showBars = true;
 		$event.node.data.showOptions = false;
 
-		this.notificarCategoriasSelecionadas();
+		this.filtroLancamentoService.onSelectCategoria($event.node.data.nome);
 	}
 
-	onDeactivate($event, node) {
-
-		//TODO: Alterar a forma de passar esses dados, gerenciando no serviço atraves de um array !
-		// utilizar a propriedade: $event.target.lastChild.data para obter o nome da categoria.
-
-		console.log('deac event', event);
-		console.log('deac event', node);
-
+	onDeactivate($event) {
 		$event.node.data.showBars = false;
 		$event.node.data.showOptions = false;
 
-		this.notificarCategoriasSelecionadas();
-	}
-
-	notificarCategoriasSelecionadas() {
-		let filtrados;
-		if (this.tree.treeModel.activeNodes.length > 0) {
-			filtrados = this.tree.treeModel.activeNodes.map(item => item.data.nome);
-		} else {
-			console.log('nos = ', this.tree.treeModel.nodes);
-			filtrados = this.tree.treeModel.nodes.map(item => item.nome);
-		}
-		this.filtroLancamentoService.onSelectedCategorias(filtrados);
+		this.filtroLancamentoService.onDeselectCategoria($event.node.data.nome);
 	}
 
 	clickBars(node) {

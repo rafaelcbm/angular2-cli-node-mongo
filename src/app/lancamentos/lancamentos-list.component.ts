@@ -45,7 +45,6 @@ export class LancamentosListComponent implements OnInit {
 			.subscribe(contasSelecionadas => {
 				if (contasSelecionadas.length > 0) {
 					this.lancamentos.forEach((lancamento: any) => {
-						console.log('Lancamento forEach = ', lancamento);
 						lancamento.show = false;
 
 						if (contasSelecionadas.some(contasSelecionada => contasSelecionada == lancamento.conta.nome)) {
@@ -57,9 +56,13 @@ export class LancamentosListComponent implements OnInit {
 
 		this.filtroLancamentoService.selectedCategorias$
 			.subscribe(categoriasSelecionadas => {
+
+				if (categoriasSelecionadas.length == 0) {
+					this.lancamentos.forEach((lancamento:any) => lancamento.show = true);
+				}
+
 				if (categoriasSelecionadas.length > 0) {
 					this.lancamentos.forEach((lancamento: any) => {
-						console.log('Lancamento forEach = ', lancamento);
 						lancamento.show = false;
 
 						if (categoriasSelecionadas.some(categoriaSelecionada => categoriaSelecionada == lancamento.categoria.nome)) {
@@ -67,8 +70,7 @@ export class LancamentosListComponent implements OnInit {
 						}
 					});
 				}
-			}
-			);
+			});
 
 		let competenciaAtual = moment().format('YYYYMM');
 		this.lancamentosService.getByCompetencia(competenciaAtual);
