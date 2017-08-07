@@ -3,11 +3,10 @@
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
     border: 0px solid #000000;
-    padding: 2px;
+    padding: 0.75em;
     -webkit-box-shadow: 10px 10px 5px 0px rgba(195, 196, 214, 1);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(195, 196, 214, 1);
-    //box-shadow: 10px 10px 34px -9px rgb(144, 11, 11);
-	box-shadow: 0 0 14px 1px rgb(144, 11, 11) inset;
+    -moz-box-shadow: 10px 10px 5px 0px rgba(195, 196, 214, 1); //box-shadow: 10px 10px 34px -9px rgb(144, 11, 11);
+    box-shadow: 0 0 5px 1px rgb(144, 11, 11) inset;
     background-color: rgba(189, 7, 7, 0.08);
 }
 
@@ -16,22 +15,36 @@
 }
 
 .btn-add-cat {
-    background-color: rgba(79, 245, 82, 0.33);
+    border-radius: 10px 10px 10px 10px;
+    background-color: rgba(0, 123, 2, 0.43);
     border: 0;
 }
 
 .btn-remove-cat {
+    border-radius: 10px 10px 10px 10px;
     background-color: rgba(208, 9, 11, 0.33);
     border: 0;
 }
 
 .btn-edit-cat {
+    border-radius: 10px 10px 10px 10px;
     background-color: rgba(41, 87, 142, 0.33);
     border: 0;
 }
 
 .btn-save-cat {
+    border-radius: 10px 10px 10px 10px;
     background-color: rgba(245, 199, 79, 0.33);
     border: 0;
     margin-left: 5px;
+}
+
+.cat-input-container {
+    margin-top: 0.5em;
+}
+
+.input-cat {
+    font-size: 10px;
+    border: 0;
+    padding: 0px;
 }

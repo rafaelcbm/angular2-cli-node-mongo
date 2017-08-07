@@ -11,7 +11,7 @@
 				<button (click)="remove(node, index)" class="btn-remove-cat"><i class="fa fa-remove"></i></button>
 				<button (click)="add(node, index)" class="btn-add-cat"><i class="fa fa-plus"></i></button>
 				<div *ngIf="node.data.showEdit" class="m1">
-					<input [(ngModel)]="node.data.novoNome" type="text">
+					<input [(ngModel)]="node.data.novoNome" type="text" class="input-cat">
 					<button (click)="saveNode(node, index)" class="btn-save-cat"><i class="fa fa-check"></i></button>
 				</div>
 			</div>
