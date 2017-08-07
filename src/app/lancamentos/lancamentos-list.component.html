@@ -17,12 +17,12 @@
 			<tbody>
 				<!-- Async pipe is used to bind an observable directly in our template -->
 				<tr *ngFor="let lancamento of lancamentos" (click)="onSelect(lancamento)">
-					<td *ngIf="lancamento.show">{{lancamento.data | date:"dd/MM/yyyy"}}</td>
-					<td *ngIf="lancamento.show">{{lancamento.descricao}}</td>
-					<td *ngIf="lancamento.show">{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
-					<td *ngIf="lancamento.show">{{lancamento.conta.nome}}</td>
-					<td *ngIf="lancamento.show">{{lancamento.categoria.nome}}</td>
-					<td *ngIf="lancamento.show">{{lancamento.isDebito | boolean}}</td>
+					<td *ngIf="showLancamento(lancamento)">{{lancamento.data | date:"dd/MM/yyyy"}}</td>
+					<td *ngIf="showLancamento(lancamento)">{{lancamento.descricao}}</td>
+					<td *ngIf="showLancamento(lancamento)">{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
+					<td *ngIf="showLancamento(lancamento)">{{lancamento.conta.nome}}</td>
+					<td *ngIf="showLancamento(lancamento)">{{lancamento.categoria.nome}}</td>
+					<td *ngIf="showLancamento(lancamento)">{{lancamento.isDebito | boolean}}</td>
 				</tr>
 			</tbody>
 		</table>
