@@ -10,11 +10,12 @@
 		<lancamentos-detail></lancamentos-detail>
 	</section>
 
-	<section class="categorias" [class.hidden-xs-up]="!showCategorias">
-		<categorias-tree></categorias-tree>
-	</section>
 	<section class="contas" [class.hidden-xs-up]="!showContas">
 		<contas-tree></contas-tree>
+	</section>
+
+	<section class="categorias" [class.hidden-xs-up]="!showCategorias">
+		<categorias-tree></categorias-tree>
 	</section>
 
 	<section class="lancamentos" [class.expanded]="!showCategorias && !showContas">
