@@ -1,25 +1,24 @@
 <h3>Lançamentos</h3>
 <hr>
-<div class="row">
-	<div class="col-12">
+<main class="wrapper">
+
+	<section class="filtros">
 		<lancamentos-filtro (onShowCategoriaChange)="onShowCategoriaChange($event)" (onShowContaChange)="onShowContaChange($event)"></lancamentos-filtro>
-	</div>
-</div>
-<div class="row">
-	<div class="col-12">
+	</section>
+
+	<section class="detalhe-lancamento">
 		<lancamentos-detail></lancamentos-detail>
-	</div>
-</div>
-<div class="row">
-	<div class="row" style="align-content: flex-start;" [class.col-2]="showCategorias || showContas">
-		<div [class.hidden-xs-up]="!showCategorias" class="col-12">
-			<categorias-tree></categorias-tree>
-		</div>
-		<div [class.hidden-xs-up]="!showContas" class="col-12 mt-1">
-			<contas-tree></contas-tree>
-		</div>
-	</div>
-	<div class="ml-1" [class.col-12]="!showCategorias && !showContas" [class.col-10]="showCategorias || showContas">
+	</section>
+
+	<section class="categorias" [class.hidden-xs-up]="!showCategorias">
+		<categorias-tree></categorias-tree>
+	</section>
+	<section class="contas" [class.hidden-xs-up]="!showContas">
+		<contas-tree></contas-tree>
+	</section>
+
+	<section class="lancamentos" [class.expanded]="!showCategorias && !showContas">
 		<lancamentos-list></lancamentos-list>
-	</div>
-</div>
+	</section>
+
+</main>

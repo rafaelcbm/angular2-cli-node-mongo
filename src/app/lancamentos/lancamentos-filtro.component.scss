@@ -1,3 +1,12 @@
+.filtros-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 3fr repeat(14, 1fr);
+    // grid-column: 1/5;
+    // grid-row: 1;
+    align-items: center;
+    justify-items: start;
+}
+
 .datepicker-popup {
     position: absolute;
     top: 35px;
@@ -16,7 +25,7 @@
     &.fa-tags {
         color: rgba(255, 77, 77, 0.82);
     }
-	&.credit-card-alt {
+    &.credit-card-alt {
         color: rgba(55, 90, 183, 0.76);
     }
 }
@@ -38,4 +47,3 @@
         }
     }
 }
-

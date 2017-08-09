@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { Lancamento } from "../models/models.module";
 
 @Component({
-	templateUrl: './manage-lancamentos.component.html'
+	templateUrl: './manage-lancamentos.component.html',
+	styleUrls: ['./manage-lancamentos.component.scss']
 })
 export class ManageLancamentosComponent {
 	constructor() { }

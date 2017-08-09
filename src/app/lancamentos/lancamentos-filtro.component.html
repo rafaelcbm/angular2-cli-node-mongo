@@ -1,8 +1,8 @@
-<div class="row mb-1">
-	<div class="col-1">
+<section class="filtros-wrapper">
+	<section class="btn-adicionar">
 		<button (click)="adicionar()" type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Adicionar</button>
-	</div>
-	<div class="col-2 ml-2">
+	</section>
+	<section class="competencia">
 		<div class="input-group">
 			<span class="input-group-addon p-0" (click)="showDatePicker=(!showDatePicker)"><i class="fa fa-calendar"></i></span>
 			<span class="input-group-addon input-group-addon-white p-0 text-primary" (click)="previousMonth()"><i class="fa fa-chevron-left fa-lg"></i></span>
@@ -14,11 +14,11 @@
 			 [input-mask]="'00/0000'" #inputCompetencia (keyup)="onCompetenciaChanged(inputCompetencia.value)">
 			<span class="input-group-addon input-group-addon-white p-0 text-primary" (click)="nextMonth()"><i class="fa fa-chevron-right fa-lg"></i></span>
 		</div>
-	</div>
-	<div class="col-1">
-		<div class="row">
-			<button (click)="categoriaChange()" type="button" [ngClass]="categoryClass"><i class="fa fa-tags"></i></button>
-			<button (click)="contasChange()" type="button" [ngClass]="contasClass" class="ml-1"><i class="fa fa-credit-card-alt"></i></button>
-		</div>
-	</div>
-</div>
+	</section>
+	<section class="btn-toogle-contas">
+		<button (click)="contasChange()" type="button" [ngClass]="contasClass" class="ml-1"><i class="fa fa-credit-card-alt"></i></button>
+	</section>
+	<section class="btn-toogle-categorias">
+		<button (click)="categoriaChange()" type="button" [ngClass]="categoryClass"><i class="fa fa-tags"></i></button>
+	</section>
+</section>
