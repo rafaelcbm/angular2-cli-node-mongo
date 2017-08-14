@@ -11,7 +11,8 @@ import { Lancamento } from "../models/models.module";
 
 @Component({
 	selector: 'lancamentos-list',
-	templateUrl: './lancamentos-list.component.html'
+	templateUrl: './lancamentos-list.component.html',
+	styleUrls: ['./lancamentos-list.component.scss']
 })
 export class LancamentosListComponent implements OnInit {
 

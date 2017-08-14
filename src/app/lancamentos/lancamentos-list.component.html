@@ -1,3 +1,22 @@
+<section class="lancamentos-list-header">
+	<div>Data</div>
+	<div>Descrição</div>
+	<div>Valor</div>
+	<div>Conta</div>
+	<div>Categoria</div>
+	<div>Débito?</div>
+</section>
+
+<section class="lancamentos-list-content" *ngFor="let lancamento of lancamentos" (click)="onSelect(lancamento)">
+	<div *ngIf="showLancamento(lancamento)">{{lancamento.data | date:"dd/MM/yyyy"}}</div>
+	<div *ngIf="showLancamento(lancamento)">{{lancamento.descricao}}</div>
+	<div *ngIf="showLancamento(lancamento)">{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</div>
+	<div *ngIf="showLancamento(lancamento)">{{lancamento.conta.nome}}</div>
+	<div *ngIf="showLancamento(lancamento)">{{lancamento.categoria.nome}}</div>
+	<div *ngIf="showLancamento(lancamento)">{{lancamento.isDebito | boolean}}</div>
+</section>
+<!--
+
 <div class="card">
 	<div class="card-header">
 		<i class="fa fa-align-justify"></i> Lançamentos
@@ -16,7 +35,7 @@
 			</thead>
 			<tbody>
 				<!-- Async pipe is used to bind an observable directly in our template -->
-				<tr *ngFor="let lancamento of lancamentos" (click)="onSelect(lancamento)">
+				<!--<tr *ngFor="let lancamento of lancamentos" (click)="onSelect(lancamento)">
 					<td *ngIf="showLancamento(lancamento)">{{lancamento.data | date:"dd/MM/yyyy"}}</td>
 					<td *ngIf="showLancamento(lancamento)">{{lancamento.descricao}}</td>
 					<td *ngIf="showLancamento(lancamento)">{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</td>
@@ -27,4 +46,4 @@
 			</tbody>
 		</table>
 	</div>
-</div>
+</div>-->

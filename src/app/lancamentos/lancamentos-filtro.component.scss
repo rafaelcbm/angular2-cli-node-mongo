@@ -1,6 +1,8 @@
 .filtros-wrapper {
     display: grid;
-    grid-template-columns: 2fr 3fr repeat(14, 1fr);
+    //grid-template-columns: 2fr 3fr repeat(14, 1fr);
+	grid-template-columns: 10em 20em 5em 5em;
+	grid-column-gap: 1em;
     // grid-column: 1/5;
     // grid-row: 1;
     align-items: center;
