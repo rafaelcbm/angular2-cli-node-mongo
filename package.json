@@ -3,26 +3,21 @@
   "version": "1.0.0",
   "license": "MIT",
   "angular-cli": {},
+  "config": {
+    "port": "3001"
+  },
   "scripts": {
-    "debug": "npm run all",
-    "start": "npm run all",
     "lint": "tslint \"src/**/*.ts\"",
-    "test": "ng test",
-    "pree2e": "webdriver-manager update",
-    "e2e": "protractor",
-    "client": "ng build",
-    "server": "concurrently \"npm run build:server\" \"nodemon ./server/dist/app.js\" ",
-    "preall": "npm run client",
-    "all": "npm run server",
+    "conc:example": "concurrently \"npm run build:server\" \"nodemon ./server/dist/app.js\" ",
+    "start": "npm run build:client && npm run server",
+    "server": "tsc-watch -p ./server --onSuccess \"nodemon ./server/dist/app.js\" ",
     "build:server": "tsc -p ./server",
     "build:server:watch": "tsc -w -p ./server",
-    "build:client": "tsc -w -p ./src",
-    "build:watch": "watch 'npm run build:client' dist/"
+    "build:client": "ng build",
+    "run:client": "ng serve",
+    "client": "npm run build:client && npm run run:client"
   },
   "private": true,
-  "engines": {
-    "node": ">= 6.9.1"
-  },
   "dependencies": {
     "@angular/animations": "4.0.1",
     "@angular/common": "4.0.1",
@@ -50,9 +45,9 @@
     "body-parser": "^1.15.2",
     "bootstrap": "^4.0.0-alpha.4",
     "chart.js": "2.5.0",
-    "co": "^4.6.0",
     "cookie-parser": "^1.4.3",
     "core-js": "2.4.1",
+    "cors": "^2.8.4",
     "dragula": "3.7.2",
     "express": "^4.14.0",
     "jquery": "^3.1.1",
@@ -101,6 +96,7 @@
     "protractor": "5.1.1",
     "serve-favicon": "~2.3.0",
     "ts-node": "3.0.2",
+    "tsc-watch": "^1.0.21",
     "tslint": "5.0.0",
     "typescript": "2.4.0",
     "watch": "1.0.2"
