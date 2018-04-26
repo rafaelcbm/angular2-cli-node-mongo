@@ -73,7 +73,7 @@ app.use('/*', function(request: express.Request, response: express.Response) {
 
 // Porta que o express irá escutar as requisições
 //const port: number = process.env.PORT || 3005;
-const port: number = process.env.npm_package_config_port || 3001;
+const port = process.env.npm_package_config_port || 3001;
 
 // Iniciar o servidor na porta especificada
 app.listen(port, () => {

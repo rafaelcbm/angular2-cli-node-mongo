@@ -30,7 +30,7 @@ import { MessagesService } from './services/messages.service';
 		ApiHttpService,
 		AuthService,
 		AuthGuard,
-		{ provide: LOCALE_ID, useValue: 'pt-BR' },
+		{ provide: LOCALE_ID, useValue: 'pt' },
 		MessagesService],
 	bootstrap: [AppComponent]
 })

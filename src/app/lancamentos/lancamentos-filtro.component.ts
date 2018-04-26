@@ -14,8 +14,8 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 })
 export class LancamentosFiltroComponent implements OnInit {
 
-	@Output() onShowCategoriaChange = new EventEmitter<Lancamento>();
-	@Output() onShowContaChange = new EventEmitter<Lancamento>();
+	@Output() onShowCategoriaChange = new EventEmitter<any>();
+	@Output() onShowContaChange = new EventEmitter<any>();
 
 	contasClass: {};
 	categoryClass: {};

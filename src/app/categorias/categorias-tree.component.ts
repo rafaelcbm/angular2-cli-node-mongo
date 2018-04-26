@@ -19,7 +19,7 @@ export class CategoriasTreeComponent implements OnInit {
 	actionMapping: IActionMapping = {
 		mouse: {
 			click: null,
-			dblClick: TREE_ACTIONS.TOGGLE_SELECTED_MULTI
+			dblClick: TREE_ACTIONS.TOGGLE_ACTIVE_MULTI
 		}
 	}
 

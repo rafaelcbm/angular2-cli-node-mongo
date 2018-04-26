@@ -10,7 +10,7 @@
 <section class="lancamentos-list-content" *ngFor="let lancamento of lancamentos" (click)="onSelect(lancamento)">
 	<div *ngIf="showLancamento(lancamento)">{{lancamento.data | date:"dd/MM/yyyy"}}</div>
 	<div *ngIf="showLancamento(lancamento)">{{lancamento.descricao}}</div>
-	<div *ngIf="showLancamento(lancamento)">{{lancamento.valor | currency:'BRL':true:'1.2-2'}}</div>
+	<div *ngIf="showLancamento(lancamento)">{{lancamento.valor | currency:'BRL':'symbol-narrow':'1.2-2'}}</div>
 	<div *ngIf="showLancamento(lancamento)">{{lancamento.conta.nome}}</div>
 	<div *ngIf="showLancamento(lancamento)">{{lancamento.categoria.nome}}</div>
 	<div *ngIf="showLancamento(lancamento)">{{lancamento.isDebito | boolean}}</div>

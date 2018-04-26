@@ -6,10 +6,10 @@ import { secret } from "../config";
 
 const protectedRouter: Router = Router();
 
-protectedRouter.use((request: Request & { headers: { authorization: string }, userName: string }, response: Response, next: NextFunction) => {
+protectedRouter.use((request: Request & { headers: { authorization: string }, userName }, response: Response, next: NextFunction) => {
     const token = request.headers.authorization;
 
-    verify(token, secret, function(tokenError, decodedToken) {
+    verify(token, secret, function(tokenError, decodedToken:any) {
         if (tokenError) {
             return response.status(403).json({
                 status: "erro",
@@ -19,7 +19,7 @@ protectedRouter.use((request: Request & { headers: { authorization: string }, us
 
         logger.info("** DecodedToken.userName: %j", decodedToken.userName);
 
-        // Popula o objeto de Request com o userName na própria request, contido no token verificado, para utilização nas chamadas da api.        
+        // Popula o objeto de Request com o userName na própria request, contido no token verificado, para utilização nas chamadas da api.
         request.userName = decodedToken.userName;
 
         next();
