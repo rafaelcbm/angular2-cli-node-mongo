@@ -7,6 +7,7 @@ import { join } from "path";
 import * as favicon from "serve-favicon";
 import { json, urlencoded } from "body-parser";
 import { Container } from 'typedi';
+import * as cors from 'cors';
 
 import { loginRouter } from "./routes/loginRouter";
 import { protectedRouter } from "./routes/protectedRouter";
@@ -32,6 +33,7 @@ app.use(express.static(join(__dirname, '../../dist')));
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
+app.use(cors());
 
 // api routes
 app.use("/", loginRouter);
@@ -64,8 +66,14 @@ app.use('/*', function(request: express.Request, response: express.Response) {
     response.sendFile(join(__dirname, '../../dist', 'index.html'));
 });
 
+// PARAMETRO PASSADO ATRAVES DO NOMEMON, exemplo.
+//logger.info(`## FROM NOMEMON, process.env.NODE_ENV = ${process.env.NODE_ENV}`);
+// PARAMETRO PASSADO ATRAVES DE CONFIGURACAO NO package.json, exemplo.
+//logger.info("npm_package_config_port: " + process.env.npm_package_config_port)
+
 // Porta que o express irá escutar as requisições
-const port: number = process.env.PORT || 3002;
+//const port: number = process.env.PORT || 3005;
+const port: number = process.env.npm_package_config_port || 3001;
 
 // Iniciar o servidor na porta especificada
 app.listen(port, () => {
