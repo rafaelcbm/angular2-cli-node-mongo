@@ -7,15 +7,14 @@ import { Log } from './../util/log';
 import { MessagesService } from './messages.service';
 import { DataService } from './data.service';
 import { ApiHttpService } from './api-http.service';
-import { FiltroLancamentoService } from '../lancamentos/filtro-lancamento.service';
-
 import { Lancamento } from "../models/models.module";
-
+import { FiltroLancamentoService } from '../lancamentos/filtro-lancamento.service';
+import { ENV } from './env-config';
 
 @Injectable()
 export class LancamentosService extends DataService<Lancamento> {
 
-	static baseUrl = '/api/lancamentos';
+	static baseUrl = `${ENV.BASE_API}lancamentos/`;
 
 	constructor(apiHttp: ApiHttpService, _notificationsService: NotificationsService, private msgService: MessagesService, private filtroLancamentoService: FiltroLancamentoService) {
 		super(apiHttp, _notificationsService, LancamentosService.baseUrl);

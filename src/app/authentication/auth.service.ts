@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
 import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
 
+import { ENV } from '../services/env-config';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/observable/of';
@@ -35,7 +36,7 @@ export class AuthService {
         return tokenNotExpired();
     }
 
-    getToken() {     
+    getToken() {
         return localStorage.getItem('id_token');
     }
 
@@ -55,7 +56,7 @@ export class AuthService {
             let userName = jwtHelper.decodeToken(token).userName;
             return userName;
         }
-        
+
         return null;
     }
 
@@ -63,7 +64,7 @@ export class AuthService {
         //return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
         //this.isLoggedIn = true;
 
-        this.http.post("/login", JSON.stringify(userCredential), new RequestOptions({
+        this.http.post(`${ENV.HOST_URI}login`, JSON.stringify(userCredential), new RequestOptions({
             headers: new Headers({ "Content-Type": "application/json" })
         }))
             .map((res: Response) => res.json())
@@ -72,7 +73,7 @@ export class AuthService {
                 console.log("Resposta /login:", data);
 
                 if (data.status === "erro") {
-                    // put data into observavle 
+                    // put data into observavle
                     this.loginObserver.next({
                         status: data.status,
                         message: data.message,
@@ -80,7 +81,7 @@ export class AuthService {
                 } else {
                     localStorage.setItem("id_token", data.jwt);
 
-                    // put data into observavle 
+                    // put data into observavle
                     this.loginObserver.next({
                         status: data.status,
                         jwt: data.jwt
@@ -89,7 +90,7 @@ export class AuthService {
             },
             (error: Error) => {
                 console.log(error);
-                // put data into observavle  
+                // put data into observavle
                 this.loginObserver.next({
                     status: 'erro',
                     message: 'Erro ao autenticar usuário!',
@@ -102,7 +103,7 @@ export class AuthService {
         //return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
         //this.isLoggedIn = true;
 
-        this.http.post("/signup", JSON.stringify(userCredential), new RequestOptions({
+        this.http.post(`${ENV.HOST_URI}signup`, JSON.stringify(userCredential), new RequestOptions({
             headers: new Headers({ "Content-Type": "application/json" })
         }))
             .map((res: Response) => res.json())
@@ -111,7 +112,7 @@ export class AuthService {
                 console.log("Resposta / register:", data);
 
                 if (data.status === "erro") {
-                    // put data into observavle 
+                    // put data into observavle
                     this.registerObserver.next({
                         status: data.status,
                         message: data.message,
@@ -119,7 +120,7 @@ export class AuthService {
                 } else {
                     localStorage.setItem("id_token", data.jwt);
 
-                    // put data into observavle 
+                    // put data into observavle
                     this.registerObserver.next({
                         status: data.status,
                         jwt: data.jwt
@@ -128,7 +129,7 @@ export class AuthService {
             },
             (error: Error) => {
                 console.log(error);
-                // put data into observavle  
+                // put data into observavle
                 this.registerObserver.next({
                     status: 'erro',
                     message: 'Erro ao registrar novo usuário!',

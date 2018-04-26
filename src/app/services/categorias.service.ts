@@ -4,6 +4,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
+import { ENV } from './env-config';
 import { MessagesService } from './messages.service';
 import { DataService } from './data.service';
 import { ApiHttpService } from './api-http.service';
@@ -13,7 +14,7 @@ import { Categoria } from "../models/models.module";
 @Injectable()
 export class CategoriasService extends DataService<Categoria> {
 
-	static baseUrl = '/api/categorias';
+	static baseUrl = `${ENV.BASE_API}categorias/`;
 
 	flatCategorias$: Observable<any>;
 	private flatCategoriasObserver: Observer<any>;
