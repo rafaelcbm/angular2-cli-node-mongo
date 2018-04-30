@@ -5,7 +5,7 @@
   }
 
   .cal-cell-row:hover {
-    background-color: $gray-lightest;
+    background-color: $gray-100;
   }
 
   .cal-header .cal-cell {
@@ -18,7 +18,7 @@
 
   .cal-cell-row .cal-cell:hover,
   .cal-cell.cal-has-events.cal-open {
-    background-color: $gray-lightest;
+    background-color: $gray-100;
   }
 
   .cal-days {
@@ -57,7 +57,7 @@
   .cal-day-badge {
     margin-top: 18px;
     margin-left: 10px;
-    background-color: $brand-danger;
+    background-color: theme-color("danger");
     display: inline-block;
     min-width: 10px;
     padding: 3px 7px;
@@ -122,7 +122,7 @@
   .cal-open-day-events {
     padding: 15px;
     color: white;
-    background-color: $gray;
+    background-color: $gray-600;
   }
 
   .cal-open-day-events .cal-event {

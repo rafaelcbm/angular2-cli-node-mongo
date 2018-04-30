@@ -157,7 +157,7 @@
 }
 
 .daterangepicker table thead {
-  background: $gray-lightest;
+  background: $gray-100;
 }
 
 .daterangepicker td, .daterangepicker th {
@@ -170,22 +170,22 @@
 }
 
 .daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
-  color: $gray-lighter;
+  color: $gray-200;
   background: #fff;
 }
 
 .daterangepicker td.disabled, .daterangepicker option.disabled {
-  color: $gray-lighter;
+  color: $gray-200;
   cursor: not-allowed;
   text-decoration: line-through;
 }
 
 .daterangepicker td.available:hover, .daterangepicker th.available:hover {
-  background: $gray-lightest;
+  background: $gray-100;
 }
 
 .daterangepicker td.in-range {
-  background: lighten($brand-primary, 40%);
+  background: lighten(theme-color("primary"), 40%);
   border-radius: 0;
 }
 
@@ -204,8 +204,8 @@
 }
 
 .daterangepicker td.active, .daterangepicker td.active:hover {
-  background-color: $brand-primary;
-  border-color: $brand-primary;
+  background-color: theme-color("primary");
+  border-color: theme-color("primary");
   color: #fff;
 }
 
@@ -249,14 +249,14 @@
 }
 
 .daterangepicker .input-mini.active {
-  border: 1px solid $brand-primary;
+  border: 1px solid theme-color("primary");
 }
 
 .daterangepicker .daterangepicker_input i {
   position: absolute;
   left: 8px;
   top: 10px;
-  color: $gray-lighter;
+  color: $gray-200;
 }
 
 .daterangepicker .daterangepicker_input {
@@ -296,7 +296,7 @@
 
 .daterangepicker .ranges li {
   font-size: 13px;
-  background: $gray-lightest;
+  background: $gray-100;
   border: 1px solid $border-color;;
   padding: 7px 10px;
   margin-bottom: 5px;
@@ -305,8 +305,8 @@
 }
 
 .daterangepicker .ranges li.active, .daterangepicker .ranges li:hover {
-  background: $brand-primary;
-  border-color: $brand-primary;
+  background: theme-color("primary");
+  border-color: theme-color("primary");
   color: #fff;
 }
 

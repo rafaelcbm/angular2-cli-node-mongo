@@ -7,7 +7,7 @@
   }
 
   .cal-hour:nth-child(odd) {
-    background-color: $gray-lightest;
+    background-color: $gray-100;
   }
 
   .cal-hour-segment {
@@ -27,7 +27,7 @@
   }
 
   .cal-hour-segment:hover {
-    background-color: $gray-lighter;
+    background-color: $gray-200;
   }
 
   .cal-event {

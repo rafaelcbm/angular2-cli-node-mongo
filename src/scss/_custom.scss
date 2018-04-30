@@ -1,5 +1,8 @@
 // Here you can add other styles
 .navbar {
+  .sidebar-minimizer {
+    min-width: 50px;
+  }
 
   .form-inline {
     i {
@@ -59,6 +62,12 @@ $sidebar-header-height: 200px;
   }
   .sidebar-header + .sidebar-nav {
     height: calc(100vh - #{$navbar-height} - #{$sidebar-header-height}) !important;
+  }
+}
+
+.sidebar-minimized {
+  .sidebar-header {
+    display: none;
   }
 }
 

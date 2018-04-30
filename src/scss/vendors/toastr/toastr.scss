@@ -152,19 +152,19 @@ button.toast-close-button {
   margin: auto;
 }
 .toast {
-  background-color: $brand-primary;
+  background-color: theme-color("primary");
 }
 .toast-success {
-  background-color: $brand-success;
+  background-color: theme-color("success");
 }
 .toast-error {
-  background-color: $brand-danger;
+  background-color: theme-color("danger");
 }
 .toast-info {
-  background-color: $brand-info;
+  background-color: theme-color("info");
 }
 .toast-warning {
-  background-color: $brand-warning;
+  background-color: theme-color("warning");
 }
 
 progress-bar,

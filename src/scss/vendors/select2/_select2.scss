@@ -1050,7 +1050,7 @@ html[dir="rtl"] .select2-container-multi .select2-search-choice-close {
 */
 .select2-results .select2-highlighted {
   color: white;
-  background-color: $brand-primary;
+  background-color: theme-color("primary");
 }
 
 /**
@@ -1271,7 +1271,7 @@ body > .select2-container.open {
 
 /* Helper class to show styles when focus */
 .btn-default-focus {
-  border-color: $brand-primary;
+  border-color: theme-color("primary");
 }
 
 .btn-default {
@@ -1479,13 +1479,13 @@ select {
   height: 32px;
   padding: 6px 0 0 12px;
   border: none;
-  // background: $gray-lightest;
+  // background: $gray-100;
 }
 
 .select2-container .select2-choice .select2-arrow {
   right: 0px;
   top: 0px;
-  background: $gray-lightest;
+  background: $gray-100;
   border: none;
 }
 
@@ -1495,7 +1495,7 @@ select {
 }
 
 .select2-drop {
-  color: $gray-dark;
+  color: $gray-800;
   border: 1px solid $border-color;
   border-radius: 0;
   @if $enable-rounded {
@@ -1520,7 +1520,7 @@ select {
 }
 
 .select2-default {
-  color: darken($gray-dark,15%) !important;
+  color: darken($gray-800,15%) !important;
   padding-left: 12px !important;
 }
 
@@ -1533,19 +1533,19 @@ select {
     border-radius: .25rem !important;
   }
   box-shadow: none;
-  background-color: $gray-lightest;
+  background-color: $gray-100;
   filter: none;
   background-image: none;
   font-size: 11px;
 }
 
 .select2-container-multi .select2-choices .select2-search-field input {
-  color: $gray-dark;
+  color: $gray-800;
 }
 
 .select2-container-active .select2-choice,
 .select2-container-multi.select2-container-active .select2-choices {
-  border-color: $brand-primary !important;
+  border-color: theme-color("primary") !important;
   box-shadow: none;
 }
 

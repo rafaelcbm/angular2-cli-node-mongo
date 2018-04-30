@@ -18,7 +18,7 @@
   }
 
   .cal-day-headers .cal-header:hover {
-    background-color: $gray-lightest;
+    background-color: $gray-100;
   }
 
   .cal-day-headers span {
@@ -50,11 +50,11 @@
   }
 
   .cal-header.cal-today {
-    background-color: lighten($brand-success, 25%);
+    background-color: lighten(theme-color("success"), 25%);
   }
 
   .cal-header.cal-weekend span {
-    color: $brand-danger;
+    color: theme-color("danger");
   }
 
   .cal-event,
