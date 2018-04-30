@@ -12,15 +12,11 @@ const userService: UserService = Container.get(UserService);
 
 userRouter.get("/all", function (request: Request, response: Response, next: NextFunction) {
 
-	co(function* () {
-
-		let users = yield userService.getUsers();
-
-		response.json({
+	userService.getUsers()
+		.then(users => response.json({
 			"status": "sucesso",
 			"data": users
-		});
-
-	}).catch((e: Error) => handleError(e, response));
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
 

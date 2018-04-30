@@ -13,7 +13,7 @@ export class UserService {
 
 	userDAO = Container.get(UserDAO);
 
-	public *getUsers() {
-		return yield this.userDAO.getAllUsers();
+	public getUsers() {
+		return this.userDAO.getAllUsers();
 	}
 }
