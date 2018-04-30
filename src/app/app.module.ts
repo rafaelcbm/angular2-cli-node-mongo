@@ -1,6 +1,8 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
@@ -12,6 +14,8 @@ import { AuthGuard } from './authentication/auth-guard.service';
 import { AuthService } from './authentication/auth.service';
 import { ApiHttpService } from './services/api-http.service';
 import { MessagesService } from './services/messages.service';
+
+registerLocaleData(localePt);
 
 @NgModule({
 	declarations: [
