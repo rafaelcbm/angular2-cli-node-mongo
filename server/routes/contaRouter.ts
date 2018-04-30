@@ -16,33 +16,25 @@ contaRouter.get("/", function (request: Request & { userName: string }, response
 
 	let userName = request.userName;
 
-	co(function* () {
-
-		let contas = yield contaService.getContas(userName);
-
-		response.json({
+	contaService.getContas(userName)
+		.then(contas => response.json({
 			"status": "sucesso",
 			"data": contas
-		});
-
-	}).catch((e: Error) => handleError(e, response));
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
-
 
 contaRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
 	let userName = request.userName;
 	let nomeConta = request.body.nomeConta;
 
-	co(function* () {
-
-		let contaObtida = yield contaService.insertConta(userName, nomeConta);
-
-		response.status(201).json({
+	contaService.insertConta(userName, nomeConta)
+		.then(contaObtida => response.status(201).json({
 			"status": "sucesso",
 			"data": contaObtida
-		});
-	}).catch((e: Error) => handleError(e, response));
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
 
 contaRouter.delete("/:idConta", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
@@ -50,17 +42,12 @@ contaRouter.delete("/:idConta", function (request: Request & { userName: string 
 	let userName = request.userName;
 	let idConta = request.params.idConta;
 
-	co(function* () {
-
-		let user = yield contaService.removeConta(userName, idConta);
-
-		response.json({
+	contaService.removeConta(userName, idConta)
+		.then(user => response.json({
 			"status": "sucesso",
 			"user": user
-		});
-
-	}).catch((e: Error) => handleError(e, response));
-
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
 
 contaRouter.put("/:idConta", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
@@ -69,14 +56,10 @@ contaRouter.put("/:idConta", function (request: Request & { userName: string }, 
 	let idConta = request.params.idConta;
 	let nomeConta = request.body.nomeConta;
 
-	co(function* () {
-
-		let contaAlterada = yield contaService.updateConta(userName, idConta, nomeConta);
-
-		response.json({
+	contaService.updateConta(userName, idConta, nomeConta)
+		.then(contaAlterada => response.json({
 			"status": "sucesso",
 			"data": contaAlterada
-		});
-
-	}).catch((e: Error) => handleError(e, response));
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
