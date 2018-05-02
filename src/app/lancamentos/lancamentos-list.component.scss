@@ -1,26 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 .lancamentos-list-header {
     display: grid;
-    grid-template-columns: 1fr 5fr 1fr 2fr 1fr 1fr;
-    // grid-column: 1/5;
+    grid-template-columns: 2fr 10fr 1fr 3fr 3fr 1fr; // grid-column: 1/5;
     // grid-row: 1;
     align-items: center;
-	justify-items: center;
-	font-weight: bold;
+    justify-items: center;
+    font-weight: bold;
 }
 
 .lancamentos-list-content {
     display: grid;
-	grid-template-columns: 1fr 5fr 1fr 2fr 1fr 1fr;
-	grid-auto-rows: 2em;
-    // grid-column: 1/5;
+    grid-template-columns: 2fr 10fr 1fr 3fr 3fr 1fr;
+    grid-auto-rows: 2em; // grid-column: 1/5;
     // grid-row: 1;
     align-items: center;
-	justify-items: center;
-	cursor: pointer;
-	.content-descricao-field{
-		justify-self: start;
-	}
-	.content-valor-field,{
-		justify-self: end;
-	}
+    justify-items: center;
+    cursor: pointer;
+    .content-descricao-field {
+        justify-self: start;
+    }
+    .content-valor-field,
+        {
+        justify-self: end;
+    }
+    .digits {
+        font-family: 'Montserrat', sans-serif;
+    }
 }
