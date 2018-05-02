@@ -15,90 +15,103 @@ export class LancamentoService {
 	lancamentoDAO = Container.get(LancamentoDAO);
 	userDAO = Container.get(UserDAO);
 
-	public *getLancamentos(userName: string) {
+	public getLancamentos(userName: string) {
 
-		let user = yield this.userDAO.getUser(userName);
-
-		return yield this.lancamentoDAO.getLancamentosByUser(user._id.toString());
+		return this.userDAO.getUser(userName)
+			.then(user => this.lancamentoDAO.getLancamentosByUser(user._id.toString()));
 	}
 
-	public *getLancamentosByCompetencia(userName: string, competencia: string) {
+	public getLancamentosByCompetencia(userName: string, competencia: string) {
 
-		let user = yield this.userDAO.getUser(userName);
-
-		return yield this.lancamentoDAO.getLancamentoByCompetencia(user._id.toString(), competencia);
+		return this.userDAO.getUser(userName)
+			.then(user => this.lancamentoDAO.getLancamentoByCompetencia(user._id.toString(), competencia));
 	}
 
-	public *insertLancamento(userName: string, lancamento: any) {
+	public insertLancamento(userName: string, lancamento: any) {
 
-		let user = yield this.userDAO.getUser(userName);
-		assert.ok(user);
+		return this.userDAO.getUser(userName)
+			.then(user => {
+				assert.ok(user);
+				if (!user.contas)
+					return Promise.reject(new BusinessError(`Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`));
+				else {
+					// Transforma o _id para String
+					lancamento._idUser = user._id.toString();
+					//logger.info("** typeof lancamento._idUser: %s", typeof lancamento._idUser);
 
-		// Transforma o _id para String
-		lancamento._idUser = user._id.toString();
-		logger.info("** typeof lancamento._idUser: %s", typeof lancamento._idUser);
+					//Salva somente o _id e nome da categoria no lancamento
+					let categoriaLancamento = { _id: lancamento.categoria._id, nome: lancamento.categoria.nome };
+					lancamento.categoria = categoriaLancamento;
 
-		//Salva somente o _id e nome da categoria no lancamento
-		let novaCategoria = { _id: lancamento.categoria._id, nome: lancamento.categoria.nome };
-		lancamento.categoria = novaCategoria;
-
-		let daoReturn = yield this.lancamentoDAO.insertLancamento(lancamento);
-		logger.info("** inserted obj: %j", daoReturn.ops[0]);
-		let insertedLancamento = daoReturn.ops[0];
-		assert.equal(daoReturn.result.n, 1);
-
-		return insertedLancamento;
+					return this.lancamentoDAO.insertLancamento(lancamento)
+				}
+			})
+			.then(resultInsercaoLancamento => {
+				logger.info("** inserted obj: %j", resultInsercaoLancamento.ops[0]);
+				let insertedLancamento = resultInsercaoLancamento.ops[0];
+				assert.equal(resultInsercaoLancamento.result.n, 1);
+				return insertedLancamento;
+			});
 	}
 
-	public *removeLancamento(userName: string, idLancamento: any) {
+	public removeLancamento(userName: string, idLancamento: any) {
 
-		let lancamentoObtido = yield this.lancamentoDAO.getLancamentoById(idLancamento);
-		logger.info("** Remover Lancamentos - lancamentoObtido = %j", lancamentoObtido);
-		if (!lancamentoObtido)
-			throw new BusinessError("Lancamento não encontrado!");
+		let lancamentoObtido;
 
-		let user = yield this.userDAO.getUser(userName);
-		assert.ok(user);
-
-		if (user._id.toHexString() != lancamentoObtido._idUser)
-			throw new BusinessError(`Lancamento (${lancamentoObtido.nome}) não pertence ao usuário informado!`);
-
-
-		let daoReturn = yield this.lancamentoDAO.removeLancamentoById(idLancamento);
-		assert.equal(daoReturn.result.n, 1);
+		return this.lancamentoDAO.getLancamentoById(idLancamento)
+			.then(lancamento => {
+				logger.info("** Remover Lancamentos - lancamento = %j", lancamento);
+				if (!lancamento)
+					return Promise.reject(new BusinessError('Lancamento não encontrado!'))
+				else {
+					lancamentoObtido = lancamento;
+					return this.userDAO.getUser(userName);
+				}
+			})
+			.then(user => {
+				assert.ok(user);
+				if (user._id.toHexString() != lancamentoObtido._idUser)
+					return Promise.reject(new BusinessError(`Lancamento (${lancamentoObtido.nome}) não pertence ao usuário informado!`));
+				else
+					return this.lancamentoDAO.removeLancamentoById(idLancamento);
+			})
+			.then(resultRemocaoLancamento => assert.equal(resultRemocaoLancamento.result.n, 1));
 	}
 
-	public *updateLancamento(userName: string, idLancamento: any, lancamento: any) {
+	public updateLancamento(userName: string, idLancamento: any, lancamento: any) {
 
-		let user = yield this.userDAO.getUser(userName);
-		assert.ok(user);
+		let lancamentoObtido;
 
-		if (!user.contas)
-			throw new BusinessError(`Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`);
+		return this.userDAO.getUser(userName)
+			.then(user => {
+				assert.ok(user);
+				if (!user.contas)
+					return Promise.reject(new BusinessError(`Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`));
+				else {
+					let contaLancamento = user.contas.find(conta => conta === lancamento.conta._id);
 
-		let contaLancamento = user.contas.find(conta => conta === lancamento.conta._id);
+					if (!contaLancamento)
+						return Promise.reject(new BusinessError(`Lancamento informado não pertence a uma conta do usuário!`));
 
-		if (!contaLancamento)
-			throw new BusinessError(`Lancamento informado não pertence a uma conta do usuário!`);
+					let query = { _id: new ObjectID(idLancamento) }
 
-		let query = { _id: new ObjectID(idLancamento) }
+					let novoLancamento = {
+						data: moment(lancamento.data, 'YYYY-MM-DD').toDate(),
+						descricao: lancamento.descricao,
+						valor: lancamento.valor,
+						conta: lancamento.conta,
+						categoria: { _id: lancamento.categoria._id, nome: lancamento.categoria.nome },
+						isDebito: lancamento.isDebito
+					}
 
-		let novoLancamento = {
-			data: moment(lancamento.data, 'YYYY-MM-DD').toDate(),
-			descricao: lancamento.descricao,
-			valor: lancamento.valor,
-			conta: lancamento.conta,
-			categoria: { _id: lancamento.categoria._id, nome: lancamento.categoria.nome },
-			isDebito: lancamento.isDebito
-		}
+					logger.info("** typeof UPDATED LANCAMENTO: %j", novoLancamento);
 
-		logger.info("** typeof UPDATED LANCAMENTO: %j", novoLancamento);
-		let daoReturn = yield this.lancamentoDAO.updateLancamento(query, { $set: novoLancamento });
-		assert.equal(daoReturn.result.n, 1);
-
-		let lancamentoAlterado = yield this.lancamentoDAO.getLancamentoByDescricao(lancamento.descricao);
-		assert.ok(lancamentoAlterado);
-
-		return lancamentoAlterado;
+					return this.lancamentoDAO.updateLancamento(query, { $set: novoLancamento });
+				}
+			})
+			.then((resultLancamentoUpdated) => {
+				assert.equal(resultLancamentoUpdated.result.n, 1);
+				return this.lancamentoDAO.getLancamentoByDescricao(lancamento.descricao);
+			});
 	}
 }
