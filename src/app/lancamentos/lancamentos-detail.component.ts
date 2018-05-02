@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import 'rxjs/add/operator/map';
@@ -22,7 +22,11 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 })
 export class LancamentosDetailComponent implements OnInit {
 
-	lancamento: Lancamento = new Lancamento();
+	@Input()
+	lancamento: any;
+	@Output()
+	onVoltar: EventEmitter<any> = new EventEmitter<any>();
+
 	showLancamento = false;
 	showDatePicker = false;
 	contas: Conta[];
@@ -39,23 +43,18 @@ export class LancamentosDetailComponent implements OnInit {
 		private contasService: ContasService,
 		private categoriasService: CategoriasService,
 		private filtroLancamentoService: FiltroLancamentoService,
-	) { }
+	) {
+		console.log('constructor chamado');
+	}
 
 	ngOnInit() {
-		console.debug('LancamentosDetailComponent:ngOnInit');
 		this.carregarContas();
 		this.carregarCategorias();
 		this.carregarLancamento();
 	}
 
 	carregarLancamento() {
-		this.filtroLancamentoService.selectedLancamento$.subscribe(
-			lancamento => {
-				console.debug('subscribe lancamento=', lancamento);
-				this.lancamento = lancamento;
-				this.onLancamentoChange();
-				this.showLancamento = true;
-			});
+		this.onLancamentoChange();
 	}
 
 	carregarContas() {
@@ -104,7 +103,7 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	associaContaDoLancamento() {
-		if (this.lancamento.conta) {
+		if (this.lancamento && this.lancamento.conta) {
 			let contaEncontrada = this.contas.find(conta => conta._id === this.lancamento.conta._id);
 
 			if (contaEncontrada) {
@@ -114,7 +113,7 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	associaCategoriaDoLancamento() {
-		if (this.lancamento.categoria) {
+		if (this.lancamento && this.lancamento.categoria) {
 			let categoriaEncontrada = this.categorias.find(categoria => categoria._id === this.lancamento.categoria._id);
 
 			if (categoriaEncontrada) {
@@ -150,8 +149,8 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	voltar() {
-		this.lancamento = new Lancamento();
-		this.showLancamento = false;
+		this.lancamento.showDetail = false;
+		this.onVoltar.emit(true);
 	}
 
 	isLancamentoValido(formValue) {
@@ -163,7 +162,7 @@ export class LancamentosDetailComponent implements OnInit {
 
 	//Apenas teste de como obter o valor do select através ngModelChange
 	contasChanged(contaChanged) {
-		Log.log("contaChanged = ", contaChanged);
+		//Log.log("contaChanged = ", contaChanged);
 		this.contaSelectionada = contaChanged;
 	}
 }

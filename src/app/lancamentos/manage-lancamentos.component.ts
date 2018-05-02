@@ -1,18 +1,26 @@
 import { Log } from './../util/log';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Lancamento } from "../models/models.module";
+import { FiltroLancamentoService } from './filtro-lancamento.service';
 
 @Component({
 	templateUrl: './manage-lancamentos.component.html',
 	styleUrls: ['./manage-lancamentos.component.scss']
 })
-export class ManageLancamentosComponent {
-	constructor() { }
+export class ManageLancamentosComponent implements OnInit {
 
+	novoLancamento: any;
 	showCategorias = true;
 	showContas = true;
+
+	ngOnInit() {
+		this.filtroLancamentoService.selectedLancamento$.subscribe(
+			lancamento => this.novoLancamento = lancamento);
+	}
+
+	constructor(private filtroLancamentoService: FiltroLancamentoService) { }
 
 	onShowCategoriaChange(showCategorias: boolean) {
 		this.showCategorias = showCategorias;
@@ -20,5 +28,10 @@ export class ManageLancamentosComponent {
 
 	onShowContaChange(showContas: boolean) {
 		this.showContas = showContas;
+	}
+
+	onLancamentoDetailVoltar(isVoltou) {
+		if (isVoltou)
+			this.novoLancamento = undefined;
 	}
 }

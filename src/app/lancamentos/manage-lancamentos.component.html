@@ -7,7 +7,7 @@
 	</section>
 
 	<section class="detalhe-lancamento">
-		<lancamentos-detail></lancamentos-detail>
+		<lancamentos-detail *ngIf="novoLancamento" [lancamento]="novoLancamento" (onVoltar)="onLancamentoDetailVoltar($event)"></lancamentos-detail>
 	</section>
 
 	<section class="contas" [hidden]="!showContas">

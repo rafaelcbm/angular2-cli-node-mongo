@@ -1,6 +1,6 @@
 import { length } from './../../../server/config';
 import { Categoria } from './../models/categoria.model';
-import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, ChangeDetectorRef } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
@@ -16,9 +16,9 @@ import { Lancamento } from "../models/models.module";
 })
 export class LancamentosListComponent implements OnInit {
 
-	lancamentos: Lancamento[];
+	lancamentos: any[];
 
-	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService) { }
+	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private ref: ChangeDetectorRef) { }
 
 	ngOnInit() {
 
@@ -34,7 +34,7 @@ export class LancamentosListComponent implements OnInit {
 		this.lancamentosService.getByCompetencia(competenciaAtual);
 	}
 
-	inicializarLancamentos(){
+	inicializarLancamentos() {
 		this.lancamentosService.dataObservable$.subscribe(lancamentos => {
 			this.lancamentos = lancamentos;
 			this.lancamentos = this.lancamentos.map(
@@ -47,14 +47,14 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 
-	inicializarFiltroCompetencia(){
+	inicializarFiltroCompetencia() {
 		this.filtroLancamentoService.competenciaLancamento$
 			.debounceTime(500)
 			.distinctUntilChanged()
 			.subscribe(novaCompetencia => this.lancamentosService.getByCompetencia(novaCompetencia));
 	}
 
-	inicializarFiltroContas(){
+	inicializarFiltroContas() {
 		this.filtroLancamentoService.selectedContas$
 			.subscribe(contasSelecionadas => {
 				if (contasSelecionadas.length > 0) {
@@ -69,12 +69,12 @@ export class LancamentosListComponent implements OnInit {
 			});
 	}
 
-	inicializarFiltroCategorias(){
+	inicializarFiltroCategorias() {
 		this.filtroLancamentoService.selectedCategorias$
 			.subscribe(categoriasSelecionadas => {
 
 				if (categoriasSelecionadas.length == 0) {
-					this.lancamentos.forEach((lancamento:any) => lancamento.showLancamento = true);
+					this.lancamentos.forEach((lancamento: any) => lancamento.showLancamento = true);
 				}
 
 				if (categoriasSelecionadas.length > 0) {
@@ -89,8 +89,8 @@ export class LancamentosListComponent implements OnInit {
 			});
 	}
 
-	onSelect(lancamento: Lancamento) {
-		this.filtroLancamentoService.selectLancamento(lancamento);
+	onSelect(lancamento) {
+		lancamento.showDetail = true;
 	}
 
 	showLancamento(lancamento: any) {
