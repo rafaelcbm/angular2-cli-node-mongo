@@ -96,4 +96,17 @@ export class LancamentosListComponent implements OnInit {
 	showLancamento(lancamento: any) {
 		return lancamento.showConta && lancamento.showLancamento;
 	}
+
+	lancSelected = [];
+	clickCheck($event) {
+		let lancamentoSelected = $event.target.value;
+
+		if ($event.target.checked) {
+			this.lancSelected.push(lancamentoSelected);
+		} else {
+			this.lancSelected = this.lancSelected.filter(l => l !== lancamentoSelected);
+		}
+
+		console.log(`Lancs = ${this.lancSelected}`);
+	}
 }

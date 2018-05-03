@@ -43,9 +43,7 @@ export class LancamentosDetailComponent implements OnInit {
 		private contasService: ContasService,
 		private categoriasService: CategoriasService,
 		private filtroLancamentoService: FiltroLancamentoService,
-	) {
-		console.log('constructor chamado');
-	}
+	) { }
 
 	ngOnInit() {
 		this.carregarContas();
