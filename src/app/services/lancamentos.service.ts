@@ -27,15 +27,13 @@ export class LancamentosService extends DataService<Lancamento> {
 		this._apiHttp.get(`${LancamentosService.baseUrl}/${competencia}`)
 			.subscribe(
 			jsonData => {
-				console.log("Data return on service:", jsonData);
-
 				if (jsonData.status === "sucesso") {
 					this._dataStore.dataList = jsonData.data;
 					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 				}
 			},
 			error => {
-				console.log(error);
+				Log.error(error);
 			});
 	}
 
@@ -69,7 +67,6 @@ export class LancamentosService extends DataService<Lancamento> {
 			.subscribe(
 			jsonData => {
 				if (jsonData.status === "sucesso") {
-
 					this._dataStore.dataList.forEach((dataItem, i) => {
 						if (dataItem._id === jsonData.data._id) {
 							this._dataStore.dataList[i] = jsonData.data;

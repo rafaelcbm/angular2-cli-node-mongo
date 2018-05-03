@@ -33,19 +33,20 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.post(this.apiBaseUrl, payLoad)
 			.subscribe(
-			jsonData => {
-				if (jsonData.status === "sucesso") {
-					this._dataStore.dataList = jsonData.data;
-					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+						this._dataStore.dataList = jsonData.data;
+						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
-					//Atualiza a fonte de dados do dropdown de categorias
-					this.getAll();
+						//Atualiza a fonte de dados do dropdown de categorias
+						this.getAll();
 
-					this._notificationsService.success('Sucesso', this.successPostMessage);
-				} else if (jsonData.status === "erro") {
-					this._notificationsService.error('Erro', jsonData.message);
-				}
-			});
+						this._notificationsService.success('Sucesso', this.successPostMessage);
+					} else if (jsonData.status === "erro") {
+						this._notificationsService.error('Erro', jsonData.message);
+					}
+				},
+				error => { console.log(error) });
 	}
 
 	remove(modelId) {
@@ -53,19 +54,20 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.delete(`${this.apiBaseUrl}/${modelId}`)
 			.subscribe(
-			jsonData => {
-				if (jsonData.status === "sucesso") {
-					this._dataStore.dataList = jsonData.data;
-					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+						this._dataStore.dataList = jsonData.data;
+						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
-					//Atualiza a fonte de dados do dropdown de categorias
-					this.getAll();
+						//Atualiza a fonte de dados do dropdown de categorias
+						this.getAll();
 
-					this._notificationsService.success('Sucesso', this.successDeleteMessage);
-				} else if (jsonData.status === "erro") {
-					this._notificationsService.error('Erro', jsonData.message);
-				}
-			});
+						this._notificationsService.success('Sucesso', this.successDeleteMessage);
+					} else if (jsonData.status === "erro") {
+						this._notificationsService.error('Erro', jsonData.message);
+					}
+				},
+				error => { console.log(error) });
 	}
 
 	update(modelId, payLoad) {
@@ -73,39 +75,36 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.put(`${this.apiBaseUrl}/${modelId}`, payLoad)
 			.subscribe(
-			jsonData => {
-				if (jsonData.status === "sucesso") {
-					this._dataStore.dataList = jsonData.data;
-					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+						this._dataStore.dataList = jsonData.data;
+						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
-					//Atualiza a fonte de dados do dropdown de categorias
-					this.getAll();
+						//Atualiza a fonte de dados do dropdown de categorias
+						this.getAll();
 
-					this._notificationsService.success('Sucesso', this.successPutMessage);
+						this._notificationsService.success('Sucesso', this.successPutMessage);
 
-				} else if (jsonData.status === "erro") {
-					this._notificationsService.error('Erro', jsonData.message);
-				}
-			});
+					} else if (jsonData.status === "erro") {
+						this._notificationsService.error('Erro', jsonData.message);
+					}
+				},
+				error => { console.log(error) });
 	}
 
 	getAll(): any {
 
 		this._apiHttp.get(`${this.apiBaseUrl}/flat`)
 			.subscribe(
-			jsonData => {
-				console.log("Data return on service:", jsonData);
+				jsonData => {
+					if (jsonData.status === "sucesso") {
 
-				if (jsonData.status === "sucesso") {
+						return this.flatCategoriasObserver.next(jsonData.data);
 
-					return this.flatCategoriasObserver.next(jsonData.data);
-
-				} else if (jsonData.status === "erro") {
-					this._notificationsService.error('Erro', jsonData.message);
-				}
-			},
-			error => {
-				console.log(error);
-			});
+					} else if (jsonData.status === "erro") {
+						this._notificationsService.error('Erro', jsonData.message);
+					}
+				},
+				error => { console.log(error) });
 	}
 }

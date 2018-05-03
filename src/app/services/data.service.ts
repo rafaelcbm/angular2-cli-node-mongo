@@ -39,8 +39,6 @@ export class DataService<T extends Model> {
 		this._apiHttp.get(this.apiBaseUrl)
 			.subscribe(
 			jsonData => {
-				console.log("Data return on service:", jsonData);
-
 				if (jsonData.status === "sucesso") {
 					this._dataStore.dataList = jsonData.data;
 					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
@@ -49,7 +47,7 @@ export class DataService<T extends Model> {
 				}
 			},
 			error => {
-				console.log(error);
+				console.error(error);
 			});
 	}
 
