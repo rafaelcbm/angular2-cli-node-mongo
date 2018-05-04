@@ -3,7 +3,7 @@ $color-lancamento-nao-pago: #000000;
 $color-lancamento-pago: #4dbd74;
 .lancamentos-list-header {
     display: grid;
-    grid-template-columns: 2fr 10fr 2fr 3fr 3fr; // grid-column: 1/5;
+    grid-template-columns: 1fr 2fr 10fr 2fr 3fr 3fr 1fr; // grid-column: 1/5;
     // grid-row: 1;
     align-items: center;
     justify-items: center;
@@ -12,55 +12,39 @@ $color-lancamento-pago: #4dbd74;
 
 .lancamentos-list-wrapper {
     display: grid;
-    grid-template-columns: 1fr 20fr 1fr;
-    .lancamentos-list-checks {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-auto-rows: 2em;
-        margin-top: 0.12em;
-        align-items: center;
-        justify-items: center;
-    }
-    .lancamentos-list-pago-wrapper {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-auto-rows: 2em;
-        margin-top: 0.12em;
-        align-items: center;
-        justify-items: center;
-        .lancamento-pago {
-            font-size: 1.5em;
-            color: $color-lancamento-pago;
-            &:hover {
-                color: lighten($color-lancamento-pago, 30%);
-            }
-        }
-        .lancamento-nao-pago {
-            font-size: 1.5em;
-            color: $color-lancamento-nao-pago;
-            &:hover {
-                color: lighten($color-lancamento-nao-pago, 30%);
-            }
-        }
-    }
+    grid-template-columns: 1fr;
+    margin-top: 1em;
     .lancamentos-list-content-wrapper {
         display: grid;
         grid-template-columns: 1fr;
+        &:hover {
+            background-color: #a8cae042;
+        }
         .lancamentos-list-content {
             display: grid;
-            grid-template-columns: 2fr 10fr 2fr 3fr 3fr;
+            grid-template-columns: 1fr 2fr 10fr 2fr 3fr 3fr 1fr;
             grid-auto-rows: 2em; // grid-column: 1/5;
             // grid-row: 1;
             align-items: center;
             justify-items: center;
-            cursor: pointer;
+			cursor: default;
+			border-bottom: 1px solid #bfc8ce;
             .content-descricao-field {
                 justify-self: start;
+                cursor: pointer;
+                &:hover {
+                    text-decoration: underline;
+                    color: #b10e0eb5;
+                    font-weight: 900;
+                }
             }
             .content-valor-field,
                 {
                 justify-self: end;
-            }
+			}
+			.lancamentos-list-pago-item{
+				cursor: pointer;
+			}
             .digits {
                 font-family: 'Montserrat', sans-serif;
             }
@@ -69,6 +53,20 @@ $color-lancamento-pago: #4dbd74;
             }
             .credito-color {
                 color: #28a513;
+            }
+            .lancamento-pago {
+                font-size: 1.5em;
+                color: $color-lancamento-pago;
+                &:hover {
+                    color: lighten($color-lancamento-pago, 30%);
+                }
+            }
+            .lancamento-nao-pago {
+                font-size: 1.5em;
+                color: $color-lancamento-nao-pago;
+                &:hover {
+                    color: lighten($color-lancamento-nao-pago, 30%);
+                }
             }
         }
     }
