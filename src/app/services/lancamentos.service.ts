@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { NotificationsService } from 'angular2-notifications';
 import * as moment from 'moment';
+import { Observable } from 'rxjs/Observable';
+//import 'rxjs/add/operator/of';
 
 import { Log } from './../util/log';
 import { MessagesService } from './messages.service';
@@ -26,15 +28,15 @@ export class LancamentosService extends DataService<Lancamento> {
 	getByCompetencia(competencia: string) {
 		this._apiHttp.get(`${LancamentosService.baseUrl}/${competencia}`)
 			.subscribe(
-			jsonData => {
-				if (jsonData.status === "sucesso") {
-					this._dataStore.dataList = jsonData.data;
-					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
-				}
-			},
-			error => {
-				Log.error(error);
-			});
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+						this._dataStore.dataList = jsonData.data;
+						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+					}
+				},
+				error => {
+					Log.error(error);
+				});
 	}
 
 	create(payLoad) {
@@ -42,22 +44,22 @@ export class LancamentosService extends DataService<Lancamento> {
 		this._apiHttp
 			.post(this.apiBaseUrl, payLoad)
 			.subscribe(
-			jsonData => {
-				if (jsonData.status === "sucesso") {
-					this._dataStore.dataList.push(jsonData.data);
-					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+						this._dataStore.dataList.push(jsonData.data);
+						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
-					this.filtroLancamentoService.novaCompetencia(moment(payLoad.lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
+						this.filtroLancamentoService.novaCompetencia(moment(payLoad.lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
 
-					this._notificationsService.success('Sucesso', this.successPostMessage);
+						this._notificationsService.success('Sucesso', this.successPostMessage);
 
-				} else if (jsonData.status === "erro") {
-					this._notificationsService.error('Erro', jsonData.message);
-				}
-			},
-			error => {
-				Log.error(error);
-			});
+					} else if (jsonData.status === "erro") {
+						this._notificationsService.error('Erro', jsonData.message);
+					}
+				},
+				error => {
+					Log.error(error);
+				});
 	}
 
 	update(modelId, payLoad) {
@@ -65,26 +67,49 @@ export class LancamentosService extends DataService<Lancamento> {
 		this._apiHttp
 			.put(`${this.apiBaseUrl}/${modelId}`, payLoad)
 			.subscribe(
-			jsonData => {
-				if (jsonData.status === "sucesso") {
-					this._dataStore.dataList.forEach((dataItem, i) => {
-						if (dataItem._id === jsonData.data._id) {
-							this._dataStore.dataList[i] = jsonData.data;
-						}
-					});
-					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+						this._dataStore.dataList.forEach((dataItem, i) => {
+							if (dataItem._id === jsonData.data._id) {
+								this._dataStore.dataList[i] = jsonData.data;
+							}
+						});
+						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
-					// Atualiza também para a nova competência, de acordo com a data alterada do lançamento.
-					this.filtroLancamentoService.novaCompetencia(moment(payLoad.lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
+						// Atualiza também para a nova competência, de acordo com a data alterada do lançamento.
+						this.filtroLancamentoService.novaCompetencia(moment(payLoad.lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
 
-					this._notificationsService.success('Sucesso', this.successPutMessage);
+						this._notificationsService.success('Sucesso', this.successPutMessage);
 
-				} else if (jsonData.status === "erro") {
-					this._notificationsService.error('Erro', jsonData.message);
-				}
-			},
-			error => {
-				Log.error(error);
-			});
+					} else if (jsonData.status === "erro") {
+						this._notificationsService.error('Erro', jsonData.message);
+					}
+				},
+				error => {
+					Log.error(error);
+				});
+	}
+
+	consolidar(lancamento) {
+
+		this._notificationsService.success('Sucesso', `Lançamento '${lancamento.descricao}' ${!!lancamento.pago?'não pago':'pago'} !`);
+		return !!lancamento.pago ? Observable.of(false) : Observable.of(true);
+
+		// this._apiHttp
+		// 	.put(`${this.apiBaseUrl}/${modelId}/${isConsolida}`, null)
+		// 	.subscribe(
+		// 		jsonData => {
+		// 			if (jsonData.status === "sucesso") {
+
+		// 				this._notificationsService.success('Sucesso', this.successPutMessage);
+		// 				return isConsolida ? Observable.of(true) : Observable.of(false);
+
+		// 			} else if (jsonData.status === "erro") {
+		// 				this._notificationsService.error('Erro', jsonData.message);
+		// 			}
+		// 		},
+		// 		error => {
+		// 			Log.error(error);
+		// 		});
 	}
 }

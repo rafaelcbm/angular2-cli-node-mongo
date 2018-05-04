@@ -27,7 +27,7 @@
 					<span class="digits" [ngClass]="{'debito-color': lancamento.isDebito, 'credito-color': !lancamento.isDebito}">{{lancamento.valor | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
 				</section>
 				<div class="lancamentos-list-pago-item">
-					<div (click)="clickCheck($event)" [ngClass]="{'lancamento-pago': lancamento.isDebito, 'lancamento-nao-pago': !lancamento.isDebito, 'fa fa-check-square': true}"></div>
+					<div (click)="consolidarLancamento(lancamento)" [ngClass]="{'lancamento-pago': lancamento.pago, 'lancamento-nao-pago': !lancamento.pago, 'fa fa-check-square': true}"></div>
 				</div>
 			</section>
 

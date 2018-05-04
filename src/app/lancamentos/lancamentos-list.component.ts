@@ -97,6 +97,15 @@ export class LancamentosListComponent implements OnInit {
 		return lancamento.showConta && lancamento.showLancamento;
 	}
 
+	consolidarLancamento(lancamento) {
+		console.log('ANTES lancamento.pago = ', lancamento.pago);
+
+		this.lancamentosService.consolidar(lancamento).subscribe(pago => {
+			lancamento.pago = pago;
+			console.log('DEPOIS lancamento.pago = ', lancamento.pago);
+		});
+	}
+
 	lancSelected = [];
 	clickCheck($event) {
 		let lancamentoSelected = $event.target.value;
