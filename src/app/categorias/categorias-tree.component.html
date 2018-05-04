@@ -1,5 +1,5 @@
 <div class="block-tree-cat">
-	<tree-root #tree [nodes]="categorias" [options]="options" (onDeactivate)="onDeactivate($event)" (onActivate)="onActivate($event)">
+	<tree-root #tree [nodes]="categorias" [options]="options" (deactivate)="onDeactivate($event)" (activate)="onActivate($event)">
 		<ng-template #loadingTemplate></ng-template>
 		<ng-template #treeNodeTemplate let-node="node" let-index="index">
 			<span>{{ node.data.nome }}</span>
