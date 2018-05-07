@@ -14,11 +14,12 @@ export class AppComponent implements OnInit {
 	//SimpleNotifications configuration
 	public options = {
 		position: ["bottom", "right"],
-		timeOut: 5000,
+		timeOut: 2000,
         showProgressBar: true,
         pauseOnHover: true,
         clickToClose: true,
-		lastOnBottom: true
+		lastOnBottom: true,
+		maxStack:3
 	};
 
   ngOnInit(): void {
