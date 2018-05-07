@@ -30,6 +30,8 @@ export class LancamentosListComponent implements OnInit {
 
 		this.inicializarFiltroCategorias();
 
+		this.observarLancamentoConsolidado();
+
 		let competenciaAtual = moment().format('YYYYMM');
 		this.lancamentosService.getByCompetencia(competenciaAtual);
 	}
@@ -98,14 +100,19 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 	consolidarLancamento(lancamento) {
-		console.log('ANTES lancamento.pago = ', lancamento.pago);
+		this.lancamentosService.consolidar(lancamento);
+	}
 
-		this.lancamentosService.consolidar(lancamento).subscribe(pago => {
-			lancamento.pago = pago;
-			console.log('DEPOIS lancamento.pago = ', lancamento.pago);
+	observarLancamentoConsolidado() {
+		this.lancamentosService.lancamentoConsolidado$.subscribe(dadosLancamento => {
+			let lancLista = this.lancamentos.find(l => l._id == dadosLancamento.id);
+			if (lancLista) {
+				lancLista.pago = dadosLancamento.pago;
+			}
 		});
 	}
 
+	//TODO: todos checks
 	lancSelected = [];
 	clickCheck($event) {
 		let lancamentoSelected = $event.target.value;

@@ -114,4 +114,38 @@ export class LancamentoService {
 				return this.lancamentoDAO.getLancamentoByDescricao(lancamento.descricao);
 			});
 	}
+
+	public consolidarLancamento(userName: string, idLancamento: any, lancamentoPago: any) {
+
+		let lancamentoObtido;
+
+		return this.lancamentoDAO.getLancamentoById(idLancamento)
+			.then(lancamento => {
+				logger.info("** Consolidando Lancamento = %j", lancamento);
+				if (!lancamento)
+					return Promise.reject(new BusinessError('Lancamento não encontrado!'))
+				else {
+					lancamentoObtido = lancamento;
+					return this.userDAO.getUser(userName);
+				}
+			})
+			.then(user => {
+				assert.ok(user);
+				if (user._id.toHexString() != lancamentoObtido._idUser)
+					return Promise.reject(new BusinessError(`Lancamento (${lancamentoObtido.nome}) não pertence ao usuário informado!`));
+				else {
+
+					let query = { _id: new ObjectID(idLancamento) };
+					// Converte o tipo de string para boolean
+					lancamentoPago = (lancamentoPago === 'true');
+
+					return this.lancamentoDAO.updateLancamento(query, { $set: { pago: lancamentoPago } });
+				}
+			})
+			.then((resultLancamentoUpdated) => {
+				assert.equal(resultLancamentoUpdated.result.n, 1);
+				return this.lancamentoDAO.getLancamentoByDescricao(lancamentoObtido.descricao);
+			});
+
+	}
 }

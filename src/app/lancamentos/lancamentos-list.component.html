@@ -1,4 +1,10 @@
 <section class="lancamentos-list-wrapper">
+	<div class="saldo-content">
+		<span>Saldo Anterior:</span>
+		<span class="digits">{{572.96 | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
+	</div>
+</section>
+<section class="lancamentos-list-wrapper">
 	<div></div>
 	<section class="lancamentos-list-header">
 		<div></div>
@@ -6,7 +12,7 @@
 		<div class="content-descricao-header">Descrição</div>
 		<div class="content-conta-header">Conta</div>
 		<div class="content-categoria-header">Categoria</div>
-		<div>Valor</div>
+		<div class="content-valor-header">Valor</div>
 		<div></div>
 	</section>
 </section>
@@ -34,4 +40,11 @@
 			<lancamentos-detail *ngIf="lancamento.showDetail" [lancamento]="lancamento"></lancamentos-detail>
 		</section>
 	</section>
+</section>
+
+<section class="lancamentos-list-wrapper">
+	<div class="saldo-content">
+		<span>Saldo Atual:</span>
+		<span class="digits">{{1325.54 | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
+	</div>
 </section>

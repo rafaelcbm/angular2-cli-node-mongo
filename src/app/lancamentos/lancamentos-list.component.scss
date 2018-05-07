@@ -41,9 +41,6 @@ $color-lancamento-pago: #4dbd74;
             .lancamentos-list-pago-item {
                 cursor: pointer;
             }
-            .digits {
-                font-family: 'Montserrat', sans-serif;
-            }
             .debito-color {
                 color: #ec2727;
             }
@@ -66,6 +63,15 @@ $color-lancamento-pago: #4dbd74;
             }
         }
     }
+    .saldo-content {
+        .digits {
+            font-size: 1.2em;
+			padding-left: 10px;
+        }
+        display: inline-block;
+        justify-self: end;
+        margin-right: 3.5em;
+    }
 }
 
 .content-descricao-header,
@@ -81,4 +87,8 @@ $color-lancamento-pago: #4dbd74;
 .content-valor-field,
 .content-valor-header {
     justify-self: end;
+}
+
+.digits {
+    font-family: 'Montserrat', sans-serif;
 }

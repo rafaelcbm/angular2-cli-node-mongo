@@ -1,8 +1,10 @@
+import { NextFunction } from 'express';
 import { Injectable } from '@angular/core';
 
 import { NotificationsService } from 'angular2-notifications';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 //import 'rxjs/add/operator/of';
 
 import { Log } from './../util/log';
@@ -16,6 +18,9 @@ import { ENV } from './env-config';
 @Injectable()
 export class LancamentosService extends DataService<Lancamento> {
 
+	lancamentoConsolidado$: Observable<any>;
+	protected _lancamentoConsolidadoSubject: BehaviorSubject<any>;
+
 	static baseUrl = `${ENV.BASE_API}lancamentos/`;
 
 	constructor(apiHttp: ApiHttpService, _notificationsService: NotificationsService, private msgService: MessagesService, private filtroLancamentoService: FiltroLancamentoService) {
@@ -23,6 +28,9 @@ export class LancamentosService extends DataService<Lancamento> {
 		this.successPostMessage = this.msgService.getMessage(this.msgService.SUCCESS_CREATE_LANCAMENTO);
 		this.successDeleteMessage = this.msgService.getMessage(this.msgService.SUCCESS_DELETE_LANCAMENTO);
 		this.successPutMessage = this.msgService.getMessage(this.msgService.SUCCESS_UPDATE_LANCAMENTO);
+
+		this._lancamentoConsolidadoSubject = <BehaviorSubject<any>>new BehaviorSubject({});
+		this.lancamentoConsolidado$ = this._lancamentoConsolidadoSubject.asObservable();
 	}
 
 	getByCompetencia(competencia: string) {
@@ -90,26 +98,19 @@ export class LancamentosService extends DataService<Lancamento> {
 				});
 	}
 
-	consolidar(lancamento) {
-
-		this._notificationsService.success('Sucesso', `Lançamento '${lancamento.descricao}' ${!!lancamento.pago?'não pago':'pago'} !`);
-		return !!lancamento.pago ? Observable.of(false) : Observable.of(true);
-
-		// this._apiHttp
-		// 	.put(`${this.apiBaseUrl}/${modelId}/${isConsolida}`, null)
-		// 	.subscribe(
-		// 		jsonData => {
-		// 			if (jsonData.status === "sucesso") {
-
-		// 				this._notificationsService.success('Sucesso', this.successPutMessage);
-		// 				return isConsolida ? Observable.of(true) : Observable.of(false);
-
-		// 			} else if (jsonData.status === "erro") {
-		// 				this._notificationsService.error('Erro', jsonData.message);
-		// 			}
-		// 		},
-		// 		error => {
-		// 			Log.error(error);
-		// 		});
+	consolidar(lancamento): any {
+		this._apiHttp
+			.put(`${this.apiBaseUrl}consolidar/${lancamento._id}/${!lancamento.pago}`, {})
+			.subscribe(
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+						let lancamentoPago = jsonData.data.pago;
+						this._notificationsService.success('Sucesso', `Lançamento '${lancamento.descricao}' ${lancamentoPago ? 'pago' : 'não pago'} !`);
+						this._lancamentoConsolidadoSubject.next({ id: lancamento._id, pago: lancamentoPago });
+					}
+				},
+				error => {
+					Log.error(error);
+				});
 	}
 }
