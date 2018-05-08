@@ -81,4 +81,13 @@ export class LancamentoDAO {
 
 		return this._dataAccess.dbConnection.collection(this.LANCAMENTO_COLLECTION).update(query, updateObj, options);
 	}
+
+
+	public getCompetencia(idUser: string, competencia): any {
+
+		return this._dataAccess.getDocument('competencias',
+			{ $and: [{ _idUser: idUser }, { competencia: competencia }] });
+	}
+
+
 }

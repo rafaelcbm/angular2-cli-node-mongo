@@ -16,11 +16,19 @@ import { Lancamento } from "../models/models.module";
 })
 export class LancamentosListComponent implements OnInit {
 
+	saldoAnterior;
+	saldoAtual;
+	competenciaAtual;
+
 	lancamentos: any[];
 
 	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private ref: ChangeDetectorRef) { }
 
 	ngOnInit() {
+
+		this.competenciaAtual = moment().format('YYYYMM');
+
+		this.observarSaldoCompetencia();
 
 		this.inicializarLancamentos();
 
@@ -32,8 +40,9 @@ export class LancamentosListComponent implements OnInit {
 
 		this.observarLancamentoConsolidado();
 
-		let competenciaAtual = moment().format('YYYYMM');
-		this.lancamentosService.getByCompetencia(competenciaAtual);
+		this.lancamentosService.getByCompetencia(this.competenciaAtual);
+
+		//this.lancamentosService.obterSaldoCompetencia(+competenciaAtual, true);
 	}
 
 	inicializarLancamentos() {
@@ -43,11 +52,19 @@ export class LancamentosListComponent implements OnInit {
 				(lancamento: any) => {
 					lancamento.showConta = true;
 					lancamento.showLancamento = true;
+					this.convertToString(lancamento);
+
 					return lancamento;
 				});
+			this.lancamentosService.obterSaldoCompetencia(this.competenciaAtual - 1, false);
 		});
 	}
 
+	convertToString(lancamento) {
+		//Conversão somente devido a problema com a máscara.
+		if (!lancamento.valor.toString().includes('.'))
+			lancamento.valor = lancamento.valor.toString().concat('.00');
+	}
 
 	inicializarFiltroCompetencia() {
 		this.filtroLancamentoService.competenciaLancamento$
@@ -109,6 +126,40 @@ export class LancamentosListComponent implements OnInit {
 			if (lancLista) {
 				lancLista.pago = dadosLancamento.pago;
 			}
+		});
+	}
+
+	observarSaldoCompetencia(): any {
+		this.observarSaldoCompetenciaAnterior();
+		// Sem necessidade atualmente
+		// this.observarSaldoCompetenciaAtual();
+	}
+
+	observarSaldoCompetenciaAnterior(): any {
+		this.lancamentosService.saldoAnterior$.subscribe(competencia => {
+			this.saldoAnterior = competencia.saldo ? competencia.saldo : 0.0;
+			if (this.lancamentos && this.lancamentos.length > 0) {
+				this.atualizarSaldoAtual();
+			}
+		});
+	}
+
+	atualizarSaldoAtual() {
+		let saldoAtualizado = this.lancamentos.reduce((acum, lancAtual) => {
+			if (lancAtual.isDebito) {
+				acum -= parseFloat(lancAtual.valor);
+			} else {
+				acum += parseFloat(lancAtual.valor);
+			}
+			return acum;
+		}, this.saldoAnterior);
+
+		this.saldoAtual = saldoAtualizado;
+	}
+
+	observarSaldoCompetenciaAtual(): any {
+		this.lancamentosService.saldoAtual$.subscribe(competencia => {
+			this.saldoAtual = competencia.saldo ? competencia.saldo : 0.0;
 		});
 	}
 

@@ -146,6 +146,24 @@ export class LancamentoService {
 				assert.equal(resultLancamentoUpdated.result.n, 1);
 				return this.lancamentoDAO.getLancamentoByDescricao(lancamentoObtido.descricao);
 			});
+	}
 
+	obterCompetencia(userName, competencia) {
+		return this.userDAO.getUser(userName)
+			.then(user => {
+				assert.ok(user);
+				logger.info("** Obtendo Competencia = %s", competencia);
+				return this.lancamentoDAO.getCompetencia(user._id.toString(), +competencia);
+			})
+			.then(r => {
+				console.log('resultado = r', r);
+				return r;
+			})
+		// .then(resultInsercaoLancamento => {
+		// 	logger.info("** inserted obj: %j", resultInsercaoLancamento.ops[0]);
+		// 	let insertedLancamento = resultInsercaoLancamento.ops[0];
+		// 	assert.equal(resultInsercaoLancamento.result.n, 1);
+		// 	return insertedLancamento;
+		// });
 	}
 }

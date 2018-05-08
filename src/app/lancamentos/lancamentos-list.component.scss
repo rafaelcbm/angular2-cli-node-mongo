@@ -41,12 +41,6 @@ $color-lancamento-pago: #4dbd74;
             .lancamentos-list-pago-item {
                 cursor: pointer;
             }
-            .debito-color {
-                color: #ec2727;
-            }
-            .credito-color {
-                color: #28a513;
-            }
             .lancamento-pago {
                 font-size: 1.5em;
                 color: $color-lancamento-pago;
@@ -91,4 +85,10 @@ $color-lancamento-pago: #4dbd74;
 
 .digits {
     font-family: 'Montserrat', sans-serif;
+}
+.debito-color {
+	color: #ec2727;
+}
+.credito-color {
+	color: #28a513;
 }

@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { NotificationsService } from "angular2-notifications";
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
 import { Log } from './../util/log';
 import { Util } from './../util/util';
@@ -21,6 +22,16 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 	styleUrls: ['./lancamentos-detail.component.scss']
 })
 export class LancamentosDetailComponent implements OnInit {
+
+	public numberMask = createNumberMask({
+		prefix: 'R$ ',
+		thousandsSeparatorSymbol:'.',
+		decimalSymbol:',',
+		requireDecimal:true
+		//suffix: ' $' // This will put the dollar sign at the end, with a space.
+	  });
+
+	//public mask = [/[1-9]/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
 	@Input()
 	lancamento: any;

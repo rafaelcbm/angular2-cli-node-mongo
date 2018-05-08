@@ -21,6 +21,12 @@ export class LancamentosService extends DataService<Lancamento> {
 	lancamentoConsolidado$: Observable<any>;
 	protected _lancamentoConsolidadoSubject: BehaviorSubject<any>;
 
+	saldoAnterior$: Observable<any>;
+	protected _saldoAnteriorSubject: BehaviorSubject<any>;
+
+	saldoAtual$: Observable<any>;
+	protected _saldoAtualSubject: BehaviorSubject<any>;
+
 	static baseUrl = `${ENV.BASE_API}lancamentos/`;
 
 	constructor(apiHttp: ApiHttpService, _notificationsService: NotificationsService, private msgService: MessagesService, private filtroLancamentoService: FiltroLancamentoService) {
@@ -31,6 +37,12 @@ export class LancamentosService extends DataService<Lancamento> {
 
 		this._lancamentoConsolidadoSubject = <BehaviorSubject<any>>new BehaviorSubject({});
 		this.lancamentoConsolidado$ = this._lancamentoConsolidadoSubject.asObservable();
+
+		this._saldoAnteriorSubject = <BehaviorSubject<any>>new BehaviorSubject({});
+		this.saldoAnterior$ = this._saldoAnteriorSubject.asObservable();
+
+		this._saldoAtualSubject = <BehaviorSubject<any>>new BehaviorSubject({});
+		this.saldoAtual$ = this._saldoAtualSubject.asObservable();
 	}
 
 	getByCompetencia(competencia: string) {
@@ -107,6 +119,27 @@ export class LancamentosService extends DataService<Lancamento> {
 						let lancamentoPago = jsonData.data.pago;
 						this._notificationsService.success('Sucesso', `Lançamento '${lancamento.descricao}' ${lancamentoPago ? 'pago' : 'não pago'} !`);
 						this._lancamentoConsolidadoSubject.next({ id: lancamento._id, pago: lancamentoPago });
+					}
+				},
+				error => {
+					Log.error(error);
+				});
+	}
+
+	obterSaldoCompetencia(competencia, isAtual) {
+		this._apiHttp.get(`${LancamentosService.baseUrl}competencia/${competencia}`)
+			.subscribe(
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+						let competencia = {
+							competencia: jsonData.data.competencia,
+							saldo: jsonData.data.saldo
+						}
+						if (isAtual) {
+							this._saldoAtualSubject.next(competencia);
+						} else {
+							this._saldoAnteriorSubject.next(competencia);
+						}
 					}
 				},
 				error => {

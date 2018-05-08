@@ -76,19 +76,29 @@ lancamentoRouter.get("/:competencia", function (request: Request & { userName: s
 
 lancamentoRouter.put("/consolidar/:idLancamento/:lancamentoPago", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
-	logger.info('CHEGOU  lancamentoRouter.put');
 	let userName = request.userName;
 	let idLancamento = request.params.idLancamento;
 	let lancamentoPago = request.params.lancamentoPago;
-
-	logger.info('idLancamento = ',idLancamento);
-	logger.info('lancamentoPago = ',lancamentoPago);
 
 	lancamentoService.consolidarLancamento(userName, idLancamento, lancamentoPago)
 		.then(lancamentoAlterado =>
 			response.json({
 				"status": "sucesso",
 				"data": lancamentoAlterado
+			}))
+		.catch((e: Error) => handleError(e, response));
+});
+
+lancamentoRouter.get("/competencia/:competencia", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+
+	let userName = request.userName;
+	let competencia = request.params.competencia;
+
+	lancamentoService.obterCompetencia(userName, competencia)
+		.then(competencia =>
+			response.json({
+				"status": "sucesso",
+				"data": competencia
 			}))
 		.catch((e: Error) => handleError(e, response));
 });
