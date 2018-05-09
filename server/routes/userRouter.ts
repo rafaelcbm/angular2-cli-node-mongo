@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { Container } from 'typedi';
-import * as co from "co";
 
 import { UserService } from './../services/userService';
 import { UserDAO } from "../dal/userDAO";

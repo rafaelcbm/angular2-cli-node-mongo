@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { randomBytes, pbkdf2 } from "crypto";
-import * as co from "co";
 import * as assert from "assert";
 import { sign } from "jsonwebtoken";
 import { Container } from 'typedi';
