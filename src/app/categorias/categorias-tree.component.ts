@@ -82,6 +82,12 @@ export class CategoriasTreeComponent implements OnInit {
 
 	remove(node, indexNode) {
 		this.categoriasService.remove(node.data._id);
+
+		let clearSelection = this.filtroLancamentoService.onDeselectCategoria(node.data.nome);
+
+		if (clearSelection) {
+			this.tree.treeModel.activeNodes.forEach(node => node.setIsActive(false));
+		}
 	}
 
 	clearTempData(node) {
