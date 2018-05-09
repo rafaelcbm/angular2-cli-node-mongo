@@ -47,10 +47,7 @@ export class FiltroLancamentoService {
 	}
 
 	onSelectCategoria(categoria: string) {
-		console.log('Select categoria', categoria);
-		console.log('Categorias Antes', this.categorias);
 		this.categorias.push(categoria);
-		console.log('Categorias Depois', this.categorias);
 		this.selectedCategoriasSource.next(this.categorias);
 	}
 }
