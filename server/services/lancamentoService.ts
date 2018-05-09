@@ -53,13 +53,15 @@ export class LancamentoService {
 				assert.equal(resultInsercaoLancamento.result.n, 1);
 				lancamentoInserido = insertedLancamento;
 
+				return lancamentoInserido;
+
 				//TODO: Atualizar/Incluir Dados Competencia (Saldo)
-				let competenciaLancamento = moment(lancamento.data).format('YYYYMM');
-				return this.obterCompetencia(userName, competenciaLancamento);
-			})
-			.then(competencia=>{
-				//TODO...
+				// let competenciaLancamento = moment(lancamento.data).format('YYYYMM');
+				// return this.obterCompetencia(userName, competenciaLancamento);
 			});
+			//TODO... Criar/Atualizar competencia na criação de um Lançamento
+			// .then(competencia=>{
+			// });
 	}
 
 	public removeLancamento(userName: string, idLancamento: any) {
