@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { NotificationsService } from 'angular2-notifications';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Subject } from 'rxjs/Subject';
 
 import { ENV } from './env-config';
 import { MessagesService } from './messages.service';
@@ -16,8 +16,11 @@ export class CategoriasService extends DataService<Categoria> {
 
 	static baseUrl = `${ENV.BASE_API}categorias/`;
 
-	flatCategorias$: Observable<any>;
-	private flatCategoriasObserver: Observer<any>;
+	private flatCategoriasSource = new Subject<any>();
+	flatCategorias$: Observable<any> = this.flatCategoriasSource.asObservable();
+
+	private competenciaLancamentoSource = new Subject<string>();
+	competenciaLancamento$ = this.competenciaLancamentoSource.asObservable();
 
 	constructor(apiHttp: ApiHttpService, _notificationsService: NotificationsService, private msgService: MessagesService) {
 		super(apiHttp, _notificationsService, CategoriasService.baseUrl);
@@ -25,7 +28,7 @@ export class CategoriasService extends DataService<Categoria> {
 		this.successDeleteMessage = this.msgService.getMessage(this.msgService.SUCCESS_DELETE_CATEGORIA);
 		this.successPutMessage = this.msgService.getMessage(this.msgService.SUCCESS_UPDATE_CATEGORIA);
 
-		this.flatCategorias$ = new Observable(observer => this.flatCategoriasObserver = observer).share();
+		//this.flatCategorias$ = new Observable(observer => this.flatCategoriasObserver = observer).share();
 	}
 
 	create(payLoad) {
@@ -99,7 +102,7 @@ export class CategoriasService extends DataService<Categoria> {
 				jsonData => {
 					if (jsonData.status === "sucesso") {
 
-						return this.flatCategoriasObserver.next(jsonData.data);
+						return this.flatCategoriasSource.next(jsonData.data);
 
 					} else if (jsonData.status === "erro") {
 						this._notificationsService.error('Erro', jsonData.message);
