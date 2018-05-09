@@ -29,24 +29,20 @@ export class LancamentosListComponent implements OnInit {
 
 		this.competenciaAtual = moment().format('YYYYMM');
 
-		this.inicializarLancamentos();
+		this.observarLancamentos();
 
-		this.inicializarFiltroCompetencia();
+		this.observarFiltroCompetencia();
 
-		this.inicializarFiltroContas();
+		this.observarFiltroContas();
 
-		this.inicializarFiltroCategorias();
+		this.observarFiltroCategorias();
 
 		this.observarCategorias();
 
 		this.lancamentosService.getByCompetencia(this.competenciaAtual);
 	}
 
-	observarCategorias() {
-		this.categoriasService.dataObservable$.subscribe(categorias => this.lancamentosService.getByCompetencia(this.competenciaAtual));
-	}
-
-	inicializarLancamentos() {
+	observarLancamentos() {
 		this.lancamentosService.dataObservable$.subscribe(lancamentos => {
 			this.lancamentos = lancamentos;
 			this.lancamentos = this.lancamentos.map(
@@ -67,7 +63,7 @@ export class LancamentosListComponent implements OnInit {
 			lancamento.valor = lancamento.valor.toString().concat('.00');
 	}
 
-	inicializarFiltroCompetencia() {
+	observarFiltroCompetencia() {
 		this.filtroLancamentoService.competenciaLancamento$
 			.debounceTime(500) // Caso o usuário altere rapidamente as competencia (nas setas), evita várias requisições.
 			.distinctUntilChanged()
@@ -80,7 +76,7 @@ export class LancamentosListComponent implements OnInit {
 			});
 	}
 
-	inicializarFiltroContas() {
+	observarFiltroContas() {
 		this.filtroLancamentoService.selectedContas$
 			.subscribe(contasSelecionadas => {
 				if (contasSelecionadas.length > 0) {
@@ -95,7 +91,11 @@ export class LancamentosListComponent implements OnInit {
 			});
 	}
 
-	inicializarFiltroCategorias() {
+	observarCategorias() {
+		this.categoriasService.dataObservable$.subscribe(categorias => this.lancamentosService.getByCompetencia(this.competenciaAtual));
+	}
+
+	observarFiltroCategorias() {
 		this.filtroLancamentoService.selectedCategorias$
 			.subscribe(categoriasSelecionadas => {
 
