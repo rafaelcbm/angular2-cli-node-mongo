@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { LancamentosService } from '../services/lancamentos.service';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
 import { Lancamento } from "../models/models.module";
+import { CategoriasService } from '../services/categorias.service';
 
 @Component({
 	selector: 'lancamentos-list',
@@ -22,7 +23,7 @@ export class LancamentosListComponent implements OnInit {
 
 	lancamentos: any[];
 
-	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private ref: ChangeDetectorRef) { }
+	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private ref: ChangeDetectorRef, private categoriasService: CategoriasService) { }
 
 	ngOnInit() {
 
@@ -36,7 +37,13 @@ export class LancamentosListComponent implements OnInit {
 
 		this.inicializarFiltroCategorias();
 
+		this.observarCategorias();
+
 		this.lancamentosService.getByCompetencia(this.competenciaAtual);
+	}
+
+	observarCategorias() {
+		this.categoriasService.dataObservable$.subscribe(categorias => this.lancamentosService.getByCompetencia(this.competenciaAtual));
 	}
 
 	inicializarLancamentos() {

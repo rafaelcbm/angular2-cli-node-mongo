@@ -5,14 +5,14 @@ import { Container } from 'typedi';
 import * as assert from "assert";
 
 import { BusinessError } from './../commons/businessError';
-import { UserDAO } from '../dal/userDAO';
-import { CategoriaDAO } from "../dal/categoriaDAO";
+import { UserDAO, CategoriaDAO, LancamentoDAO } from '../dal/DAOs';
 
 @Service()
 export class CategoriaService {
 
 	categoriaDAO = Container.get(CategoriaDAO);
 	userDAO = Container.get(UserDAO);
+	lancamentoDAO = Container.get(LancamentoDAO);
 
 	public async getArvoreCategorias(userName: string) {
 
@@ -107,19 +107,25 @@ export class CategoriaService {
 			throw new BusinessError(`Usuário já possui categoria com o nome informado: "${novoNomeCategoria}".`);
 
 		// Adiciona referencias nos filhos do novo nome
-		let query: any = { ancestrais: categoria.nome };
+		let query: any = { $and: [{ _idUser: user._id.toString() }, { ancestrais: categoria.nome }] };
 		await this.categoriaDAO.updateCategoria(query, { $push: { ancestrais: novoNomeCategoria } });
 
 		// Remove referencias nos filhos do nome antigo
 		query = { $and: [{ _idUser: user._id.toString() }, { ancestrais: categoria.nome }] };
 		await this.categoriaDAO.updateCategoria(query, { $pull: { ancestrais: categoria.nome } });
-		query = { pai: categoria.nome };
+		//query = { pai: categoria.nome };
+		query = { $and: [{ _idUser: user._id.toString() }, { pai: categoria.nome }] };
 		await this.categoriaDAO.updateCategoria(query, { $set: { pai: novoNomeCategoria } });
 
 		// Atualiza de fato o nome da categoria
 		query = { _id: new ObjectID(idCategoria) };
 		let daoReturn = await this.categoriaDAO.updateCategoria(query, { $set: { nome: novoNomeCategoria } });
 		assert.equal(daoReturn.result.n, 1);
+
+		// Atualiza os lançamentos com o novo nome da categoria
+		query = { $and: [{ _idUser: user._id.toString() }, { "categoria.nome": categoria.nome }] };
+		let resultLancamentoUpdated = await this.lancamentoDAO.updateLancamento(query, { $set: { "categoria.nome": novoNomeCategoria } });
+		logger.info('* Quantidade de lançamentos atualizados com nova categoria = %j', resultLancamentoUpdated.result.n);
 
 		return await this.getArvoreCategorias(userName);
 	}
