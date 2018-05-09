@@ -20,7 +20,7 @@
 <section class="lancamentos-list-wrapper">
 	<section>
 		<section class="lancamentos-list-content-wrapper" *ngFor="let lancamento of lancamentos">
-			<section class="lancamentos-list-content" *ngIf="showLancamento(lancamento)">
+			<section class="lancamentos-list-content" *ngIf="lancamento.showConta && lancamento.showLancamento">
 				<div class="lancamentos-list-checks-item2">
 					<input type="checkbox" [value]="lancamento._id" (click)="clickCheck($event)">
 				</div>

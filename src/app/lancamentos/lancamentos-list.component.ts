@@ -119,10 +119,6 @@ export class LancamentosListComponent implements OnInit {
 		lancamento.showDetail = true;
 	}
 
-	showLancamento(lancamento: any) {
-		return lancamento.showConta && lancamento.showLancamento;
-	}
-
 	consolidarLancamento(lancamento) {
 		this.lancamentosService.consolidar(lancamento).subscribe(dadosLancamento => {
 			let lancLista = this.lancamentos.find(l => l._id == dadosLancamento.id);
