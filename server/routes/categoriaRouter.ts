@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
-import * as co from "co";
 import { Container } from 'typedi';
 import * as logger from 'logops';
 
@@ -15,36 +14,24 @@ categoriaRouter.get("/", function (request: Request & { userName: string }, resp
 
 	let userName = request.userName;
 
-	co(function* () {
-
-		let arvoreCategorias = yield categoriaService.getArvoreCategorias(userName);
-		assert.ok(arvoreCategorias);
-
-		response.json({
+	categoriaService.getArvoreCategorias(userName)
+		.then(arvoreCategorias => response.json({
 			"status": "sucesso",
 			"data": arvoreCategorias
-		});
-
-	}).catch((e: Error) => handleError(e, response));
-
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
 
 categoriaRouter.get("/flat", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
 	let userName = request.userName;
 
-	co(function* () {
-
-		let categorias = yield categoriaService.getCategorias(userName);
-		assert.ok(categorias);
-
-		response.json({
+	categoriaService.getCategorias(userName)
+		.then(categorias => response.json({
 			"status": "sucesso",
 			"data": categorias
-		});
-
-	}).catch((e: Error) => handleError(e, response));
-
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
 
 categoriaRouter.post("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
@@ -52,17 +39,12 @@ categoriaRouter.post("/", function (request: Request & { userName: string }, res
 	let userName = request.userName;
 	let novaCategoria = request.body.novaCategoria;
 
-	co(function* () {
-
-		let arvoreCategorias = yield categoriaService.insertCategoria(userName, novaCategoria);
-		assert.ok(arvoreCategorias);
-
-		response.status(201).json({
+	categoriaService.insertCategoria(userName, novaCategoria)
+		.then(arvoreCategorias => response.status(201).json({
 			"status": "sucesso",
 			"data": arvoreCategorias
-		});
-
-	}).catch((e: Error) => handleError(e, response));
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
 
 categoriaRouter.delete("/:idCategoria", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
@@ -70,17 +52,12 @@ categoriaRouter.delete("/:idCategoria", function (request: Request & { userName:
 	let userName = request.userName;
 	let idCategoria = request.params.idCategoria;
 
-	co(function* () {
-
-		let arvoreCategorias = yield categoriaService.removeCategoria(userName, idCategoria);
-		assert.ok(arvoreCategorias);
-
-		response.json({
+	categoriaService.removeCategoria(userName, idCategoria)
+		.then(arvoreCategorias => response.json({
 			"status": "sucesso",
 			"data": arvoreCategorias
-		});
-
-	}).catch((e: Error) => handleError(e, response));
+		}))
+		.catch((e: Error) => handleError(e, response));
 });
 
 categoriaRouter.put("/:idCategoria", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
@@ -89,15 +66,11 @@ categoriaRouter.put("/:idCategoria", function (request: Request & { userName: st
 	let idCategoria = request.params.idCategoria;
 	let nomeCategoria = request.body.nomeCategoria;
 
-	co(function* () {
 
-		let arvoreCategorias = yield categoriaService.updateCategoria(userName, idCategoria, nomeCategoria);
-		assert.ok(arvoreCategorias);
-
-		response.json({
+	categoriaService.updateCategoria(userName, idCategoria, nomeCategoria)
+		.then(arvoreCategorias => response.json({
 			"status": "sucesso",
 			"data": arvoreCategorias
-		});
-
-	}).catch((e: Error) => handleError(e, response));
+		}))
+		.catch((e: Error) => handleError(e, response));
 });

@@ -14,13 +14,13 @@ export class CategoriaService {
 	categoriaDAO = Container.get(CategoriaDAO);
 	userDAO = Container.get(UserDAO);
 
-	public *getArvoreCategorias(userName: string) {
+	public async getArvoreCategorias(userName: string) {
 
-		let user = yield this.userDAO.getUser(userName);
+		let user = await this.userDAO.getUser(userName);
 		assert.ok(user);
 
 		let userId = user._id.toString();
-		let raizes = yield this.categoriaDAO.getCategoriasRaiz(userId);
+		let raizes = await this.categoriaDAO.getCategoriasRaiz(userId);
 		assert.ok(raizes);
 
 		let categorias = [].concat(raizes);
@@ -30,7 +30,7 @@ export class CategoriaService {
 
 			let categoriaAtual = categorias[i];
 
-			let filhas = yield this.categoriaDAO.getCategoriasFilhas(userId, categoriaAtual.nome);
+			let filhas = await this.categoriaDAO.getCategoriasFilhas(userId, categoriaAtual.nome);
 			if (filhas.length > 0) {
 				categoriaAtual.children = [];
 				filhas.forEach(filha => categoriaAtual.children.push(filha));
@@ -41,62 +41,62 @@ export class CategoriaService {
 		return arvoreCategorias;
 	}
 
-	public *getCategorias(userName: string) {
+	public async getCategorias(userName: string) {
 
-		let user = yield this.userDAO.getUser(userName);
+		let user = await this.userDAO.getUser(userName);
 		assert.ok(user);
 
 		let userId = user._id.toString();
-		let categorias = yield this.categoriaDAO.getCategoriasByUser(user._id.toString());
+		let categorias = await this.categoriaDAO.getCategoriasByUser(user._id.toString());
 
 		return categorias;
 	}
 
-	public *insertCategoria(userName: string, novaCategoria: any) {
+	public async insertCategoria(userName: string, novaCategoria: any) {
 
-		let user = yield this.userDAO.getUser(userName);
+		let user = await this.userDAO.getUser(userName);
 		assert.ok(user);
 
-		let categorias = yield this.categoriaDAO.getCategoriasByUser(user._id.toString());
+		let categorias = await this.categoriaDAO.getCategoriasByUser(user._id.toString());
 		if (categorias.length > 0 && categorias.find(categoria => categoria.nome === novaCategoria.nome)) {
 			throw new BusinessError(`Usuário já possui categoria com o nome informado: "${novaCategoria.nome}".`);
 		}
 
 		novaCategoria._idUser = user._id.toString();
-		let daoReturn = yield this.categoriaDAO.insertCategoria(novaCategoria);
+		let daoReturn = await this.categoriaDAO.insertCategoria(novaCategoria);
 		assert.equal(daoReturn.result.n, 1);
 
-		return yield this.getArvoreCategorias(userName);
+		return await this.getArvoreCategorias(userName);
 	}
 
-	public *removeCategoria(userName: string, idCategoria: any) {
+	public async removeCategoria(userName: string, idCategoria: any) {
 
-		let user = yield this.userDAO.getUser(userName);
+		let user = await this.userDAO.getUser(userName);
 		assert.ok(user);
 
-		let categoria = yield this.categoriaDAO.getCategoriaById(idCategoria);
+		let categoria = await this.categoriaDAO.getCategoriaById(idCategoria);
 
 		if (categoria && categoria._idUser !== user._id.toString()) {
 			throw new BusinessError(`Categoria não pertence ao usuário informado!`);
 		}
 
-		let catFilhas = yield this.categoriaDAO.getCategoriasFilhas(user._id.toString(), categoria.nome);
+		let catFilhas = await this.categoriaDAO.getCategoriasFilhas(user._id.toString(), categoria.nome);
 		if (catFilhas.length > 0) {
-			let daoReturn = yield this.categoriaDAO.removeCategoriasFilhas(categoria.nome);
+			let daoReturn = await this.categoriaDAO.removeCategoriasFilhas(categoria.nome);
 		}
 
-		let daoReturn = yield this.categoriaDAO.removeCategoriaById(idCategoria);
+		let daoReturn = await this.categoriaDAO.removeCategoriaById(idCategoria);
 		assert.equal(daoReturn.result.n, 1);
 
-		return yield this.getArvoreCategorias(userName);
+		return await this.getArvoreCategorias(userName);
 	}
 
-	public *updateCategoria(userName: string, idCategoria: any, novoNomeCategoria: string) {
+	public async updateCategoria(userName: string, idCategoria: any, novoNomeCategoria: string) {
 
-		let user = yield this.userDAO.getUser(userName);
+		let user = await this.userDAO.getUser(userName);
 		assert.ok(user);
 
-		let categorias = yield this.categoriaDAO.getCategoriasByUser(user._id.toString());
+		let categorias = await this.categoriaDAO.getCategoriasByUser(user._id.toString());
 
 		let categoria = categorias.find(categoria => categoria._id.toString() === idCategoria);
 
@@ -108,20 +108,19 @@ export class CategoriaService {
 
 		// Adiciona referencias nos filhos do novo nome
 		let query: any = { ancestrais: categoria.nome };
-		yield this.categoriaDAO.updateCategoria(query, { $push: { ancestrais: novoNomeCategoria } });
+		await this.categoriaDAO.updateCategoria(query, { $push: { ancestrais: novoNomeCategoria } });
 
 		// Remove referencias nos filhos do nome antigo
 		query = { $and: [{ _idUser: user._id.toString() }, { ancestrais: categoria.nome }] };
-		yield this.categoriaDAO.updateCategoria(query, { $pull: { ancestrais: categoria.nome } });
+		await this.categoriaDAO.updateCategoria(query, { $pull: { ancestrais: categoria.nome } });
 		query = { pai: categoria.nome };
-		yield this.categoriaDAO.updateCategoria(query, { $set: { pai: novoNomeCategoria } });
+		await this.categoriaDAO.updateCategoria(query, { $set: { pai: novoNomeCategoria } });
 
 		// Atualiza de fato o nome da categoria
 		query = { _id: new ObjectID(idCategoria) };
-		let daoReturn = yield this.categoriaDAO.updateCategoria(query, { $set: { nome: novoNomeCategoria } });
+		let daoReturn = await this.categoriaDAO.updateCategoria(query, { $set: { nome: novoNomeCategoria } });
 		assert.equal(daoReturn.result.n, 1);
 
-
-		return yield this.getArvoreCategorias(userName);
+		return await this.getArvoreCategorias(userName);
 	}
 }
