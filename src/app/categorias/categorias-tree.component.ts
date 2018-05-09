@@ -38,6 +38,8 @@ export class CategoriasTreeComponent implements OnInit {
 		this.categoriasService.dataObservable$.subscribe(categorias => {
 			this.categorias = categorias;
 			this.tree.treeModel.update();
+			// Expande a árvore depois de carregada
+			setTimeout(() => this.tree.treeModel.roots[1].expandAll(), 200);
 		});
 
 		this.categoriasService.retrieve();

@@ -29,6 +29,7 @@ export class LancamentoService {
 
 	public insertLancamento(userName: string, lancamento: any) {
 
+		let lancamentoInserido;
 		return this.userDAO.getUser(userName)
 			.then(user => {
 				assert.ok(user);
@@ -50,7 +51,14 @@ export class LancamentoService {
 				logger.info("** inserted obj: %j", resultInsercaoLancamento.ops[0]);
 				let insertedLancamento = resultInsercaoLancamento.ops[0];
 				assert.equal(resultInsercaoLancamento.result.n, 1);
-				return insertedLancamento;
+				lancamentoInserido = insertedLancamento;
+
+				//TODO: Atualizar/Incluir Dados Competencia (Saldo)
+				let competenciaLancamento = moment(lancamento.data).format('YYYYMM');
+				return this.obterCompetencia(userName, competenciaLancamento);
+			})
+			.then(competencia=>{
+				//TODO...
 			});
 	}
 
@@ -155,15 +163,12 @@ export class LancamentoService {
 				logger.info("** Obtendo Competencia = %s", competencia);
 				return this.lancamentoDAO.getCompetencia(user._id.toString(), +competencia);
 			})
-			.then(r => {
-				console.log('resultado = r', r);
-				return r;
-			})
-		// .then(resultInsercaoLancamento => {
-		// 	logger.info("** inserted obj: %j", resultInsercaoLancamento.ops[0]);
-		// 	let insertedLancamento = resultInsercaoLancamento.ops[0];
-		// 	assert.equal(resultInsercaoLancamento.result.n, 1);
-		// 	return insertedLancamento;
-		// });
+			.then(competencia => {
+				console.log('competencia = ', competencia);
+				if (!competencia) {
+					return { competencia, saldo: 0.0 };
+				}
+				return competencia;
+			});
 	}
 }

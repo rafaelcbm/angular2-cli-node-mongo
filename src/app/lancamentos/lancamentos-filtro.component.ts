@@ -34,12 +34,10 @@ export class LancamentosFiltroComponent implements OnInit {
 		this.filtroLancamentoService.competenciaLancamento$
 			.distinctUntilChanged()
 			.subscribe(
-			novaCompetencia => {
-				Log.info('Nova competência informada:', novaCompetencia)
-
-				this.mesCompetencia = moment(novaCompetencia, 'YYYYMM').toDate();
-			}
-			)
+				novaCompetencia => {
+					this.mesCompetencia = moment(novaCompetencia, 'YYYYMM').toDate();
+				}
+			);
 	}
 
 	adicionar() {

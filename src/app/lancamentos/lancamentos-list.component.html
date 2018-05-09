@@ -1,7 +1,7 @@
 <section class="lancamentos-list-wrapper">
 	<div class="saldo-content">
 		<span>Saldo Anterior:</span>
-		<span class="digits" [ngClass]="{'debito-color': saldoAtual<0, 'credito-color': saldoAtual>0}">{{saldoAnterior | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
+		<span class="digits" [ngClass]="{'debito-color': saldoAnterior<0, 'credito-color': saldoAnterior>0}">{{saldoAnterior | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
 	</div>
 </section>
 <section class="lancamentos-list-wrapper">

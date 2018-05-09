@@ -28,8 +28,6 @@ export class LancamentosListComponent implements OnInit {
 
 		this.competenciaAtual = moment().format('YYYYMM');
 
-		this.observarSaldoCompetencia();
-
 		this.inicializarLancamentos();
 
 		this.inicializarFiltroCompetencia();
@@ -38,11 +36,7 @@ export class LancamentosListComponent implements OnInit {
 
 		this.inicializarFiltroCategorias();
 
-		this.observarLancamentoConsolidado();
-
 		this.lancamentosService.getByCompetencia(this.competenciaAtual);
-
-		//this.lancamentosService.obterSaldoCompetencia(+competenciaAtual, true);
 	}
 
 	inicializarLancamentos() {
@@ -56,7 +50,7 @@ export class LancamentosListComponent implements OnInit {
 
 					return lancamento;
 				});
-			this.lancamentosService.obterSaldoCompetencia(this.competenciaAtual - 1, false);
+			this.atualizarSaldos();
 		});
 	}
 
@@ -68,9 +62,15 @@ export class LancamentosListComponent implements OnInit {
 
 	inicializarFiltroCompetencia() {
 		this.filtroLancamentoService.competenciaLancamento$
-			.debounceTime(500)
+			.debounceTime(500) // Caso o usuário altere rapidamente as competencia (nas setas), evita várias requisições.
 			.distinctUntilChanged()
-			.subscribe(novaCompetencia => this.lancamentosService.getByCompetencia(novaCompetencia));
+			.subscribe(novaCompetencia => {
+				this.competenciaAtual = novaCompetencia;
+				this.saldoAnterior = 0.0;
+				this.saldoAtual = 0.0;
+				this.lancamentosService.getByCompetencia(novaCompetencia);
+				this.atualizarSaldos();
+			});
 	}
 
 	inicializarFiltroContas() {
@@ -117,11 +117,7 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 	consolidarLancamento(lancamento) {
-		this.lancamentosService.consolidar(lancamento);
-	}
-
-	observarLancamentoConsolidado() {
-		this.lancamentosService.lancamentoConsolidado$.subscribe(dadosLancamento => {
+		this.lancamentosService.consolidar(lancamento).subscribe(dadosLancamento => {
 			let lancLista = this.lancamentos.find(l => l._id == dadosLancamento.id);
 			if (lancLista) {
 				lancLista.pago = dadosLancamento.pago;
@@ -129,14 +125,8 @@ export class LancamentosListComponent implements OnInit {
 		});
 	}
 
-	observarSaldoCompetencia(): any {
-		this.observarSaldoCompetenciaAnterior();
-		// Sem necessidade atualmente
-		// this.observarSaldoCompetenciaAtual();
-	}
-
-	observarSaldoCompetenciaAnterior(): any {
-		this.lancamentosService.saldoAnterior$.subscribe(competencia => {
+	atualizarSaldos() {
+		this.lancamentosService.obterSaldoCompetencia(this.competenciaAtual - 1, false).subscribe(competencia => {
 			this.saldoAnterior = competencia.saldo ? competencia.saldo : 0.0;
 			if (this.lancamentos && this.lancamentos.length > 0) {
 				this.atualizarSaldoAtual();
@@ -157,12 +147,6 @@ export class LancamentosListComponent implements OnInit {
 		this.saldoAtual = saldoAtualizado;
 	}
 
-	observarSaldoCompetenciaAtual(): any {
-		this.lancamentosService.saldoAtual$.subscribe(competencia => {
-			this.saldoAtual = competencia.saldo ? competencia.saldo : 0.0;
-		});
-	}
-
 	//TODO: todos checks
 	lancSelected = [];
 	clickCheck($event) {
@@ -173,7 +157,5 @@ export class LancamentosListComponent implements OnInit {
 		} else {
 			this.lancSelected = this.lancSelected.filter(l => l !== lancamentoSelected);
 		}
-
-		console.log(`Lancs = ${this.lancSelected}`);
 	}
 }
