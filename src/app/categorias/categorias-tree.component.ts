@@ -39,7 +39,7 @@ export class CategoriasTreeComponent implements OnInit {
 			this.categorias = categorias;
 			this.tree.treeModel.update();
 			// Expande a árvore depois de carregada
-			setTimeout(() => this.tree.treeModel.roots[1].expandAll(), 200);
+			setTimeout(() => this.tree.treeModel.roots[1].expandAll(), 500);
 		});
 
 		this.categoriasService.retrieve();
@@ -107,7 +107,11 @@ export class CategoriasTreeComponent implements OnInit {
 		$event.node.data.showBars = false;
 		$event.node.data.showOptions = false;
 
-		this.filtroLancamentoService.onDeselectCategoria($event.node.data.nome);
+		let clearSelection = this.filtroLancamentoService.onDeselectCategoria($event.node.data.nome);
+
+		if (clearSelection) {
+			this.tree.treeModel.activeNodes.forEach(node => node.setIsActive(false));
+		}
 	}
 
 	clickBars(node) {
