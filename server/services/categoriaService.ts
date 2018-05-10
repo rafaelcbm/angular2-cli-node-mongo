@@ -88,6 +88,10 @@ export class CategoriaService {
 		let daoReturn = await this.categoriaDAO.removeCategoriaById(idCategoria);
 		assert.equal(daoReturn.result.n, 1);
 
+		// Atualiza os lançamentos com a categoria padrão 'Sem Categoria'
+		let query = { $and: [{ _idUser: user._id.toString() }, { "categoria.nome": categoria.nome }] };
+		let resultLancamentoUpdated = await this.lancamentoDAO.updateLancamento(query, { $set: { "categoria.nome": 'Sem Categoria' } });
+
 		return await this.getArvoreCategorias(userName);
 	}
 

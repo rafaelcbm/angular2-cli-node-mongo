@@ -103,10 +103,16 @@ export class CategoriasTreeComponent implements OnInit {
 	}
 
 	onActivate($event) {
-		$event.node.data.showBars = true;
-		$event.node.data.showOptions = false;
 
-		this.filtroLancamentoService.onSelectCategoria($event.node.data.nome);
+		if ($event.node.data.nome == 'Sem Categoria') {
+			this.limparSelecao();
+		}
+		else {
+			$event.node.data.showBars = true;
+			$event.node.data.showOptions = false;
+
+			this.filtroLancamentoService.onSelectCategoria($event.node.data.nome);
+		}
 	}
 
 	onDeactivate($event) {
@@ -116,9 +122,14 @@ export class CategoriasTreeComponent implements OnInit {
 		let clearSelection = this.filtroLancamentoService.onDeselectCategoria($event.node.data.nome);
 
 		if (clearSelection) {
-			this.tree.treeModel.activeNodes.forEach(node => node.setIsActive(false));
+			this.limparSelecao();
 		}
 	}
+
+	limparSelecao() {
+		this.tree.treeModel.activeNodes.forEach(node => node.setIsActive(false));
+	}
+
 
 	clickBars(node) {
 		node.data.showBars = false;
