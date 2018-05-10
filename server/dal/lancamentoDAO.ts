@@ -33,7 +33,7 @@ export class LancamentoDAO {
 		return this._dataAccess.getDocument(this.LANCAMENTO_COLLECTION, { descricao: descricaoLancamento });
 	}
 
-	public getLancamentoByCompetencia(idUser: string, competencia: string): any {
+	public getLancamentosByCompetencia(idUser: string, competencia: string): any {
 
 		let dataInicio = moment(competencia, "YYYYMM").toDate();
 		let dataFim = moment(competencia, "YYYYMM").add(1, 'months').toDate();
@@ -87,6 +87,17 @@ export class LancamentoDAO {
 
 		return this._dataAccess.getDocument('competencias',
 			{ $and: [{ _idUser: idUser }, { competencia: competencia }] });
+	}
+
+	public obterCompetenciasMaioresIgualCompetencia(idUser: string, competencia): any {
+
+		return this._dataAccess.getDocuments('competencias',
+			{ $and: [{ _idUser: idUser }, { competencia: { $gte: competencia } }] });
+	}
+
+	public updateCompetencia(query: any, updateObj: any, options: any = { multi: true }): any {
+
+		return this._dataAccess.dbConnection.collection('competencias').update(query, updateObj, options);
 	}
 
 

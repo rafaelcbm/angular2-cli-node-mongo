@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto';
+import { length } from './../config';
 import { ObjectID } from "mongodb";
 import { Service } from 'typedi';
 import * as logger from 'logops';
@@ -24,21 +26,25 @@ export class LancamentoService {
 	public getLancamentosByCompetencia(userName: string, competencia: string) {
 
 		return this.userDAO.getUser(userName)
-			.then(user => this.lancamentoDAO.getLancamentoByCompetencia(user._id.toString(), competencia));
+			.then(user => this.lancamentoDAO.getLancamentosByCompetencia(user._id.toString(), competencia));
 	}
 
 	public insertLancamento(userName: string, lancamento: any) {
 
 		let lancamentoInserido;
+		let usuario;
+		let competenciaAnterior;
+		let competenciaAtual;
+
 		return this.userDAO.getUser(userName)
 			.then(user => {
 				assert.ok(user);
 				if (!user.contas)
 					return Promise.reject(new BusinessError(`Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`));
 				else {
+					usuario = user;
 					// Transforma o _id para String
 					lancamento._idUser = user._id.toString();
-					//logger.info("** typeof lancamento._idUser: %s", typeof lancamento._idUser);
 
 					//Salva somente o _id e nome da categoria no lancamento
 					let categoriaLancamento = { _id: lancamento.categoria._id, nome: lancamento.categoria.nome };
@@ -48,21 +54,32 @@ export class LancamentoService {
 				}
 			})
 			.then(resultInsercaoLancamento => {
-				logger.info("** inserted obj: %j", resultInsercaoLancamento.ops[0]);
 				let insertedLancamento = resultInsercaoLancamento.ops[0];
 				assert.equal(resultInsercaoLancamento.result.n, 1);
 				lancamentoInserido = insertedLancamento;
 
-				return lancamentoInserido;
+				let compAtual = moment(lancamentoInserido.data).format('YYYYMM');
+				return this.lancamentoDAO.obterCompetenciasMaioresIgualCompetencia(usuario._id.toString(), +compAtual);
+			})
+			.then(competencias => {
 
-				//TODO: Atualizar/Incluir Dados Competencia (Saldo)
-				// let competenciaLancamento = moment(lancamento.data).format('YYYYMM');
-				// return this.obterCompetencia(userName, competenciaLancamento);
+				let promises = competencias.map(c => {
+					c.saldo += lancamentoInserido.valor;
+
+					let query: any = { $and: [{ _idUser: usuario._id.toString() }, { competencia: c.competencia }] };
+					return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
+				});
+
+				return Promise.all(promises);
+			})
+			.then(resultadosUpdateCompentecias => {
+				resultadosUpdateCompentecias.forEach(resultCompetenciaUpdated => {
+					assert.equal(resultCompetenciaUpdated.result.n, 1);
+				});
+				return lancamentoInserido;
 			});
-			//TODO... Criar/Atualizar competencia na criação de um Lançamento
-			// .then(competencia=>{
-			// });
 	}
+
 
 	public removeLancamento(userName: string, idLancamento: any) {
 
@@ -158,7 +175,7 @@ export class LancamentoService {
 			});
 	}
 
-	obterCompetencia(userName, competencia) {
+	public obterCompetencia(userName, competencia) {
 		return this.userDAO.getUser(userName)
 			.then(user => {
 				assert.ok(user);
