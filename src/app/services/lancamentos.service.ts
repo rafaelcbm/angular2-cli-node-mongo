@@ -112,7 +112,7 @@ export class LancamentosService extends DataService<Lancamento> {
 		});
 	}
 
-	obterSaldoCompetencia(competencia, isAtual) {
+	obterSaldoCompetencia(competencia) {
 
 		return Observable.create((observer: Observer<any>) => {
 			this._apiHttp.get(`${LancamentosService.baseUrl}competencia/${competencia}`)
@@ -121,8 +121,27 @@ export class LancamentosService extends DataService<Lancamento> {
 						if (jsonData.status === "sucesso") {
 							let competencia = {
 								competencia: jsonData.data.competencia,
-								saldo: jsonData.data.saldo,
-								isAtual
+								saldo: jsonData.data.saldo
+							}
+							observer.next(competencia);
+						}
+					},
+					error => {
+						Log.error(error);
+					});
+		});
+	}
+
+	obterSaldoUltimaCompetenciaAnterior(competencia) {
+
+		return Observable.create((observer: Observer<any>) => {
+			this._apiHttp.get(`${LancamentosService.baseUrl}competencia/anterior/${competencia}`)
+				.subscribe(
+					jsonData => {
+						if (jsonData.status === "sucesso") {
+							let competencia = {
+								competencia: jsonData.data.competencia,
+								saldo: jsonData.data.saldo
 							}
 							observer.next(competencia);
 						}

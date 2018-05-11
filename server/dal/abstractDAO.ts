@@ -33,17 +33,27 @@ export class DataAccess {
 		return this.dbConnection.collection(collectionName).insertOne(document);
 	}
 
-	public getDocuments(collectionName: string, query = {}): any {
+	public getDocuments(collectionName: string, query = {}, sort?, limit?): any {
 
 		if (this.dbConnection) {
-			return this.dbConnection.collection(collectionName).find(query).toArray();
+
+			let cursor = this.dbConnection.collection(collectionName).find(query);
+			if (sort) cursor = cursor.sort(sort);
+			if (limit) cursor = cursor.limit(limit);
+
+			return cursor.toArray();
 		}
 	}
 
-	public getDocument(collectionName: string, query = {}): any {
+	public getDocument(collectionName: string, query = {}, sort?): any {
 
+		let options;
 		if (this.dbConnection) {
-			return this.dbConnection.collection(collectionName).findOne(query);
+			if (sort) {
+				options = {};
+				options.sort = sort;
+			}
+			return this.dbConnection.collection(collectionName).findOne(query, options);
 		}
 	}
 

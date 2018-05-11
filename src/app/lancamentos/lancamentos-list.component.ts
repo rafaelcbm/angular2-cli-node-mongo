@@ -69,8 +69,6 @@ export class LancamentosListComponent implements OnInit {
 			.distinctUntilChanged()
 			.subscribe(novaCompetencia => {
 				this.competenciaAtual = novaCompetencia;
-				this.saldoAnterior = 0.0;
-				this.saldoAtual = 0.0;
 				this.lancamentosService.getByCompetencia(novaCompetencia);
 				this.atualizarSaldos();
 			});
@@ -129,12 +127,20 @@ export class LancamentosListComponent implements OnInit {
 	}
 
 	atualizarSaldos() {
-		this.lancamentosService.obterSaldoCompetencia(this.competenciaAtual - 1, false).subscribe(competencia => {
-			this.saldoAnterior = competencia.saldo ? competencia.saldo : 0.0;
+		this.inicializarSaldos();
+
+		this.lancamentosService.obterSaldoUltimaCompetenciaAnterior(this.competenciaAtual).subscribe(competencia => {
+			this.saldoAnterior = competencia.saldo;
+			this.saldoAtual = this.saldoAnterior;
 			if (this.lancamentos && this.lancamentos.length > 0) {
 				this.atualizarSaldoAtual();
 			}
 		});
+	}
+
+	inicializarSaldos() {
+		this.saldoAnterior = 0.0;
+		this.saldoAtual = 0.0;
 	}
 
 	atualizarSaldoAtual() {

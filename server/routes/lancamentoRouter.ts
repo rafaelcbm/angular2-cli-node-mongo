@@ -101,3 +101,17 @@ lancamentoRouter.get("/competencia/:competencia", function (request: Request & {
 			}))
 		.catch((e: Error) => handleError(e, response));
 });
+
+lancamentoRouter.get("/competencia/anterior/:competencia", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+
+	let userName = request.userName;
+	let competencia = request.params.competencia;
+
+	lancamentoService.obterUltimaCompetenciaAnterior(userName, competencia)
+		.then(competencia =>
+			response.json({
+				"status": "sucesso",
+				"data": competencia
+			}))
+		.catch((e: Error) => handleError(e, response));
+});

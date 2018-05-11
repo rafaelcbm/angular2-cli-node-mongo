@@ -6,7 +6,9 @@
 ## *SERVER*
 ```
 
-- Criar/Atualizar competencia(saldo) na criação de um Lançamento.(ver insertLancamento)
+- 
+- Mover a logica de Competencia para um servico/dao proprio.
+- Atualizar competencia(saldo) na atualização de um Lançamento.(ver insertLancamento)
 - Refatorar server para eliminar o pacote 'typedi', de acordo com o template do outro repo.
 
 ```

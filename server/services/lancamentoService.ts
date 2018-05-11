@@ -33,8 +33,8 @@ export class LancamentoService {
 
 		let lancamentoInserido;
 		let usuario;
-		let competenciaAnterior;
 		let competenciaAtual;
+		let isCompetenciaAtualExistente;
 
 		return this.userDAO.getUser(userName)
 			.then(user => {
@@ -58,24 +58,53 @@ export class LancamentoService {
 				assert.equal(resultInsercaoLancamento.result.n, 1);
 				lancamentoInserido = insertedLancamento;
 
-				let compAtual = moment(lancamentoInserido.data).format('YYYYMM');
-				return this.lancamentoDAO.obterCompetenciasMaioresIgualCompetencia(usuario._id.toString(), +compAtual);
+				competenciaAtual = parseInt(moment(lancamentoInserido.data).format('YYYYMM'));
+
+				//Upsert Compentecia
+				return this.lancamentoDAO.getCompetencia(usuario._id.toString(), competenciaAtual);
+			})
+			.then(compAtual => {
+				if (compAtual) {
+					isCompetenciaAtualExistente = true;
+
+					compAtual.saldo += lancamentoInserido.valor;
+
+					let query: any = { $and: [{ _idUser: usuario._id.toString() }, { competencia: compAtual.competencia }] };
+					return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } });
+				} else {
+					isCompetenciaAtualExistente = false;
+					//Obter Ultima Comp anterior
+					return this.lancamentoDAO.obterUltimaCompetenciaAnterior(usuario._id.toString(), competenciaAtual);
+				}
+			}).then(compAnterior => {
+				if (!isCompetenciaAtualExistente) {
+					let novaCompetencia: any = {
+						competencia: competenciaAtual,
+						saldo: 0,
+						_idUser: usuario._id.toString()
+					};
+					if (compAnterior) {
+						novaCompetencia.saldo = compAnterior.saldo + lancamentoInserido.valor
+					}
+					return this.lancamentoDAO.insertCompetencia(novaCompetencia);
+				}
+			})
+			.then(r => {
+				return this.lancamentoDAO.obterCompetenciasPosteriores(usuario._id.toString(), competenciaAtual);
 			})
 			.then(competencias => {
+				if (competencias) {
+					let promises = competencias.map(c => {
+						c.saldo += lancamentoInserido.valor;
 
-				let promises = competencias.map(c => {
-					c.saldo += lancamentoInserido.valor;
+						let query: any = { $and: [{ _idUser: usuario._id.toString() }, { competencia: c.competencia }] };
+						return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
+					});
 
-					let query: any = { $and: [{ _idUser: usuario._id.toString() }, { competencia: c.competencia }] };
-					return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
-				});
-
-				return Promise.all(promises);
+					return Promise.all(promises);
+				}
 			})
 			.then(resultadosUpdateCompentecias => {
-				resultadosUpdateCompentecias.forEach(resultCompetenciaUpdated => {
-					assert.equal(resultCompetenciaUpdated.result.n, 1);
-				});
 				return lancamentoInserido;
 			});
 	}
@@ -172,6 +201,20 @@ export class LancamentoService {
 			.then((resultLancamentoUpdated) => {
 				assert.equal(resultLancamentoUpdated.result.n, 1);
 				return this.lancamentoDAO.getLancamentoByDescricao(lancamentoObtido.descricao);
+			});
+	}
+
+	public obterUltimaCompetenciaAnterior(userName, competencia) {
+		return this.userDAO.getUser(userName)
+			.then(user => {
+				assert.ok(user);
+				return this.lancamentoDAO.obterUltimaCompetenciaAnterior(user._id.toString(), +competencia);
+			})
+			.then(comp => {
+				if (!comp) {
+					return { competencia: 0, saldo: 0.0 };
+				}
+				return { competencia: comp.competencia, saldo: comp.saldo };
 			});
 	}
 

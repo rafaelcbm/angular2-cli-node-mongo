@@ -89,10 +89,17 @@ export class LancamentoDAO {
 			{ $and: [{ _idUser: idUser }, { competencia: competencia }] });
 	}
 
-	public obterCompetenciasMaioresIgualCompetencia(idUser: string, competencia): any {
+	public obterCompetenciasPosteriores(idUser: string, competencia): any {
 
-		return this._dataAccess.getDocuments('competencias',
-			{ $and: [{ _idUser: idUser }, { competencia: { $gte: competencia } }] });
+		return this._dataAccess.getDocuments('competencias', { $and: [{ _idUser: idUser }, { competencia: { $gt: competencia } }] });
+	}
+
+	public obterUltimaCompetenciaAnterior(idUser: string, competencia): any {
+
+		let query = { $and: [{ _idUser: idUser }, { competencia: { $lt: competencia } }] };
+		let sort = { competencia: -1 };
+
+		return this._dataAccess.getDocument('competencias', query, sort);
 	}
 
 	public updateCompetencia(query: any, updateObj: any, options: any = { multi: true }): any {
@@ -100,5 +107,9 @@ export class LancamentoDAO {
 		return this._dataAccess.dbConnection.collection('competencias').update(query, updateObj, options);
 	}
 
+	public insertCompetencia(competencia): any {
+
+		return this._dataAccess.insertDocument(competencia, 'competencias');
+	}
 
 }
