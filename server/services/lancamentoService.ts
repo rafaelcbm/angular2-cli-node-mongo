@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { BusinessError } from './../commons/businessError';
 import { UserDAO } from '../dal/userDAO';
 import { LancamentoDAO } from "../dal/lancamentoDAO";
+import { promise } from 'selenium-webdriver';
 
 @Service()
 export class LancamentoService {
@@ -32,6 +33,7 @@ export class LancamentoService {
 	public insertLancamento(userName: string, lancamento: any) {
 
 		let competenciaAtual = parseInt(moment(lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
+		let idUsuario;
 
 		return this.userDAO.getUser(userName)
 			.then(user => {
@@ -39,14 +41,11 @@ export class LancamentoService {
 				if (!user.contas)
 					return Promise.reject(new BusinessError(`Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`));
 				else {
-					let idUsuario = user._id.toString();
-					// Transforma o _id para String e Atualizao lancamento com o id do usuario
-					lancamento._idUser = idUsuario;
-					return Promise.all([Promise.resolve(idUsuario), this.lancamentoDAO.getCompetencia(idUsuario, competenciaAtual)]);
+					idUsuario = user._id.toString();
+					return this.lancamentoDAO.getCompetencia(idUsuario, competenciaAtual);
 				}
 			})
-			.then(([idUsuario, compAtual]) => {
-				logger.info('** then - idUsuario = %j, compAtual = %j', idUsuario, compAtual);
+			.then(compAtual => {
 				let isCompetenciaAtualExistente = false;
 				if (compAtual) {
 					isCompetenciaAtualExistente = true;
@@ -54,14 +53,13 @@ export class LancamentoService {
 					compAtual.saldo += lancamento.valor;
 
 					let query: any = { $and: [{ _idUser: idUsuario }, { competencia: compAtual.competencia }] };
-					return Promise.all([Promise.resolve(idUsuario), Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } })]);
+					return Promise.all([Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } })]);
 				} else {
 					isCompetenciaAtualExistente = false;
 					//Obter Ultima Comp anterior
-					return Promise.all([Promise.resolve(idUsuario), Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.obterUltimaCompetenciaAnterior(idUsuario, competenciaAtual)]);
+					return Promise.all([Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.obterUltimaCompetenciaAnterior(idUsuario, competenciaAtual)]);
 				}
-			}).then(([idUsuario, isCompetenciaAtualExistente, compAnterior]) => {
-				logger.info('** then - idUsuario = %j, isCompetenciaAtualExistente = %j, compAnterior = %j', idUsuario, isCompetenciaAtualExistente, compAnterior);
+			}).then(([isCompetenciaAtualExistente, compAnterior]) => {
 				if (!isCompetenciaAtualExistente) {
 					let novaCompetencia: any = {
 						competencia: competenciaAtual,
@@ -71,17 +69,14 @@ export class LancamentoService {
 					if (compAnterior) {
 						novaCompetencia.saldo = compAnterior.saldo + lancamento.valor
 					}
-					return Promise.all([Promise.resolve(idUsuario), this.lancamentoDAO.insertCompetencia(novaCompetencia)]);
-				} else {
-					return Promise.all([Promise.resolve(idUsuario)]);
+					return this.lancamentoDAO.insertCompetencia(novaCompetencia);
 				}
+				return Promise.resolve();
 			})
-			.then(([idUsuario, resultInsercaoCompetencia]) => {
-				logger.info('** then - idUsuario = %j, resultInsercaoCompetencia = %j', idUsuario, resultInsercaoCompetencia);
-				return Promise.all([Promise.resolve(idUsuario), this.lancamentoDAO.obterCompetenciasPosteriores(idUsuario, competenciaAtual)]);
+			.then(resultInsercaoCompetencia => {
+				return this.lancamentoDAO.obterCompetenciasPosteriores(idUsuario, competenciaAtual);
 			})
-			.then(([idUsuario, competencias]) => {
-				logger.info('** then - idUsuario = %j, competencias = %j', idUsuario, competencias);
+			.then(competencias => {
 				if (competencias) {
 					let promises = competencias.map(c => {
 						c.saldo += lancamento.valor;
@@ -92,9 +87,11 @@ export class LancamentoService {
 
 					return Promise.all(promises);
 				}
+				return Promise.resolve();
 			})
 			.then(resultadosUpdateCompentecias => {
-				logger.info('** then - resultadosUpdateCompentecias = %j', resultadosUpdateCompentecias);
+				// Transforma o _id para String e Atualizao lancamento com o id do usuario
+				lancamento._idUser = idUsuario;
 				// Atualiza categoria no lancamento, somente com os dados relevantes
 				let categoriaLancamento = { _id: lancamento.categoria._id, nome: lancamento.categoria.nome };
 				lancamento.categoria = categoriaLancamento;
@@ -102,7 +99,6 @@ export class LancamentoService {
 				return this.lancamentoDAO.insertLancamento(lancamento)
 			})
 			.then(resultInsercaoLancamento => {
-				logger.info('** then - resultInsercaoLancamento = %j', resultInsercaoLancamento);
 				let insertedLancamento = resultInsercaoLancamento.ops[0];
 				assert.equal(resultInsercaoLancamento.result.n, 1);
 
