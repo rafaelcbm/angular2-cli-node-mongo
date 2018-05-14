@@ -6,7 +6,7 @@
 ## *SERVER*
 ```
 
-- 
+- refatorar Promise chain da inserção de lancamentos usando Pure Functions !!!!
 - Mover a logica de Competencia para um servico/dao proprio.
 - Atualizar competencia(saldo) na atualização de um Lançamento.(ver insertLancamento)
 - Refatorar server para eliminar o pacote 'typedi', de acordo com o template do outro repo.

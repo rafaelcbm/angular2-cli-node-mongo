@@ -31,10 +31,7 @@ export class LancamentoService {
 
 	public insertLancamento(userName: string, lancamento: any) {
 
-		let lancamentoInserido;
-		let usuario;
-		let competenciaAtual;
-		let isCompetenciaAtualExistente;
+		let competenciaAtual = parseInt(moment(lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
 
 		return this.userDAO.getUser(userName)
 			.then(user => {
@@ -42,62 +39,54 @@ export class LancamentoService {
 				if (!user.contas)
 					return Promise.reject(new BusinessError(`Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`));
 				else {
-					usuario = user;
-					// Transforma o _id para String
-					lancamento._idUser = user._id.toString();
-
-					//Salva somente o _id e nome da categoria no lancamento
-					let categoriaLancamento = { _id: lancamento.categoria._id, nome: lancamento.categoria.nome };
-					lancamento.categoria = categoriaLancamento;
-
-					return this.lancamentoDAO.insertLancamento(lancamento)
+					let idUsuario = user._id.toString();
+					// Transforma o _id para String e Atualizao lancamento com o id do usuario
+					lancamento._idUser = idUsuario;
+					return Promise.all([Promise.resolve(idUsuario), this.lancamentoDAO.getCompetencia(idUsuario, competenciaAtual)]);
 				}
 			})
-			.then(resultInsercaoLancamento => {
-				let insertedLancamento = resultInsercaoLancamento.ops[0];
-				assert.equal(resultInsercaoLancamento.result.n, 1);
-				lancamentoInserido = insertedLancamento;
-
-				competenciaAtual = parseInt(moment(lancamentoInserido.data).format('YYYYMM'));
-
-				//Upsert Compentecia
-				return this.lancamentoDAO.getCompetencia(usuario._id.toString(), competenciaAtual);
-			})
-			.then(compAtual => {
+			.then(([idUsuario, compAtual]) => {
+				logger.info('** then - idUsuario = %j, compAtual = %j', idUsuario, compAtual);
+				let isCompetenciaAtualExistente = false;
 				if (compAtual) {
 					isCompetenciaAtualExistente = true;
 
-					compAtual.saldo += lancamentoInserido.valor;
+					compAtual.saldo += lancamento.valor;
 
-					let query: any = { $and: [{ _idUser: usuario._id.toString() }, { competencia: compAtual.competencia }] };
-					return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } });
+					let query: any = { $and: [{ _idUser: idUsuario }, { competencia: compAtual.competencia }] };
+					return Promise.all([Promise.resolve(idUsuario), Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } })]);
 				} else {
 					isCompetenciaAtualExistente = false;
 					//Obter Ultima Comp anterior
-					return this.lancamentoDAO.obterUltimaCompetenciaAnterior(usuario._id.toString(), competenciaAtual);
+					return Promise.all([Promise.resolve(idUsuario), Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.obterUltimaCompetenciaAnterior(idUsuario, competenciaAtual)]);
 				}
-			}).then(compAnterior => {
+			}).then(([idUsuario, isCompetenciaAtualExistente, compAnterior]) => {
+				logger.info('** then - idUsuario = %j, isCompetenciaAtualExistente = %j, compAnterior = %j', idUsuario, isCompetenciaAtualExistente, compAnterior);
 				if (!isCompetenciaAtualExistente) {
 					let novaCompetencia: any = {
 						competencia: competenciaAtual,
 						saldo: 0,
-						_idUser: usuario._id.toString()
+						_idUser: idUsuario
 					};
 					if (compAnterior) {
-						novaCompetencia.saldo = compAnterior.saldo + lancamentoInserido.valor
+						novaCompetencia.saldo = compAnterior.saldo + lancamento.valor
 					}
-					return this.lancamentoDAO.insertCompetencia(novaCompetencia);
+					return Promise.all([Promise.resolve(idUsuario), this.lancamentoDAO.insertCompetencia(novaCompetencia)]);
+				} else {
+					return Promise.all([Promise.resolve(idUsuario)]);
 				}
 			})
-			.then(r => {
-				return this.lancamentoDAO.obterCompetenciasPosteriores(usuario._id.toString(), competenciaAtual);
+			.then(([idUsuario, resultInsercaoCompetencia]) => {
+				logger.info('** then - idUsuario = %j, resultInsercaoCompetencia = %j', idUsuario, resultInsercaoCompetencia);
+				return Promise.all([Promise.resolve(idUsuario), this.lancamentoDAO.obterCompetenciasPosteriores(idUsuario, competenciaAtual)]);
 			})
-			.then(competencias => {
+			.then(([idUsuario, competencias]) => {
+				logger.info('** then - idUsuario = %j, competencias = %j', idUsuario, competencias);
 				if (competencias) {
 					let promises = competencias.map(c => {
-						c.saldo += lancamentoInserido.valor;
+						c.saldo += lancamento.valor;
 
-						let query: any = { $and: [{ _idUser: usuario._id.toString() }, { competencia: c.competencia }] };
+						let query: any = { $and: [{ _idUser: idUsuario }, { competencia: c.competencia }] };
 						return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
 					});
 
@@ -105,7 +94,19 @@ export class LancamentoService {
 				}
 			})
 			.then(resultadosUpdateCompentecias => {
-				return lancamentoInserido;
+				logger.info('** then - resultadosUpdateCompentecias = %j', resultadosUpdateCompentecias);
+				// Atualiza categoria no lancamento, somente com os dados relevantes
+				let categoriaLancamento = { _id: lancamento.categoria._id, nome: lancamento.categoria.nome };
+				lancamento.categoria = categoriaLancamento;
+
+				return this.lancamentoDAO.insertLancamento(lancamento)
+			})
+			.then(resultInsercaoLancamento => {
+				logger.info('** then - resultInsercaoLancamento = %j', resultInsercaoLancamento);
+				let insertedLancamento = resultInsercaoLancamento.ops[0];
+				assert.equal(resultInsercaoLancamento.result.n, 1);
+
+				return insertedLancamento;
 			});
 	}
 
@@ -208,9 +209,11 @@ export class LancamentoService {
 		return this.userDAO.getUser(userName)
 			.then(user => {
 				assert.ok(user);
+				logger.info("** Obtendo ANTES ANTERIOR Competencia = %s", +competencia);
 				return this.lancamentoDAO.obterUltimaCompetenciaAnterior(user._id.toString(), +competencia);
 			})
 			.then(comp => {
+				logger.info("** Obtendo ANTERIOR Competencia = %s", comp);
 				if (!comp) {
 					return { competencia: 0, saldo: 0.0 };
 				}
