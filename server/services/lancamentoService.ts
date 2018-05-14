@@ -162,7 +162,9 @@ export class LancamentoService {
 
 	public updateLancamento(userName: string, idLancamento: any, lancamento: any) {
 
-		let lancamentoObtido;
+		let competenciaAtual = parseInt(moment(lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
+		let idUsuario;
+		let lancamentoAnterior;
 
 		return this.userDAO.getUser(userName)
 			.then(user => {
@@ -175,26 +177,72 @@ export class LancamentoService {
 					if (!contaLancamento)
 						return Promise.reject(new BusinessError(`Lancamento informado não pertence a uma conta do usuário!`));
 
-					let query = { _id: new ObjectID(idLancamento) }
+					idUsuario = user._id.toHexString();
 
-					let novoLancamento = {
-						data: moment(lancamento.data, 'YYYY-MM-DD').toDate(),
-						descricao: lancamento.descricao,
-						valor: lancamento.valor,
-						conta: lancamento.conta,
-						categoria: { _id: lancamento.categoria._id, nome: lancamento.categoria.nome },
-						isDebito: lancamento.isDebito
-					}
-
-					logger.info("** typeof UPDATED LANCAMENTO: %j", novoLancamento);
-
-					return this.lancamentoDAO.updateLancamento(query, { $set: novoLancamento });
+					return this.lancamentoDAO.getLancamentoById(idLancamento)
 				}
+			})
+			.then(lancamentoEncontrado => {
+				if (!lancamentoEncontrado)
+					return Promise.reject(new BusinessError('Lancamento não encontrado!'))
+				else {
+					lancamentoAnterior = lancamentoEncontrado;
+					competenciaAtual = parseInt(moment(lancamentoAnterior.data, 'YYYY-MM-DD').format('YYYYMM'));
+					return this.lancamentoDAO.getCompetencia(idUsuario, competenciaAtual);
+				}
+			})
+			.then(compAtual => {
+				this.corrigirSaldo(compAtual, lancamentoAnterior, lancamento);
+				let query: any = { $and: [{ _idUser: idUsuario }, { competencia: compAtual.competencia }] };
+				return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } });
+			})
+			.then(resultadoUpdateCompentecia => {
+				assert.equal(resultadoUpdateCompentecia.result.n, 1)
+				return this.lancamentoDAO.obterCompetenciasPosteriores(idUsuario, competenciaAtual);
+			})
+			.then(competencias => {
+				if (competencias) {
+					let promises = competencias.map(c => {
+						this.corrigirSaldo(c, lancamentoAnterior, lancamento);
+						let query: any = { $and: [{ _idUser: idUsuario }, { competencia: c.competencia }] };
+						return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
+					});
+
+					return Promise.all(promises);
+				}
+				return Promise.resolve();
+			})
+			.then(resultadosUpdateCompentecias => {
+				let query = { _id: new ObjectID(idLancamento) }
+
+				let lancamentoAtualizado = {
+					data: moment(lancamento.data, 'YYYY-MM-DD').toDate(),
+					descricao: lancamento.descricao,
+					valor: lancamento.valor,
+					conta: lancamento.conta,
+					categoria: { _id: lancamento.categoria._id, nome: lancamento.categoria.nome },
+					isDebito: lancamento.isDebito
+				}
+
+				return this.lancamentoDAO.updateLancamento(query, { $set: lancamentoAtualizado });
 			})
 			.then((resultLancamentoUpdated) => {
 				assert.equal(resultLancamentoUpdated.result.n, 1);
 				return this.lancamentoDAO.getLancamentoByDescricao(lancamento.descricao);
 			});
+	}
+
+	public corrigirSaldo(competencia, lancamentoAnterior, lancamentoAtual) {
+		if (lancamentoAnterior.isDebito) {
+			competencia.saldo += lancamentoAnterior.valor;
+		} else {
+			competencia.saldo -= lancamentoAnterior.valor;
+		}
+		if (lancamentoAtual.isDebito) {
+			competencia.saldo -= lancamentoAtual.valor;
+		} else {
+			competencia.saldo += lancamentoAtual.valor;
+		}
 	}
 
 	public consolidarLancamento(userName: string, idLancamento: any, lancamentoPago: any) {
