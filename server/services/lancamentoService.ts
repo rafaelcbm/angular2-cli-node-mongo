@@ -110,6 +110,8 @@ export class LancamentoService {
 	public removeLancamento(userName: string, idLancamento: any) {
 
 		let lancamentoObtido;
+		let competenciaAtual;
+		let idUsuario;
 
 		return this.lancamentoDAO.getLancamentoById(idLancamento)
 			.then(lancamento => {
@@ -118,15 +120,42 @@ export class LancamentoService {
 					return Promise.reject(new BusinessError('Lancamento não encontrado!'))
 				else {
 					lancamentoObtido = lancamento;
+					competenciaAtual = parseInt(moment(lancamentoObtido.data, 'YYYY-MM-DD').format('YYYYMM'));
 					return this.userDAO.getUser(userName);
 				}
 			})
 			.then(user => {
 				assert.ok(user);
-				if (user._id.toHexString() != lancamentoObtido._idUser)
+				idUsuario = user._id.toHexString()
+				if (idUsuario != lancamentoObtido._idUser)
 					return Promise.reject(new BusinessError(`Lancamento (${lancamentoObtido.nome}) não pertence ao usuário informado!`));
 				else
-					return this.lancamentoDAO.removeLancamentoById(idLancamento);
+					return this.lancamentoDAO.getCompetencia(idUsuario, competenciaAtual);
+
+			})
+			.then(compAtual => {
+				compAtual.saldo -= lancamentoObtido.valor;
+				let query: any = { $and: [{ _idUser: idUsuario }, { competencia: compAtual.competencia }] };
+				return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } });
+			})
+			.then(resultadoUpdateCompentecia => {
+				assert.equal(resultadoUpdateCompentecia.result.n, 1)
+				return this.lancamentoDAO.obterCompetenciasPosteriores(idUsuario, competenciaAtual);
+			})
+			.then(competencias => {
+				if (competencias) {
+					let promises = competencias.map(c => {
+						c.saldo -= lancamentoObtido.valor;
+						let query: any = { $and: [{ _idUser: idUsuario }, { competencia: c.competencia }] };
+						return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
+					});
+
+					return Promise.all(promises);
+				}
+				return Promise.resolve();
+			})
+			.then(resultadosUpdateCompentecias => {
+				return this.lancamentoDAO.removeLancamentoById(idLancamento);
 			})
 			.then(resultRemocaoLancamento => assert.equal(resultRemocaoLancamento.result.n, 1));
 	}
