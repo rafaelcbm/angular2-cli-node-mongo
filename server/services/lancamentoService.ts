@@ -50,7 +50,7 @@ export class LancamentoService {
 				if (compAtual) {
 					isCompetenciaAtualExistente = true;
 
-					compAtual.saldo += lancamento.valor;
+					this.corrigirSaldo(compAtual, null, lancamento);
 
 					let query: any = { $and: [{ _idUser: idUsuario }, { competencia: compAtual.competencia }] };
 					return Promise.all([Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } })]);
@@ -79,7 +79,8 @@ export class LancamentoService {
 			.then(competencias => {
 				if (competencias) {
 					let promises = competencias.map(c => {
-						c.saldo += lancamento.valor;
+
+						this.corrigirSaldo(c, null, lancamento);
 
 						let query: any = { $and: [{ _idUser: idUsuario }, { competencia: c.competencia }] };
 						return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
@@ -134,7 +135,13 @@ export class LancamentoService {
 
 			})
 			.then(compAtual => {
-				compAtual.saldo -= lancamentoObtido.valor;
+
+				if (lancamentoObtido.isDebito) {
+					compAtual.saldo += lancamentoObtido.valor;
+				} else {
+					compAtual.saldo -= lancamentoObtido.valor;
+				}
+
 				let query: any = { $and: [{ _idUser: idUsuario }, { competencia: compAtual.competencia }] };
 				return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } });
 			})
@@ -145,7 +152,12 @@ export class LancamentoService {
 			.then(competencias => {
 				if (competencias) {
 					let promises = competencias.map(c => {
-						c.saldo -= lancamentoObtido.valor;
+						if (lancamentoObtido.isDebito) {
+							c.saldo += lancamentoObtido.valor;
+						} else {
+							c.saldo -= lancamentoObtido.valor;
+						}
+
 						let query: any = { $and: [{ _idUser: idUsuario }, { competencia: c.competencia }] };
 						return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
 					});
@@ -233,16 +245,21 @@ export class LancamentoService {
 	}
 
 	public corrigirSaldo(competencia, lancamentoAnterior, lancamentoAtual) {
-		if (lancamentoAnterior.isDebito) {
-			competencia.saldo += lancamentoAnterior.valor;
-		} else {
-			competencia.saldo -= lancamentoAnterior.valor;
+		logger.info('** 1  competencia= %j, lancamentoAnterior= %j, lancamentoAtual= %j', competencia.saldo, lancamentoAnterior, lancamentoAtual.valor)
+		if (lancamentoAnterior) {
+			if (lancamentoAnterior.isDebito) {
+				competencia.saldo += lancamentoAnterior.valor;
+			} else {
+				competencia.saldo -= lancamentoAnterior.valor;
+			}
 		}
+		logger.info('** 2  competencia= %j, lancamentoAnterior= %j, lancamentoAtual= %j', competencia.saldo, lancamentoAnterior, lancamentoAtual.valor)
 		if (lancamentoAtual.isDebito) {
 			competencia.saldo -= lancamentoAtual.valor;
 		} else {
 			competencia.saldo += lancamentoAtual.valor;
 		}
+		logger.info('** 3  competencia= %j, lancamentoAnterior= %j, lancamentoAtual= %j', competencia.saldo, lancamentoAnterior, lancamentoAtual.valor)
 	}
 
 	public consolidarLancamento(userName: string, idLancamento: any, lancamentoPago: any) {
