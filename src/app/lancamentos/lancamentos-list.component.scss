@@ -101,6 +101,14 @@ $color-lancamento-pago: #4dbd74;
     justify-self: end;
 }
 
+.content-conta-field:hover,
+.content-categoria-field:hover,
+.content-valor-field:hover {
+    text-decoration: underline;
+    color: #b10e0eb5;
+    font-weight: 900;
+}
+
 .digits {
     font-family: 'Montserrat', sans-serif;
 }

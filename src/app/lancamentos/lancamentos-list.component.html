@@ -32,9 +32,9 @@
 					<input type="checkbox" [value]="lancamento._id" (click)="clickCheck($event)">
 				</div>
 				<div (click)="onSelect(lancamento)" class="content-descricao-field">{{lancamento.descricao}}</div>
-				<div class="content-conta-field">{{lancamento.conta.nome}}</div>
-				<div class="content-categoria-field">{{lancamento.categoria.nome}}</div>
-				<section class="content-valor-field">
+				<div (click)="onSelect(lancamento)" class="content-conta-field">{{lancamento.conta.nome}}</div>
+				<div (click)="onSelect(lancamento)" class="content-categoria-field">{{lancamento.categoria.nome}}</div>
+				<section (click)="onSelect(lancamento)" class="content-valor-field">
 					<span *ngIf="lancamento.isDebito"> - </span>
 					<span class="digits" [ngClass]="{'debito-color': lancamento.isDebito, 'credito-color': !lancamento.isDebito}">{{lancamento.valor | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
 				</section>
