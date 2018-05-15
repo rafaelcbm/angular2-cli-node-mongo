@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class FiltroLancamentoService {
 
+	private contas: string[] = [];
 	private categorias: string[] = [];
 
 	private competenciaLancamentoSource = new Subject<string>();
@@ -27,7 +28,8 @@ export class FiltroLancamentoService {
 	}
 
 	onSelectedContas(contas: any) {
-		this.selectedContasSource.next(contas);
+		this.contas = contas;
+		this.selectedContasSource.next(this.contas);
 	}
 
 	onDeselectCategoria(categoria: string) {
@@ -49,5 +51,13 @@ export class FiltroLancamentoService {
 	onSelectCategoria(categoria: string) {
 		this.categorias.push(categoria);
 		this.selectedCategoriasSource.next(this.categorias);
+	}
+
+	obterCategoriasSeleciondas() {
+		return Object.assign([], this.categorias);
+	}
+
+	obterContasSeleciondas() {
+		return Object.assign([], this.contas);
 	}
 }

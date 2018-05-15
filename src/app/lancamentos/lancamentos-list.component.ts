@@ -54,6 +54,8 @@ export class LancamentosListComponent implements OnInit {
 					return lancamento;
 				});
 			this.atualizarSaldos();
+			this.atualizarCategorias.call(this, this.filtroLancamentoService.obterCategoriasSeleciondas());
+			this.atualizarContas.call(this, this.filtroLancamentoService.obterContasSeleciondas());
 		});
 	}
 
@@ -74,43 +76,46 @@ export class LancamentosListComponent implements OnInit {
 			});
 	}
 
-	observarFiltroContas() {
-		this.filtroLancamentoService.selectedContas$
-			.subscribe(contasSelecionadas => {
-				if (contasSelecionadas.length > 0) {
-					this.lancamentos.forEach((lancamento: any) => {
-						lancamento.showConta = false;
-
-						if (contasSelecionadas.some(contasSelecionada => contasSelecionada == lancamento.conta.nome)) {
-							lancamento.showConta = true;
-						}
-					});
-				}
-			});
-	}
-
 	observarCategorias() {
 		this.categoriasService.dataObservable$.subscribe(categorias => this.lancamentosService.getByCompetencia(this.competenciaAtual));
 	}
 
-	observarFiltroCategorias() {
-		this.filtroLancamentoService.selectedCategorias$
-			.subscribe(categoriasSelecionadas => {
+	observarFiltroContas() {
+		this.filtroLancamentoService.selectedContas$.subscribe(this.atualizarContas.bind(this));
+	}
 
-				if (categoriasSelecionadas.length == 0) {
-					this.lancamentos.forEach((lancamento: any) => lancamento.showLancamento = true);
-				}
+	atualizarContas(contasSelecionadas) {
 
-				if (categoriasSelecionadas.length > 0) {
-					this.lancamentos.forEach((lancamento: any) => {
-						lancamento.showLancamento = false;
+		if (contasSelecionadas.length > 0) {
+			this.lancamentos.forEach((lancamento: any) => {
+				lancamento.showConta = false;
 
-						if (categoriasSelecionadas.some(categoriaSelecionada => categoriaSelecionada == lancamento.categoria.nome)) {
-							lancamento.showLancamento = true;
-						}
-					});
+				if (contasSelecionadas.some(contasSelecionada => contasSelecionada == lancamento.conta.nome)) {
+					lancamento.showConta = true;
 				}
 			});
+		}
+	}
+
+	observarFiltroCategorias() {
+		this.filtroLancamentoService.selectedCategorias$.subscribe(this.atualizarCategorias.bind(this));
+	}
+
+	atualizarCategorias(categoriasSelecionadas) {
+
+		if (categoriasSelecionadas.length == 0) {
+			this.lancamentos.forEach((lancamento: any) => lancamento.showLancamento = true);
+		}
+
+		if (categoriasSelecionadas.length > 0) {
+			this.lancamentos.forEach((lancamento: any) => {
+				lancamento.showLancamento = false;
+
+				if (categoriasSelecionadas.some(categoriaSelecionada => categoriaSelecionada == lancamento.categoria.nome)) {
+					lancamento.showLancamento = true;
+				}
+			});
+		}
 	}
 
 	onSelect(lancamento) {
