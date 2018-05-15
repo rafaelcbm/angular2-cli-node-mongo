@@ -1,14 +1,21 @@
-<section class="lancamentos-list-wrapper">
+<section *ngIf="lancamentos.length==0" class="lancamentos-list-wrapper">
+	<div class="no-lancamentos">
+		<span>Sem lançamentos cadastrados para essa competência.</span>
+	</div>
+</section>
+
+<section *ngIf="lancamentos.length>0" class="lancamentos-list-wrapper">
 	<div class="saldo-content">
 		<span>Saldo Anterior:</span>
 		<span class="digits" [ngClass]="{'debito-color': saldoAnterior<0, 'credito-color': saldoAnterior>0}">{{saldoAnterior | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
 	</div>
 </section>
-<section class="lancamentos-list-wrapper">
+
+<section *ngIf="lancamentos.length>0" class="lancamentos-list-wrapper">
 	<div></div>
 	<section class="lancamentos-list-header">
 		<div></div>
-		<div>Data</div>
+		<!-- <div>Data</div> -->
 		<div class="content-descricao-header">Descrição</div>
 		<div class="content-conta-header">Conta</div>
 		<div class="content-categoria-header">Categoria</div>
@@ -17,15 +24,16 @@
 	</section>
 </section>
 
-<section class="lancamentos-list-wrapper">
+<section *ngIf="lancamentos.length>0" class="lancamentos-list-wrapper">
 	<section>
-		<section class="lancamentos-list-content-wrapper" *ngFor="let lancamento of lancamentos">
-			<section class="lancamentos-list-content" *ngIf="lancamento.showConta && lancamento.showLancamento">
+		<section class="lancamentos-list-content-wrapper" [ngClass]="{ odd: odd, even: even }" *ngFor="let lancamento of lancamentos; let idx = index; let even = even;let odd = odd;">
+			<div class="lancamentos-list-content-data" *ngIf="lancamentos[idx-1]?.data != lancamento.data">{{lancamento.data | date:"dd/MM/yyyy"}}</div>
+			<section class="lancamentos-list-content" *ngIf="lancamento.showConta && lancamento.showLancamento&&!lancamento.showDetail">
 				<div class="lancamentos-list-checks-item2">
 					<input type="checkbox" [value]="lancamento._id" (click)="clickCheck($event)">
 				</div>
-				<div>{{lancamento.data | date:"dd/MM/yyyy"}}</div>
-				<div (click)="onSelect(lancamento)" class="content-descricao-field">{{lancamento.descricao}}</div>
+				<!-- <div>{{lancamento.data | date:"dd/MM/yyyy"}}</div> -->
+				<div (click)="onSelect(lancamento)" class="content-descricao-field">{{lancamentos[idx-1]?.data != lancamento.data}} - {{lancamento.descricao}}</div>
 				<div class="content-conta-field">{{lancamento.conta.nome}}</div>
 				<div class="content-categoria-field">{{lancamento.categoria.nome}}</div>
 				<section class="content-valor-field">
