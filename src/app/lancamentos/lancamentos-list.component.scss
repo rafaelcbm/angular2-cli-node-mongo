@@ -104,6 +104,7 @@ $color-lancamento-pago: #4dbd74;
 .content-conta-field:hover,
 .content-categoria-field:hover,
 .content-valor-field:hover {
+	cursor: pointer;
     text-decoration: underline;
     color: #b10e0eb5;
     font-weight: 900;
