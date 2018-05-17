@@ -47,8 +47,8 @@ export class LancamentosListComponent implements OnInit {
 			this.lancamentos = lancamentos;
 			this.lancamentos = this.lancamentos.map(
 				(lancamento: any) => {
-					lancamento.showConta = true;
-					lancamento.showLancamento = true;
+					lancamento.showByConta = true;
+					lancamento.showByLancamento = true;
 					this.convertToString(lancamento);
 
 					return lancamento;
@@ -88,10 +88,10 @@ export class LancamentosListComponent implements OnInit {
 
 		if (contasSelecionadas.length > 0) {
 			this.lancamentos.forEach((lancamento: any) => {
-				lancamento.showConta = false;
+				lancamento.showByConta = false;
 
 				if (contasSelecionadas.some(contasSelecionada => contasSelecionada == lancamento.conta.nome)) {
-					lancamento.showConta = true;
+					lancamento.showByConta = true;
 				}
 			});
 		}
@@ -104,15 +104,15 @@ export class LancamentosListComponent implements OnInit {
 	atualizarCategorias(categoriasSelecionadas) {
 
 		if (categoriasSelecionadas.length == 0) {
-			this.lancamentos.forEach((lancamento: any) => lancamento.showLancamento = true);
+			this.lancamentos.forEach((lancamento: any) => lancamento.showByLancamento = true);
 		}
 
 		if (categoriasSelecionadas.length > 0) {
 			this.lancamentos.forEach((lancamento: any) => {
-				lancamento.showLancamento = false;
+				lancamento.showByLancamento = false;
 
 				if (categoriasSelecionadas.some(categoriaSelecionada => categoriaSelecionada == lancamento.categoria.nome)) {
-					lancamento.showLancamento = true;
+					lancamento.showByLancamento = true;
 				}
 			});
 		}

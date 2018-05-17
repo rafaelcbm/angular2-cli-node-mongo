@@ -24,27 +24,25 @@
 </section>
 
 <section *ngIf="lancamentos.length>0" class="lancamentos-list-wrapper">
-	<section>
-		<section class="lancamentos-list-content-wrapper" [ngClass]="{ odd: odd, even: even }" *ngFor="let lancamento of lancamentos; let idx = index; let even = even;let odd = odd;">
-			<div class="lancamentos-list-content-data" *ngIf="lancamento.showConta && lancamento.showLancamento && lancamentos[idx-1]?.data != lancamento.data">{{lancamento.data | date:"dd/MM/yyyy"}}</div>
-			<section class="lancamentos-list-content" *ngIf="lancamento.showConta && lancamento.showLancamento && !lancamento.showDetail">
-				<div class="lancamentos-list-checks-item2">
-					<input type="checkbox" [value]="lancamento._id" (click)="clickCheck($event)">
-				</div>
-				<div (click)="onSelect(lancamento)" class="content-descricao-field">{{lancamento.descricao}}</div>
-				<div (click)="onSelect(lancamento)" class="content-conta-field">{{lancamento.conta.nome}}</div>
-				<div (click)="onSelect(lancamento)" class="content-categoria-field">{{lancamento.categoria.nome}}</div>
-				<section (click)="onSelect(lancamento)" class="content-valor-field">
-					<span *ngIf="lancamento.isDebito"> - </span>
-					<span class="digits" [ngClass]="{'debito-color': lancamento.isDebito, 'credito-color': !lancamento.isDebito}">{{lancamento.valor | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
-				</section>
-				<div class="lancamentos-list-pago-item">
-					<div (click)="consolidarLancamento(lancamento)" [ngClass]="{'lancamento-pago': lancamento.pago, 'lancamento-nao-pago': !lancamento.pago, 'fa fa-check-square': true}"></div>
-				</div>
+	<section class="lancamentos-list-content-wrapper" [ngClass]="{ odd: odd, even: even }" *ngFor="let lancamento of lancamentos; let idx = index; let even = even;let odd = odd;">
+		<div class="lancamentos-list-content-data" *ngIf="lancamento.showByConta && lancamento.showByLancamento && lancamentos[idx-1]?.data != lancamento.data">{{lancamento.data | date:"dd/MM/yyyy"}}</div>
+		<section class="lancamentos-list-content" *ngIf="lancamento.showByConta && lancamento.showByLancamento && !lancamento.showDetail">
+			<div class="lancamentos-list-checks-item2">
+				<input type="checkbox" [value]="lancamento._id" (click)="clickCheck($event)">
+			</div>
+			<div (click)="onSelect(lancamento)" class="content-descricao-field">{{lancamento.descricao}}</div>
+			<div (click)="onSelect(lancamento)" class="content-conta-field">{{lancamento.conta.nome}}</div>
+			<div (click)="onSelect(lancamento)" class="content-categoria-field">{{lancamento.categoria.nome}}</div>
+			<section (click)="onSelect(lancamento)" class="content-valor-field">
+				<span *ngIf="lancamento.isDebito"> - </span>
+				<span class="digits" [ngClass]="{'debito-color': lancamento.isDebito, 'credito-color': !lancamento.isDebito}">{{lancamento.valor | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
 			</section>
-
-			<lancamentos-detail *ngIf="lancamento.showDetail" [lancamento]="lancamento"></lancamentos-detail>
+			<div class="lancamentos-list-pago-item">
+				<div (click)="consolidarLancamento(lancamento)" [ngClass]="{'lancamento-pago': lancamento.pago, 'lancamento-nao-pago': !lancamento.pago, 'fa fa-check-square': true}"></div>
+			</div>
 		</section>
+
+		<lancamentos-detail *ngIf="lancamento.showDetail" [lancamento]="lancamento"></lancamentos-detail>
 	</section>
 </section>
 
