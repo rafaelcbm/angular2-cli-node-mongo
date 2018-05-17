@@ -1,5 +1,40 @@
-select:focus{
+select:focus {
     outline-color: #8ad4ee;
     outline-style: solid;
     outline-width: 1px;
+}
+
+.lancamento-detail-form {
+    .card-block,
+    .card-footer {
+        padding: 0.8em 0.8em;
+        button {
+            font-size: 1em;
+            line-height: 1.0;
+        }
+    }
+    .lancamento-detail-wrapper {
+        display: grid;
+        grid-template-columns: 2fr 4fr 1fr 2fr 2fr 2fr;
+        grid-column-gap: 0.2em;
+        height: 2em;
+        .lancamento-detail-data-field,
+        .lancamento-detail-descricao-field,
+        .lancamento-detail-valor-field,
+        .lancamento-detail-conta-field,
+        .lancamento-detail-categoria-field,
+        .lancamento-detail-debito-field {
+            .default-padding {
+                padding: 0.1rem 0.2rem;
+            }
+            .default-font {
+                font-size: 0.8rem;
+            }
+            select {
+                &.default-height {
+                    height: 1.9em;
+                }
+            }
+        }
+    }
 }
