@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 select:focus {
     outline-color: #8ad4ee;
     outline-style: solid;
@@ -16,25 +17,50 @@ select:focus {
     .lancamento-detail-wrapper {
         display: grid;
         grid-template-columns: 2fr 4fr 1fr 2fr 2fr 2fr;
-        grid-column-gap: 0.2em;
-        height: 2em;
-        .lancamento-detail-data-field,
-        .lancamento-detail-descricao-field,
-        .lancamento-detail-valor-field,
-        .lancamento-detail-conta-field,
-        .lancamento-detail-categoria-field,
-        .lancamento-detail-debito-field {
-            .default-padding {
-                padding: 0.1rem 0.2rem;
+        grid-column-gap: 0.4em;
+        height: 2em; // .lancamento-detail-data-field,
+        // .lancamento-detail-descricao-field,
+        // .lancamento-detail-valor-field,
+        // .lancamento-detail-conta-field,
+        // .lancamento-detail-categoria-field,
+        // .lancamento-detail-debito-field {}
+    }
+    .lancamento-detail-repeticao-wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-row-gap: 1em; //grid-auto-rows: minmax(2em, auto);
+        align-items: center;
+        .l-detail-repeticao-field-wrapper {
+            .label {
+                align-self: center;
             }
-            .default-font {
-                font-size: 0.8rem;
-            }
-            select {
-                &.default-height {
-                    height: 1.9em;
-                }
+            display: grid;
+            grid-column-gap: 0.4em;
+            grid-template-columns: repeat( auto-fit,minmax(20px, max-content));
+        }
+        input {
+            &.small-input {
+                width: 5em;
             }
         }
     }
+    .default-padding {
+        padding: 0.1rem 0.2rem;
+    }
+    .default-font {
+        font-size: 0.8rem;
+    }
+    select {
+        &.default-height {
+            height: 1.9em;
+        }
+        &.medium-select {
+            width: 8em;
+        }
+    }
+}
+
+.digits {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
 }

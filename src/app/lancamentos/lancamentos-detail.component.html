@@ -8,10 +8,8 @@
 		<tabset>
 			<tab heading="Lançamento">
 				<div class="card">
-					<div class="card-block" style="padding: 0.8rem;">
-						<!-- comeca aki -->
-
-						<div class="lancamento-detail-wrapper">
+					<div class="card-block">
+						<section class="lancamento-detail-wrapper">
 							<div class="lancamento-detail-data-field">
 								<div class="input-group">
 									<span class="input-group-addon default-padding default-font" (click)="showDatePicker=(!showDatePicker)">
@@ -64,7 +62,7 @@
 							</div>
 
 							<div class="lancamento-detail-debito-field">
-								<span class="col-sm-4">
+								<span>
 									Débito?
 									<label class="switch switch-icon switch-danger-outline-alt">
 										<input focus-blur-directive (onFocus)='focusSwitch($event)' (onBlur)='blurSwitch($event)' type="checkbox" [ngModel]="lancamento.isDebito"
@@ -74,7 +72,7 @@
 									</label>
 								</span>
 							</div>
-						</div>
+						</section>
 					</div>
 					<div class="card-footer">
 						<button [disabled]="!lancamentoForm.form.valid || !isLancamentoValido(lancamentoForm.value)" type="submit" class="btn btn-sm btn-primary">
@@ -87,14 +85,53 @@
 					</div>
 				</div>
 			</tab>
+
 			<tab heading="Repetição">
-				TODO...
+				<div class="card">
+					<div class="card-block">
+						<section class="lancamento-detail-repeticao-wrapper">
+							<div class="l-detail-repeticao-field-wrapper">
+								<span class="label">Repetir a cada</span>
+								<input type="number" [ngModel]="lancamento?.descricao" class="small-input form-control form-control-sm default-padding default-font"
+								 id="valorPeriodo" name="valorPeriodo" placeholder="1">
+								<select [ngModel]="lancamento.conta" class="medium-select form-control form-control-sm default-padding default-font default-height"
+								 id="conta" name="conta" (ngModelChange)="contasChanged($event)">
+									<option [ngValue]="mes">
+										mês
+									</option>
+									<option [ngValue]="dia">
+										dia
+									</option>
+									<option [ngValue]="semana">
+										semana
+									</option>
+									<option [ngValue]="ano">
+										ano
+									</option>
+								</select>
+							</div>
+
+							<div class="l-detail-repeticao-field-wrapper">
+								<span class="label">Iniciar na parcela</span>
+								<input type="number" [ngModel]="lancamento?.descricao" class="small-input form-control form-control-sm default-padding default-font"
+								 id="valorPeriodo" name="valorPeriodo" placeholder="1">
+								<span class="label">de</span>
+								<input type="number" [ngModel]="lancamento?.descricao" class="small-input form-control form-control-sm default-padding default-font"
+								 id="valorPeriodo" name="valorPeriodo" placeholder="1">
+							</div>
+
+							<div class="l-detail-repeticao-field-wrapper">
+								<div>Totalizando:
+									<span class="label digits">{{1250.78 | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
 			</tab>
+
 			<tab heading="Notas">
 				<div class="card">
-					<div class="card-header">
-						<i class="fa fa-edit"></i>Notas
-					</div>
 					<div class="card-block">
 						<div class="form-group row">
 							<div class="col-sm-12">
