@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import 'rxjs/add/operator/map';
@@ -25,11 +25,11 @@ export class LancamentosDetailComponent implements OnInit {
 
 	public numberMask = createNumberMask({
 		prefix: 'R$ ',
-		thousandsSeparatorSymbol:'.',
-		decimalSymbol:',',
-		requireDecimal:true
+		thousandsSeparatorSymbol: '.',
+		decimalSymbol: ',',
+		requireDecimal: true
 		//suffix: ' $' // This will put the dollar sign at the end, with a space.
-	  });
+	});
 
 	//public mask = [/[1-9]/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
@@ -47,6 +47,11 @@ export class LancamentosDetailComponent implements OnInit {
 	//Apenas para testar o drop de contas
 	contaSelectionada = new Conta();
 
+	@ViewChild('inputDebitoSwitch')
+	inputDebitoSwitch: ElementRef;
+	@ViewChild('debitoSwitch')
+	debitoSwitch: ElementRef;
+
 	constructor(
 		private route: ActivatedRoute,
 		private router: Router,
@@ -54,6 +59,7 @@ export class LancamentosDetailComponent implements OnInit {
 		private contasService: ContasService,
 		private categoriasService: CategoriasService,
 		private filtroLancamentoService: FiltroLancamentoService,
+		private renderer: Renderer
 	) { }
 
 	ngOnInit() {
@@ -173,5 +179,14 @@ export class LancamentosDetailComponent implements OnInit {
 	contasChanged(contaChanged) {
 		//Log.log("contaChanged = ", contaChanged);
 		this.contaSelectionada = contaChanged;
+	}
+
+	focusSwitch($event) {
+		//console.log('changeSwitch event = ',$event);
+		this.renderer.setElementStyle(this.debitoSwitch.nativeElement, 'borderColor', "#8ad4ee");
+	}
+
+	blurSwitch($event) {
+		this.renderer.setElementStyle(this.debitoSwitch.nativeElement, 'borderColor', "#d1d4d7");
 	}
 }

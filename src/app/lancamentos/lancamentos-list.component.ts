@@ -1,6 +1,6 @@
 import { length } from './../../../server/config';
 import { Categoria } from './../models/categoria.model';
-import { Component, OnInit, EventEmitter, Output, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
@@ -15,7 +15,7 @@ import { CategoriasService } from '../services/categorias.service';
 	templateUrl: './lancamentos-list.component.html',
 	styleUrls: ['./lancamentos-list.component.scss']
 })
-export class LancamentosListComponent implements OnInit {
+export class LancamentosListComponent implements OnInit  {
 
 	saldoAnterior;
 	saldoAtual;
@@ -23,7 +23,7 @@ export class LancamentosListComponent implements OnInit {
 
 	lancamentos: any[];
 
-	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private ref: ChangeDetectorRef, private categoriasService: CategoriasService) { }
+	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private categoriasService: CategoriasService) { }
 
 	ngOnInit() {
 

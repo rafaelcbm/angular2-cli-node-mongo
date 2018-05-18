@@ -20,8 +20,8 @@
 									<div *ngIf="showDatePicker" style="position:absolute; top:35px; z-index:10; min-height:290px;">
 										<datepicker [(ngModel)]="dataLancamento" (selectionDone)="showDatePicker=false" [ngModelOptions]="{standalone: true}"></datepicker>
 									</div>
-									<input [ngModel]="dataLancamento | date:'dd/MM/yyyy'" class="form-control form-control-sm default-padding default-font" id="data" name="data" placeholder="Data"
-									 required [input-mask]="'00/00/0000'">
+									<input [ngModel]="dataLancamento | date:'dd/MM/yyyy'" class="form-control form-control-sm default-padding default-font" id="data"
+									 name="data" placeholder="Data" required [input-mask]="'00/00/0000'">
 								</div>
 							</div>
 
@@ -67,9 +67,10 @@
 								<span class="col-sm-4">
 									Débito?
 									<label class="switch switch-icon switch-danger-outline-alt">
-										<input type="checkbox" [ngModel]="lancamento.isDebito" id="isDebito" name="isDebito" class="switch-input">
+										<input focus-blur-directive (onFocus)='focusSwitch($event)' (onBlur)='blurSwitch($event)' type="checkbox" [ngModel]="lancamento.isDebito"
+										 id="isDebito" name="isDebito" class="switch-input">
 										<span class="switch-label" data-on="" data-off=""></span>
-										<span class="switch-handle"></span>
+										<span id="debitoSwitch" #debitoSwitch class="switch-handle"></span>
 									</label>
 								</span>
 							</div>
