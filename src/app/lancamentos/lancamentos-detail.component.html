@@ -1,6 +1,7 @@
-<!--<p>lancamento: {{lancamento|json}}</p>
-	<p>lancamentoForm: {{lancamentoForm.value|json}}</p>
+<!--
+	<p>lancamento: {{lancamento|json}}</p>
 	<p>categorias: {{categorias|json}}</p>-->
+	<p>lancamentoForm: {{lancamentoForm.value|json}}</p>
 <section class="lancamento-detail-form">
 	<form (ngSubmit)="salvarLancamento(lancamentoForm.value)" #lancamentoForm="ngForm">
 
@@ -92,37 +93,29 @@
 						<section class="lancamento-detail-repeticao-wrapper">
 							<div class="l-detail-repeticao-field-wrapper">
 								<span class="label">Repetir a cada</span>
-								<input type="number" [ngModel]="lancamento?.descricao" class="small-input form-control form-control-sm default-padding default-font"
-								 id="valorPeriodo" name="valorPeriodo" placeholder="1">
-								<select [ngModel]="lancamento.conta" class="medium-select form-control form-control-sm default-padding default-font default-height"
-								 id="conta" name="conta" (ngModelChange)="contasChanged($event)">
-									<option [ngValue]="mes">
-										mês
-									</option>
-									<option [ngValue]="dia">
-										dia
-									</option>
-									<option [ngValue]="semana">
-										semana
-									</option>
-									<option [ngValue]="ano">
-										ano
-									</option>
+								<input type="number" [ngModel]="lancamento.periodicidade?.valorPeriodo" class="small-input form-control form-control-sm default-padding default-font"
+								 id="valorPeriodo" name="valorPeriodo" placeholder="0">
+								<select [ngModel]="lancamento.periodicidade?.tipo || 'mes'" class="medium-select form-control form-control-sm default-padding default-font default-height"
+								 id="tipoPeriodo" name="tipoPeriodo">
+									<option value="dia">dia</option>
+									<option value="mes">mês</option>
+									<option value="semana">semana</option>
+									<option value="ano">ano</option>
 								</select>
 							</div>
 
 							<div class="l-detail-repeticao-field-wrapper">
 								<span class="label">Iniciar na parcela</span>
-								<input type="number" [ngModel]="lancamento?.descricao" class="small-input form-control form-control-sm default-padding default-font"
-								 id="valorPeriodo" name="valorPeriodo" placeholder="1">
+								<input type="number" [ngModel]="lancamento?.parcelaAtual" class="small-input form-control form-control-sm default-padding default-font"
+								 id="parcelaAtual" name="parcelaAtual" placeholder="0">
 								<span class="label">de</span>
-								<input type="number" [ngModel]="lancamento?.descricao" class="small-input form-control form-control-sm default-padding default-font"
-								 id="valorPeriodo" name="valorPeriodo" placeholder="1">
+								<input type="number" [ngModel]="lancamento?.qtdParcelas" class="small-input form-control form-control-sm default-padding default-font"
+								 id="qtdParcelas" name="qtdParcelas" placeholder="0">
 							</div>
 
 							<div class="l-detail-repeticao-field-wrapper">
 								<div>Totalizando:
-									<span class="label digits">{{1250.78 | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
+									<span class="label digits">{{obterValorTotalParcelas(lancamentoForm.value) | currency:'BRL':'symbol-narrow':'1.2-2'}}</span>
 								</div>
 							</div>
 						</section>

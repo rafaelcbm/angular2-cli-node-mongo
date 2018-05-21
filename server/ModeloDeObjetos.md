@@ -30,7 +30,14 @@ lancamento{
 	data:Date,
 	valor:123,45 , //Decimal
 	isDebito: true,	
-	notas: "Text of Note"
+	notas: "Text of Note",
+	periodicidade:{
+		_idLancamentoReferencia:"1234564564564" (vazio se for o primeiro)
+		valorPeriodo:20,
+		tipo:"mes" ("dia", "semana", "mes", "ano"),
+		parcelaAtual:1,
+		qtdParcelas:20
+	}
 }
 ```
 

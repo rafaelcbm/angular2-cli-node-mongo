@@ -97,6 +97,9 @@ export class LancamentosDetailComponent implements OnInit {
 		if (!this.lancamento._id) {
 			this.dataLancamento = moment().format('YYYY-MM-DD');
 			this.lancamento.isDebito = false;
+			//this.lancamento.periodicidade = {};
+			// this.lancamento.periodicidade.tipo = 'mes';
+			// this.lancamento.tipoPeriodo = 'mes';
 
 		} else {
 			//Para funcionar com o input [type=date] é necessário converter o obj Date para uma string no formato YYYY-MM-DD,
@@ -139,6 +142,7 @@ export class LancamentosDetailComponent implements OnInit {
 
 	salvarLancamento(formValue) {
 
+		console.debug('formValue = ', formValue);
 		// Clona e atribui os dados do formulario no obj que sera enviado ao server
 		let novoLancamento: Lancamento = new Lancamento();
 		Object.assign(novoLancamento, formValue);
@@ -147,7 +151,7 @@ export class LancamentosDetailComponent implements OnInit {
 		novoLancamento.data = moment(formValue.data, 'DD/MM/YYYY').toDate();
 		novoLancamento.valor = Util.parseCurrency(formValue.valor);
 
-		Log.debug('novoLancamento = ', novoLancamento);
+		console.debug('novoLancamento = ', novoLancamento);
 
 		if (this.lancamento._id) {
 			this.lancamentosService.update(this.lancamento._id, { lancamento: novoLancamento });
@@ -175,12 +179,6 @@ export class LancamentosDetailComponent implements OnInit {
 		return true;
 	}
 
-	//Apenas teste de como obter o valor do select através ngModelChange
-	contasChanged(contaChanged) {
-		//Log.log("contaChanged = ", contaChanged);
-		this.contaSelectionada = contaChanged;
-	}
-
 	focusSwitch($event) {
 		//console.log('changeSwitch event = ',$event);
 		this.renderer.setElementStyle(this.debitoSwitch.nativeElement, 'borderColor', "#8ad4ee");
@@ -188,5 +186,21 @@ export class LancamentosDetailComponent implements OnInit {
 
 	blurSwitch($event) {
 		this.renderer.setElementStyle(this.debitoSwitch.nativeElement, 'borderColor', "#d1d4d7");
+	}
+
+	obterValorTotalParcelas(formValue) {
+		if (formValue.valor) {
+			let valorLancamentoParsed = parseFloat(formValue.valor.replace(',', '.'));
+			if (formValue.qtdParcelas && formValue.parcelaAtual) {
+				return valorLancamentoParsed * (formValue.qtdParcelas - formValue.parcelaAtual + 1);
+			}
+			return valorLancamentoParsed;
+		}
+	}
+
+	//Apenas teste de como obter o valor do select através ngModelChange
+	contasChanged(contaChanged) {
+		//Log.log("contaChanged = ", contaChanged);
+		this.contaSelectionada = contaChanged;
 	}
 }
