@@ -27,6 +27,8 @@ lancamentoRouter.post("/", function (request: Request & { userName: string }, re
 	let userName = request.userName;
 	let lancamento = request.body.lancamento;
 
+	logger.info('** ROUTER insertLancamento  userName = %j | lancamento = %j', userName, lancamento);
+
 	lancamentoService.insertLancamento(userName, lancamento)
 		.then(insertedDocument => response.status(201).json({
 			"status": "sucesso",

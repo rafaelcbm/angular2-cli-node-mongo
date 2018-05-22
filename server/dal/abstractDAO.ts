@@ -28,7 +28,7 @@ export class DataAccess {
 
 	// Insert a new document in the collection.
 	public insertDocument(document: any, collectionName: string): any {
-		logger.info("** DAL - Collection: %j - Inserting Document: %j", collectionName, document);
+		//logger.info("** DAL - Collection: %j - Inserting Document: %j", collectionName, document);
 
 		return this.dbConnection.collection(collectionName).insertOne(document);
 	}
