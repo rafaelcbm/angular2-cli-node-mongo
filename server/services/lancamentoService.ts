@@ -11,6 +11,7 @@ import { BusinessError } from './../commons/businessError';
 import { UserDAO } from '../dal/userDAO';
 import { LancamentoDAO } from "../dal/lancamentoDAO";
 import { promise } from 'selenium-webdriver';
+import { reject } from 'q';
 
 @Service()
 export class LancamentoService {
@@ -32,11 +33,21 @@ export class LancamentoService {
 
 	public insertLancamento(userName: string, lancamento: any) {
 
+		if (lancamento.qtdParcelas) {
+			return this.insertLancamentoPeriodico(userName, lancamento);
+		} else {
+			return this.insertLancamentoIndividual(userName, lancamento);
+		}
+	}
+
+	public insertLancamentoIndividual(userName: string, lancamento: any) {
+
 		let competenciaAtual = parseInt(moment(lancamento.data, 'YYYY-MM-DD').format('YYYYMM'));
 		let idUsuario;
 
 		return this.userDAO.getUser(userName)
 			.then(user => {
+				logger.info('** insertLancamento  PASSO 1 | %j', lancamento.descricao);
 				assert.ok(user);
 				if (!user.contas)
 					return Promise.reject(new BusinessError(`Usuário não possui contas cadastradas! Favor crie uma conta antes cadastrar um lançamento!`));
@@ -46,6 +57,7 @@ export class LancamentoService {
 				}
 			})
 			.then(compAtual => {
+				logger.info('** insertLancamento  PASSO 2 | %j', lancamento.descricao);
 				let isCompetenciaAtualExistente = false;
 				if (compAtual) {
 					isCompetenciaAtualExistente = true;
@@ -60,6 +72,7 @@ export class LancamentoService {
 					return Promise.all([Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.obterUltimaCompetenciaAnterior(idUsuario, competenciaAtual)]);
 				}
 			}).then(([isCompetenciaAtualExistente, compAnterior]) => {
+				logger.info('** insertLancamento  PASSO 3 | %j', lancamento.descricao);
 				if (!isCompetenciaAtualExistente) {
 					let novaCompetencia: any = {
 						competencia: competenciaAtual,
@@ -74,9 +87,11 @@ export class LancamentoService {
 				return Promise.resolve();
 			})
 			.then(resultInsercaoCompetencia => {
+				logger.info('** insertLancamento  PASSO 4 | %j', lancamento.descricao);
 				return this.lancamentoDAO.obterCompetenciasPosteriores(idUsuario, competenciaAtual);
 			})
 			.then(competencias => {
+				logger.info('** insertLancamento  PASSO 5 | %j', lancamento.descricao);
 				if (competencias) {
 					let promises = competencias.map(c => {
 
@@ -91,6 +106,7 @@ export class LancamentoService {
 				return Promise.resolve();
 			})
 			.then(resultadosUpdateCompentecias => {
+				logger.info('** insertLancamento  PASSO 6 | %j', lancamento.descricao);
 				// Transforma o _id para String e Atualizao lancamento com o id do usuario
 				lancamento._idUser = idUsuario;
 				// Atualiza categoria no lancamento, somente com os dados relevantes
@@ -100,6 +116,7 @@ export class LancamentoService {
 				return this.lancamentoDAO.insertLancamento(lancamento)
 			})
 			.then(resultInsercaoLancamento => {
+				logger.info('** insertLancamento  PASSO 7 | %j', lancamento.descricao);
 				let insertedLancamento = resultInsercaoLancamento.ops[0];
 				assert.equal(resultInsercaoLancamento.result.n, 1);
 
@@ -107,6 +124,68 @@ export class LancamentoService {
 			});
 	}
 
+	public insertLancamentoPeriodico(userName: string, lancamento: any) {
+
+		let lancamentosPeriodicos = [];
+		let lancamentoBase: any = {
+			conta: lancamento.conta,
+			categoria: lancamento.categoria,
+			data: lancamento.data,
+			descricao: lancamento.descricao.concat(` (${lancamento.parcelaAtual} - ${lancamento.qtdParcelas})`),
+			valor: lancamento.valor,
+			isDebito: lancamento.isDebito,
+			periodicidade: {
+				parcelaInicial: lancamento.parcelaAtual,
+				parcelaAtual: lancamento.parcelaAtual,
+				qtdParcelas: lancamento.qtdParcelas,
+				tipoPeriodo: lancamento.tipoPeriodo,
+				valorPeriodo: lancamento.valorPeriodo
+			}
+		}
+
+		lancamentosPeriodicos.push(lancamentoBase);
+
+		for (let parcelaAtual = lancamento.parcelaAtual + 1, index = 1; parcelaAtual <= lancamento.qtdParcelas; parcelaAtual++ , index++) {
+
+			let novoLancamento: any = {
+				conta: lancamentoBase.conta,
+				categoria: lancamentoBase.categoria,
+				data: moment(lancamentoBase.data, 'YYYY-MM-DD').add(index * lancamentoBase.periodicidade.valorPeriodo, 'months'),
+				descricao: lancamento.descricao.concat(` (${parcelaAtual} - ${lancamentoBase.periodicidade.qtdParcelas})`),
+				valor: lancamentoBase.valor,
+				isDebito: lancamentoBase.isDebito,
+				periodicidade: {
+					parcelaInicial: lancamentoBase.periodicidade.parcelaAtual,
+					parcelaAtual: new Number(parcelaAtual),
+					qtdParcelas: lancamentoBase.periodicidade.qtdParcelas,
+					tipoPeriodo: lancamentoBase.periodicidade.tipoPeriodo,
+					valorPeriodo: lancamentoBase.periodicidade.valorPeriodo
+				}
+			}
+			lancamentosPeriodicos.push(novoLancamento);
+		}
+
+		let arrSequencePromises = [];
+		lancamentosPeriodicos.forEach(lancamentoPeriodico => arrSequencePromises.push(this.bindInsertLancamentoIndividual(userName, lancamentoPeriodico)));
+
+		return arrSequencePromises.reduce((chain, task) => chain.then(task), Promise.resolve())
+			.then(chainResult => {
+				logger.info('** CHAIN RESULT  = %j ', chainResult); // ultimo lancamento inserido
+				return lancamentoBase;
+			});
+	}
+
+	obterDataLancamentoPeriodico(){
+
+	}
+
+	bindInsertLancamentoIndividual(userName, lancamento) {
+		return function () {
+			return Promise.resolve(this.insertLancamentoIndividual(userName, lancamento));
+			//OU
+			//return new Promise((resolve) => { resolve(this.insertLancamentoIndividual(userName, lancamento)); });
+		}.bind(this); // bind ou usar arrow function ()=>{}
+	}
 
 	public removeLancamento(userName: string, idLancamento: any) {
 

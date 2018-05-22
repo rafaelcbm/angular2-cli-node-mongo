@@ -93,7 +93,7 @@
 						<section class="lancamento-detail-repeticao-wrapper">
 							<div class="l-detail-repeticao-field-wrapper">
 								<span class="label">Repetir a cada</span>
-								<input type="number" [ngModel]="lancamento.periodicidade?.valorPeriodo" class="small-input form-control form-control-sm default-padding default-font"
+								<input type="number" min="0" max="999" [ngModel]="lancamento.periodicidade?.valorPeriodo" class="small-input form-control form-control-sm default-padding default-font"
 								 id="valorPeriodo" name="valorPeriodo" placeholder="0">
 								<select [ngModel]="lancamento.periodicidade?.tipo || 'mes'" class="medium-select form-control form-control-sm default-padding default-font default-height"
 								 id="tipoPeriodo" name="tipoPeriodo">
@@ -106,10 +106,10 @@
 
 							<div class="l-detail-repeticao-field-wrapper">
 								<span class="label">Iniciar na parcela</span>
-								<input type="number" [ngModel]="lancamento?.parcelaAtual" class="small-input form-control form-control-sm default-padding default-font"
+								<input type="number" min="0" max="999" [ngModel]="lancamento?.parcelaAtual" class="small-input form-control form-control-sm default-padding default-font"
 								 id="parcelaAtual" name="parcelaAtual" placeholder="0">
 								<span class="label">de</span>
-								<input type="number" [ngModel]="lancamento?.qtdParcelas" class="small-input form-control form-control-sm default-padding default-font"
+								<input type="number" min="0" max="999" [ngModel]="lancamento?.qtdParcelas" class="small-input form-control form-control-sm default-padding default-font"
 								 id="qtdParcelas" name="qtdParcelas" placeholder="0">
 							</div>
 
