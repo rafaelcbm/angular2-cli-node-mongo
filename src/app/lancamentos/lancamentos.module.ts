@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TreeModule } from 'angular-tree-component';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
 import { SharedDirectivesModule } from './../directives/shared-directives.module';
 import { SharedPipesModule } from './../pipes/shared-pipes.module';
@@ -38,8 +39,9 @@ import { ContasTreeComponent } from "../contas/contas-tree.component";
 		SharedPipesModule,
 		SharedDirectivesModule,
         TabsModule.forRoot(),
-        DatepickerModule.forRoot(),
-		TreeModule
+		DatepickerModule.forRoot(),
+		TreeModule,
+		SweetAlert2Module
     ],
     providers: [
         LancamentosService,

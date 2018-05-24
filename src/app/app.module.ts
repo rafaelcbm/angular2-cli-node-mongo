@@ -5,6 +5,7 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -26,6 +27,7 @@ registerLocaleData(localePt);
 		BrowserAnimationsModule,
 		AuthenticationModule,
 		SimpleNotificationsModule.forRoot(),
+		SweetAlert2Module.forRoot(),
 		CommonPagesModule,
 		//O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
 		AppRoutingModule

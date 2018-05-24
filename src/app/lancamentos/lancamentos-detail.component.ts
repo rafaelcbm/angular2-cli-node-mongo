@@ -22,6 +22,22 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 	styleUrls: ['./lancamentos-detail.component.scss']
 })
 export class LancamentosDetailComponent implements OnInit {
+	public opts = {
+		title: 'Remover Lançamento Parcelado?',
+		type:'question',
+		backdrop: true,
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Confirmar',
+		cancelButtonText:'Cancelar',
+		allowOutsideClick:false,
+		input:'radio',
+		inputOptions:{
+			'este': 'Somente este',
+			'todos': 'Todos a partir deste'
+		  },
+		showCloseButton:true };
 
 	public numberMask = createNumberMask({
 		prefix: 'R$ ',
