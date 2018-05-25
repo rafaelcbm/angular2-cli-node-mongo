@@ -47,6 +47,16 @@ lancamentoRouter.delete("/:idLancamento", function (request: Request & { userNam
 		.catch((e: Error) => handleError(e, response));
 });
 
+lancamentoRouter.delete("/parcelados/:idLancamento", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+
+	let userName = request.userName;
+	let idLancamento = request.params.idLancamento;
+
+	lancamentoService.removeLancamentoParcelado(userName, idLancamento)
+		.then(() => response.json({ "status": "sucesso" }))
+		.catch((e: Error) => handleError(e, response));
+});
+
 lancamentoRouter.put("/:idLancamento", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
 	let userName = request.userName;

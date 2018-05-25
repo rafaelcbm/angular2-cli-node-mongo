@@ -152,10 +152,10 @@ export class LancamentosService extends DataService<Lancamento> {
 		});
 	}
 
-	removeLancamentoPeriodico(modelId) {
+	removerLancamentoParcelado(modelId) {
 
 		this._apiHttp
-			.delete(`${this.apiBaseUrl}/${modelId}`)
+			.delete(`${this.apiBaseUrl}/parcelados/${modelId}/`)
 			.subscribe(
 			jsonData => {
 				if (jsonData.status === "sucesso") {

@@ -219,7 +219,8 @@ export class LancamentosDetailComponent implements OnInit {
 		if ($event == 'um') {
 			this.removerLancamento();
 		} else if ($event == 'todos') {
-			this.lancamentosService.remove(this.lancamento._id);
+			this.lancamentosService.removerLancamentoParcelado(this.lancamento._id);
 		}
+		this.voltar();
 	}
 }

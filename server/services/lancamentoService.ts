@@ -8,7 +8,7 @@ import * as assert from "assert";
 import * as moment from 'moment';
 
 import { BusinessError } from './../commons/businessError';
-import { UserDAO,LancamentoDAO } from '../dal/DAOs';
+import { UserDAO, LancamentoDAO } from '../dal/DAOs';
 
 @Service()
 export class LancamentoService {
@@ -172,8 +172,8 @@ export class LancamentoService {
 			});
 	}
 
-	obterDataLancamentoPeriodico(){
-
+	obterDataLancamentoPeriodico() {
+		//TODO: Implementar o parcelamento para dias, semanas e anos
 	}
 
 	bindInsertLancamentoIndividual(userName, lancamento) {
@@ -183,6 +183,17 @@ export class LancamentoService {
 			//return new Promise((resolve) => { resolve(this.insertLancamentoIndividual(userName, lancamento)); });
 		}.bind(this); // bind ou usar arrow function ()=>{}
 	}
+
+	public removeLancamentoParcelado(userName: string, idLancamento: any) {
+
+		let lancamentoObtido;
+		let competenciaAtual;
+		let idUsuario;
+
+		//TODO: Implementar através da busca do 'idParcelamento' que deve ser criado ligando os lançamentos parcelados...
+		//... VER https://www.npmjs.com/package/uuid
+	}
+
 
 	public removeLancamento(userName: string, idLancamento: any) {
 
