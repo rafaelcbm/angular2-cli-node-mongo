@@ -5,8 +5,7 @@ import { Container } from 'typedi';
 import * as assert from "assert";
 
 import { BusinessError } from './../commons/businessError';
-import { UserDAO } from '../dal/userDAO';
-
+import { UserDAO } from '../dal/DAOs';
 
 @Service()
 export class UserService {

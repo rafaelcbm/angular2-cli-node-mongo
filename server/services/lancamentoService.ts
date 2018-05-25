@@ -8,10 +8,7 @@ import * as assert from "assert";
 import * as moment from 'moment';
 
 import { BusinessError } from './../commons/businessError';
-import { UserDAO } from '../dal/userDAO';
-import { LancamentoDAO } from "../dal/lancamentoDAO";
-import { promise } from 'selenium-webdriver';
-import { reject } from 'q';
+import { UserDAO,LancamentoDAO } from '../dal/DAOs';
 
 @Service()
 export class LancamentoService {
