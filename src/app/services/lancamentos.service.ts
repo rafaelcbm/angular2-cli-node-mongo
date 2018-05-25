@@ -152,4 +152,28 @@ export class LancamentosService extends DataService<Lancamento> {
 		});
 	}
 
+	removeLancamentoPeriodico(modelId) {
+
+		this._apiHttp
+			.delete(`${this.apiBaseUrl}/${modelId}`)
+			.subscribe(
+			jsonData => {
+				if (jsonData.status === "sucesso") {
+					this._dataStore.dataList.forEach((dataItem, i) => {
+						if (dataItem._id === modelId) {
+							this._dataStore.dataList.splice(i, 1);
+						}
+					});
+					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+
+					this._notificationsService.success('Sucesso', this.successDeleteMessage);
+				} else if (jsonData.status === "erro") {
+					this._notificationsService.error('Erro', jsonData.message);
+				}
+			},
+			error => {
+				Log.error(error);
+			});
+	}
+
 }

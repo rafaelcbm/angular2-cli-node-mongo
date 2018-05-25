@@ -1,7 +1,8 @@
 <!--
 	<p>lancamento: {{lancamento|json}}</p>
-	<p>categorias: {{categorias|json}}</p>-->
-<p>lancamentoForm: {{lancamentoForm.value|json}}</p>
+	<p>categorias: {{categorias|json}}</p>
+	<p>lancamentoForm: {{lancamentoForm.value|json}}</p>
+-->
 <section class="lancamento-detail-form">
 	<form (ngSubmit)="salvarLancamento(lancamentoForm.value)" #lancamentoForm="ngForm">
 
@@ -78,9 +79,15 @@
 					<div class="card-footer">
 						<button [disabled]="!lancamentoForm.form.valid || !isLancamentoValido(lancamentoForm.value)" type="submit" class="btn btn-sm btn-primary">
 							<i class="fa fa-dot-circle-o"></i> Salvar</button>
-						<button [hidden]="!lancamento._id" (click)="removerLancamento()" type="button" class="btn btn-sm btn-danger">
+						<button *ngIf="!lancamento.periodicidade || lancamento.periodicidade.parcelaAtual>=lancamento.periodicidade.qtdParcelas"
+						 [hidden]="!lancamento._id" (click)="removerLancamento()" type="button" class="btn btn-sm btn-danger">
 							<i class="fa fa-close"></i> Remover
 						</button>
+						<button [swal]="deleteSwal" *ngIf="lancamento.periodicidade && lancamento.periodicidade.parcelaAtual<lancamento.periodicidade.qtdParcelas"
+						 [hidden]="!lancamento._id" type="button" class="btn btn-sm btn-danger">
+							<i class="fa fa-close"></i> Remover
+						</button>
+						<swal #deleteSwal [options]="obterSwalOptions()" (confirm)="confirmarRemocao($event)"></swal>
 						<button (click)="voltar()" type="button" class="btn btn-sm btn-warning">
 							<i class="fa fa-ban"></i> Voltar</button>
 						<!-- <button [swal]="{
@@ -102,16 +109,13 @@
 						showCloseButton:true }">
 							Do it!
 						</button>  -->
-						<button [swal]="deleteSwal">Delete</button>
+						<!-- <button [swal]="deleteSwal">Delete</button> -->
 						<!-- text="Esse lançamento é parcelado. Deseja remover somente este lançamento ou todos a partir desse?" -->
 						<!-- <swal #deleteSwal title="Remover Lançamento Parcelado?"
 						 type="question" backdrop="true" showCancelButton="true" confirmButtonColor="#3085d6" cancelButtonColor="#d33" confirmButtonText="Todos"
 						 cancelButtonText="Somente este" allowOutsideClick="false" showCloseButton="true" input="radio" inputOptions="{'SRB': 'Serbia','UKR': 'Ukraine','HRV': 'Croatia'}"></swal> -->
-
-						 <swal #deleteSwal [options]="opts"></swal>
 						<!-- [showCancelButton]="true"
 						 [focusCancel]="true" (confirm)="deleteFile(file)"> -->
-
 					</div>
 				</div>
 			</tab>
@@ -135,10 +139,10 @@
 
 							<div class="l-detail-repeticao-field-wrapper">
 								<span class="label">Iniciar na parcela</span>
-								<input type="number" min="0" max="999" [ngModel]="lancamento?.parcelaAtual" class="small-input form-control form-control-sm default-padding default-font"
+								<input type="number" min="0" max="999" [ngModel]="lancamento.periodicidade?.parcelaAtual" class="small-input form-control form-control-sm default-padding default-font"
 								 id="parcelaAtual" name="parcelaAtual" placeholder="0">
 								<span class="label">de</span>
-								<input type="number" min="0" max="999" [ngModel]="lancamento?.qtdParcelas" class="small-input form-control form-control-sm default-padding default-font"
+								<input type="number" min="0" max="999" [ngModel]="lancamento.periodicidade?.qtdParcelas" class="small-input form-control form-control-sm default-padding default-font"
 								 id="qtdParcelas" name="qtdParcelas" placeholder="0">
 							</div>
 

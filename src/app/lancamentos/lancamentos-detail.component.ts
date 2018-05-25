@@ -5,7 +5,6 @@ import 'rxjs/add/operator/map';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { NotificationsService } from "angular2-notifications";
-import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 
 import { Log } from './../util/log';
 import { Util } from './../util/util';
@@ -22,32 +21,6 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 	styleUrls: ['./lancamentos-detail.component.scss']
 })
 export class LancamentosDetailComponent implements OnInit {
-	public opts = {
-		title: 'Remover Lançamento Parcelado?',
-		type:'question',
-		backdrop: true,
-		showCancelButton: true,
-		confirmButtonColor: '#3085d6',
-		cancelButtonColor: '#d33',
-		confirmButtonText: 'Confirmar',
-		cancelButtonText:'Cancelar',
-		allowOutsideClick:false,
-		input:'radio',
-		inputOptions:{
-			'este': 'Somente este',
-			'todos': 'Todos a partir deste'
-		  },
-		showCloseButton:true };
-
-	public numberMask = createNumberMask({
-		prefix: 'R$ ',
-		thousandsSeparatorSymbol: '.',
-		decimalSymbol: ',',
-		requireDecimal: true
-		//suffix: ' $' // This will put the dollar sign at the end, with a space.
-	});
-
-	//public mask = [/[1-9]/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
 	@Input()
 	lancamento: any;
@@ -218,5 +191,35 @@ export class LancamentosDetailComponent implements OnInit {
 	contasChanged(contaChanged) {
 		//Log.log("contaChanged = ", contaChanged);
 		this.contaSelectionada = contaChanged;
+	}
+
+	public obterSwalOptions() {
+		return {
+			title: 'Remover?',
+			text: 'Esse lançamento possui parcelas futuras. Deseja remover?',
+			type: 'question',
+			backdrop: true,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Confirmar',
+			cancelButtonText: 'Cancelar',
+			allowOutsideClick: false,
+			input: 'radio',
+			inputOptions: {
+				'um': 'Somente este',
+				'todos': 'Todos a partir deste'
+			},
+			showCloseButton: true
+		};
+	}
+
+	public confirmarRemocao($event) {
+		console.log('confirmarRemocao = ', $event);
+		if ($event == 'um') {
+			this.removerLancamento();
+		} else if ($event == 'todos') {
+			this.lancamentosService.remove(this.lancamento._id);
+		}
 	}
 }
