@@ -55,11 +55,16 @@ export class LancamentoService {
 			})
 			.then(compAtual => {
 				logger.info('** insertLancamento  PASSO 2 | %j', lancamento.descricao);
+				logger.info('** compAtual | %j', compAtual);
 				let isCompetenciaAtualExistente = false;
 				if (compAtual) {
 					isCompetenciaAtualExistente = true;
 
+					logger.info('** compAtual ANTES| %j', compAtual);
+
 					this.corrigirSaldo(compAtual, lancamento, null, false);
+
+					logger.info('** compAtual DEPOIS| %j', compAtual);
 
 					let query: any = { $and: [{ _idUser: idUsuario }, { competencia: compAtual.competencia }] };
 					return Promise.all([Promise.resolve(isCompetenciaAtualExistente), this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } })]);
@@ -70,6 +75,7 @@ export class LancamentoService {
 				}
 			}).then(([isCompetenciaAtualExistente, compAnterior]) => {
 				logger.info('** insertLancamento  PASSO 3 | %j', lancamento.descricao);
+				logger.info('** isCompetenciaAtualExistente %j | compAnterior %j', isCompetenciaAtualExistente, compAnterior);
 				if (!isCompetenciaAtualExistente) {
 					let novaCompetencia: any = {
 						competencia: competenciaAtual,
@@ -79,22 +85,27 @@ export class LancamentoService {
 					if (compAnterior) {
 						novaCompetencia.saldo = compAnterior.saldo + lancamento.valor
 					}
+					logger.info('** novaCompetencia %j', novaCompetencia);
 					return this.lancamentoDAO.insertCompetencia(novaCompetencia);
 				}
 				return Promise.resolve();
 			})
 			.then(resultInsercaoCompetencia => {
 				logger.info('** insertLancamento  PASSO 4 | %j', lancamento.descricao);
+				if (resultInsercaoCompetencia)
+					logger.info('** resultInsercaoCompetencia.result.n %j', resultInsercaoCompetencia.result.n);
 				return this.lancamentoDAO.obterCompetenciasPosteriores(idUsuario, competenciaAtual);
 			})
 			.then(competencias => {
 				logger.info('** insertLancamento  PASSO 5 | %j', lancamento.descricao);
+				logger.info('** Competencias Posteriores %j', competencias);
 				if (competencias) {
 					let promises = competencias.map(c => {
 
 						this.corrigirSaldo(c, lancamento, null, false);
 
 						let query: any = { $and: [{ _idUser: idUsuario }, { competencia: c.competencia }] };
+						logger.info('** updateCompetencia competencia: %j | saldo: %j', c.competencia, c.saldo);
 						return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
 					});
 
@@ -104,6 +115,7 @@ export class LancamentoService {
 			})
 			.then(resultadosUpdateCompentecias => {
 				logger.info('** insertLancamento  PASSO 6 | %j', lancamento.descricao);
+				logger.info('** resultadosUpdateCompentecias %j', resultadosUpdateCompentecias);
 				// Transforma o _id para String e Atualizao lancamento com o id do usuario
 				lancamento._idUser = idUsuario;
 				// Atualiza categoria no lancamento, somente com os dados relevantes
@@ -123,6 +135,8 @@ export class LancamentoService {
 
 	public insertLancamentoPeriodico(userName: string, lancamento: any) {
 
+		let idParcelamento = randomBytes(16).toString('base64');
+
 		let lancamentosPeriodicos = [];
 		let lancamentoBase: any = {
 			conta: lancamento.conta,
@@ -132,6 +146,7 @@ export class LancamentoService {
 			valor: lancamento.valor,
 			isDebito: lancamento.isDebito,
 			periodicidade: {
+				idParcelamento: idParcelamento,
 				parcelaInicial: lancamento.parcelaAtual,
 				parcelaAtual: lancamento.parcelaAtual,
 				qtdParcelas: lancamento.qtdParcelas,
@@ -147,13 +162,14 @@ export class LancamentoService {
 			let novoLancamento: any = {
 				conta: lancamentoBase.conta,
 				categoria: lancamentoBase.categoria,
-				data: moment(lancamentoBase.data, 'YYYY-MM-DD').add(index * lancamentoBase.periodicidade.valorPeriodo, 'months'),
+				data: this.obterDataLancamentoPeriodico(lancamentoBase, index),
 				descricao: lancamento.descricao.concat(` (${parcelaAtual} - ${lancamentoBase.periodicidade.qtdParcelas})`),
 				valor: lancamentoBase.valor,
 				isDebito: lancamentoBase.isDebito,
 				periodicidade: {
+					idParcelamento: idParcelamento,
 					parcelaInicial: lancamentoBase.periodicidade.parcelaAtual,
-					parcelaAtual: new Number(parcelaAtual),
+					parcelaAtual: parcelaAtual,
 					qtdParcelas: lancamentoBase.periodicidade.qtdParcelas,
 					tipoPeriodo: lancamentoBase.periodicidade.tipoPeriodo,
 					valorPeriodo: lancamentoBase.periodicidade.valorPeriodo
@@ -172,8 +188,25 @@ export class LancamentoService {
 			});
 	}
 
-	obterDataLancamentoPeriodico() {
-		//TODO: Implementar o parcelamento para dias, semanas e anos
+	obterDataLancamentoPeriodico(lancamento, incremento) {
+		let periodo;
+
+		switch (lancamento.periodicidade.tipoPeriodo) {
+			case "mes":
+				periodo = 'months'
+				break;
+			case "dia":
+				periodo = 'days'
+				break;
+			case "semana":
+				periodo = 'weeks'
+				break;
+			case "ano":
+				periodo = 'years'
+				break;
+		}
+
+		return moment(lancamento.data, 'YYYY-MM-DD').add(incremento * lancamento.periodicidade.valorPeriodo, periodo);
 	}
 
 	bindInsertLancamentoIndividual(userName, lancamento) {
@@ -189,9 +222,12 @@ export class LancamentoService {
 		let lancamentoObtido;
 		let competenciaAtual;
 		let idUsuario;
+		return null;
 
 		//TODO: Implementar através da busca do 'idParcelamento' que deve ser criado ligando os lançamentos parcelados...
 		//... VER https://www.npmjs.com/package/uuid
+		//OU
+		//crypto.randomBytes(16).toString('base64') //=> '9uzHqCOWI9Kq2Jdw'
 	}
 
 

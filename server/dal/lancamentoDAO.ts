@@ -37,13 +37,10 @@ export class LancamentoDAO {
 
 		let dataInicio = moment(competencia, "YYYYMM").toDate();
 		let dataFim = moment(competencia, "YYYYMM").add(1, 'months').toDate();
-		console.log('** dataInicio = ', dataInicio);
-		console.log('** dataFim = ', dataFim);
-		console.log('** idUser = ', idUser);
 
-		return this._dataAccess.getDocuments(this.LANCAMENTO_COLLECTION,
-			{ $and: [{ _idUser: idUser }, { data: { $gte: dataInicio } }, { data: { $lt: dataFim } }] });
-
+		let query = { $and: [{ _idUser: idUser }, { data: { $gte: dataInicio } }, { data: { $lt: dataFim } }] };
+		let sort = { data: 1 }
+		return this._dataAccess.getDocuments(this.LANCAMENTO_COLLECTION, query, sort);
 	}
 
 	public insertLancamento(lancamento: any): any {
