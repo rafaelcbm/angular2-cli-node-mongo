@@ -217,19 +217,32 @@ export class LancamentoService {
 		}.bind(this); // bind ou usar arrow function ()=>{}
 	}
 
-	public removeLancamentoParcelado(userName: string, idLancamento: any) {
+	public removeLancamentosParcelados(userName: string, idLancamento: any) {
 
-		let lancamentoObtido;
-		let competenciaAtual;
-		let idUsuario;
-		return null;
+		return this.lancamentoDAO.getLancamentoById(idLancamento)
+			.then(lancamento => {
+				if (!lancamento)
+					return Promise.reject(new BusinessError('Lancamento não encontrado!'))
+				else {
+					return this.lancamentoDAO.obterLancamentosParceladosFuturos(lancamento);
+				}
+			})
+			.then(lancamentosParcelados => {
+				lancamentosParcelados.forEach(l => logger.info("** Remover Lancamentos Parcelados - Lancamentos a ser removido = %j", l.descricao));
 
-		//TODO: Implementar através da busca do 'idParcelamento' que deve ser criado ligando os lançamentos parcelados...
-		//... VER https://www.npmjs.com/package/uuid
-		//OU
-		//crypto.randomBytes(16).toString('base64') //=> '9uzHqCOWI9Kq2Jdw'
+				let arrSerialPromises = [];
+				lancamentosParcelados.forEach(lancamentosParcelado => arrSerialPromises.push(this.bindRemoveLancamentoIndividual(userName, lancamentosParcelado._id.toHexString())));
+
+				return arrSerialPromises.reduce((chain, task) => chain.then(task), Promise.resolve())
+					.then(chainResult => logger.info('** REMOCAO CHAIN RESULT  = %j ', chainResult));
+			});
 	}
 
+	bindRemoveLancamentoIndividual(userName, idLancamento) {
+		return function () {
+			return Promise.resolve(this.removeLancamento(userName, idLancamento));
+		}.bind(this); // bind ou usar arrow function ()=>{}
+	}
 
 	public removeLancamento(userName: string, idLancamento: any) {
 
@@ -239,7 +252,7 @@ export class LancamentoService {
 
 		return this.lancamentoDAO.getLancamentoById(idLancamento)
 			.then(lancamento => {
-				logger.info("** Remover Lancamentos - lancamento = %j", lancamento);
+				logger.info('** removeLancamento  PASSO 1 | %j', lancamento.descricao);
 				if (!lancamento)
 					return Promise.reject(new BusinessError('Lancamento não encontrado!'))
 				else {
@@ -249,6 +262,7 @@ export class LancamentoService {
 				}
 			})
 			.then(user => {
+				logger.info('** removeLancamento  PASSO 2 | %j', lancamentoObtido.descricao);
 				assert.ok(user);
 				idUsuario = user._id.toHexString()
 				if (idUsuario != lancamentoObtido._idUser)
@@ -258,6 +272,7 @@ export class LancamentoService {
 
 			})
 			.then(compAtual => {
+				logger.info('** removeLancamento  PASSO 3 | %j', lancamentoObtido.descricao);
 
 				this.corrigirSaldo(compAtual, lancamentoObtido, null, true);
 
@@ -265,10 +280,12 @@ export class LancamentoService {
 				return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: compAtual.saldo } });
 			})
 			.then(resultadoUpdateCompentecia => {
+				logger.info('** removeLancamento  PASSO 4 | %j', lancamentoObtido.descricao);
 				assert.equal(resultadoUpdateCompentecia.result.n, 1)
 				return this.lancamentoDAO.obterCompetenciasPosteriores(idUsuario, competenciaAtual);
 			})
 			.then(competencias => {
+				logger.info('** removeLancamento  PASSO 5 | %j', lancamentoObtido.descricao);
 				if (competencias) {
 					let promises = competencias.map(c => {
 
@@ -283,9 +300,13 @@ export class LancamentoService {
 				return Promise.resolve();
 			})
 			.then(resultadosUpdateCompentecias => {
+				logger.info('** removeLancamento  PASSO 6 | %j', lancamentoObtido.descricao);
 				return this.lancamentoDAO.removeLancamentoById(idLancamento);
 			})
-			.then(resultRemocaoLancamento => assert.equal(resultRemocaoLancamento.result.n, 1));
+			.then(resultRemocaoLancamento => {
+				logger.info('** removeLancamento  PASSO 7 | %j', lancamentoObtido.descricao);
+				assert.equal(resultRemocaoLancamento.result.n, 1)
+			});
 	}
 
 	public updateLancamento(userName: string, idLancamento: any, lancamento: any) {

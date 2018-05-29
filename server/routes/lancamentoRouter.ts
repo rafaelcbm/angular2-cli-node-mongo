@@ -52,7 +52,7 @@ lancamentoRouter.delete("/parcelados/:idLancamento", function (request: Request 
 	let userName = request.userName;
 	let idLancamento = request.params.idLancamento;
 
-	lancamentoService.removeLancamentoParcelado(userName, idLancamento)
+	lancamentoService.removeLancamentosParcelados(userName, idLancamento)
 		.then(() => response.json({ "status": "sucesso" }))
 		.catch((e: Error) => handleError(e, response));
 });

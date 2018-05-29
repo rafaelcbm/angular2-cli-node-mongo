@@ -215,11 +215,10 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	public confirmarRemocao($event) {
-		console.log('confirmarRemocao = ', $event);
 		if ($event == 'um') {
 			this.removerLancamento();
 		} else if ($event == 'todos') {
-			this.lancamentosService.removerLancamentoParcelado(this.lancamento._id);
+			this.lancamentosService.removerLancamentoParcelado(this.lancamento);
 		}
 		this.voltar();
 	}
