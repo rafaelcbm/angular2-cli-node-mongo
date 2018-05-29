@@ -54,31 +54,26 @@ export class LancamentoDAO {
 		return this._dataAccess.removeDocumentById(this.LANCAMENTO_COLLECTION, idLancamento);
 	}
 
-	public updateLancamento2(idLancamento: any, lancamento: any): any {
-
-		if (this._dataAccess.dbConnection) {
-
-			let query = { _id: new ObjectID(idLancamento) }
-
-			//Parse data to Date
-			lancamento.data = moment(lancamento.data, 'YYYY-MM-DD').toDate();
-			let updateData = {
-				descricao: lancamento.descricao,
-				data: lancamento.data,
-				conta: lancamento.conta,
-				valor: lancamento.valor,
-				isDebito: lancamento.isDebito,
-			}
-
-			return this._dataAccess.dbConnection.collection(this.LANCAMENTO_COLLECTION).update(query, { $set: updateData }, { w: 1 });
-		}
-	}
-
 	public updateLancamento(query: any, updateObj: any, options: any = { multi: true }): any {
 
 		return this._dataAccess.dbConnection.collection(this.LANCAMENTO_COLLECTION).update(query, updateObj, options);
 	}
 
+	public obterLancamentosParceladosFuturos(lancamento): any {
+
+		logger.info("** QUERY obterLancamentosParceladosFuturos");
+		logger.info("** _idUser = %j | idParcelamento = %j | parcelaAtual = %j |",lancamento._idUser, lancamento.periodicidade.idParcelamento, lancamento.periodicidade.parcelaAtual);
+
+		let query = {
+			_idUser: lancamento._idUser,
+			"periodicidade.idParcelamento": lancamento.periodicidade.idParcelamento,
+			"periodicidade.parcelaAtual": {
+				$gte: lancamento.periodicidade.parcelaAtual
+			}
+		};
+		let sort = { data: 1 }
+		return this._dataAccess.getDocuments(this.LANCAMENTO_COLLECTION, query, sort);
+	}
 
 	public getCompetencia(idUser: string, competencia): any {
 
