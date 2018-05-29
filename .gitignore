@@ -4,7 +4,6 @@ typings
 dist
 server/**/*.js
 server/**/*.js.map
-src/**/*.js
 src/**/*.js.map
 /npm-debug.log.*
 
