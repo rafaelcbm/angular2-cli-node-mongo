@@ -10,11 +10,11 @@ export class MongoDB {
 	public static getConnection(): Db {
 		try {
 			if (MongoDB.dbConnection) {
-				logger.info('## Conexão existente retornada');
+				//logger.info('## Conexão existente retornada');
 				return MongoDB.dbConnection;
 			} else {
 				MongoDB.connect().then(conn => {
-					logger.error('## Obtendo nova conexão', MongoDB.dbConnection);
+					//logger.error('## Obtendo nova conexão', MongoDB.dbConnection);
 
 					MongoDB.dbConnection = conn
 					return MongoDB.dbConnection;
