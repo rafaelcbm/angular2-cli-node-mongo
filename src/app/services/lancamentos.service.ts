@@ -185,4 +185,37 @@ export class LancamentosService extends DataService<Lancamento> {
 				});
 	}
 
+	updateLancamentoParcelado(modelId, payLoad) {
+
+		this._apiHttp
+			.put(`${this.apiBaseUrl}/parcelados/${modelId}/`, payLoad)
+			.subscribe(
+				jsonData => {
+					if (jsonData.status === "sucesso") {
+
+						// Busca novamente os lançamentos da competência e atualiza a lista de lançamentos
+						let dataLancamento = payLoad.lancamento.data;
+						let competenciaLancamento = moment(dataLancamento).format('YYYYMM');
+
+						this.getByCompetencia(competenciaLancamento);
+
+						this._notificationsService.success('Sucesso', this.successDeleteMessage);
+
+						this.filtroLancamentoService.novaCompetencia(competenciaLancamento);
+
+						// this._dataStore.dataList.forEach((dataItem, i) => {
+						// 	if (dataItem._id === modelId) {
+						// 		this._dataStore.dataList.splice(i, 1);
+						// 	}
+						// });
+						// this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
+					} else if (jsonData.status === "erro") {
+						this._notificationsService.error('Erro', jsonData.message);
+					}
+				},
+				error => {
+					Log.error(error);
+				});
+	}
+
 }

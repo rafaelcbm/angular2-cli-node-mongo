@@ -87,9 +87,10 @@
 						 [hidden]="!lancamento._id" type="button" class="btn btn-sm btn-danger">
 							<i class="fa fa-close"></i> Remover
 						</button>
-						<swal #deleteSwal [options]="obterSwalOptions()" (confirm)="confirmarRemocao($event)"></swal>
-						<button (click)="voltar()" type="button" class="btn btn-sm btn-warning">
+						<button (click)="voltar()" type="buttonn" class="btn btn-sm btn-warning">
 							<i class="fa fa-ban"></i> Voltar</button>
+						<swal #deleteSwal [options]="obterDeleteSwalOptions()" (confirm)="confirmarRemocao($event)"></swal>
+						<swal #updateSwal [options]="obterUpdateSwalOptions()" (confirm)="confirmarAtualizacao($event)"></swal>
 						<!-- <button [swal]="{
 						title: 'Remover Lançamento Parcelado?',
 						type:'question',

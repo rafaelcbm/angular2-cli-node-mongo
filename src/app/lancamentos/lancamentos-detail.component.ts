@@ -22,6 +22,14 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 })
 export class LancamentosDetailComponent implements OnInit {
 
+	@ViewChild("lancamentoForm") lancamentoForm;
+	@ViewChild('updateSwal') public updateSwal;
+
+	public obterSWAL() {
+		console.log('this.updateSwal = ', this.updateSwal);
+		return this.updateSwal;
+	}
+
 	@Input()
 	lancamento: any;
 	@Output()
@@ -132,8 +140,8 @@ export class LancamentosDetailComponent implements OnInit {
 	salvarLancamento(formValue) {
 
 		console.debug('formValue = ', formValue);
-		// Clona e atribui os dados do formulario no obj que sera enviado ao server
-		let novoLancamento: Lancamento = new Lancamento();
+		//Clona e atribui os dados do formulario no obj que sera enviado ao server
+		let novoLancamento: any = new Lancamento();
 		Object.assign(novoLancamento, formValue);
 
 		// Parse form values
@@ -143,8 +151,16 @@ export class LancamentosDetailComponent implements OnInit {
 		console.debug('novoLancamento = ', novoLancamento);
 
 		if (this.lancamento._id) {
-			this.lancamentosService.update(this.lancamento._id, { lancamento: novoLancamento });
-			this.voltar();
+			if (this.lancamento.periodicidade && this.lancamento.periodicidade.parcelaAtual < this.lancamento.periodicidade.qtdParcelas) {
+				this.updateSwal.show();
+			} else {
+				if (novoLancamento.parcelaAtual) {
+					this.lancamentosService.updateLancamentoParcelado(this.lancamento._id, { lancamento: novoLancamento });
+				} else {
+					this.lancamentosService.update(this.lancamento._id, { lancamento: novoLancamento });
+				}
+				this.voltar();
+			}
 		} else {
 			this.lancamentosService.create({ lancamento: novoLancamento });
 		}
@@ -193,7 +209,7 @@ export class LancamentosDetailComponent implements OnInit {
 		this.contaSelectionada = contaChanged;
 	}
 
-	public obterSwalOptions() {
+	public obterDeleteSwalOptions() {
 		return {
 			title: 'Remover?',
 			text: 'Esse lançamento possui parcelas futuras. Deseja remover?',
@@ -219,6 +235,48 @@ export class LancamentosDetailComponent implements OnInit {
 			this.removerLancamento();
 		} else if ($event == 'todos') {
 			this.lancamentosService.removerLancamentoParcelado(this.lancamento);
+		}
+		this.voltar();
+	}
+
+	public obterUpdateSwalOptions() {
+		return {
+			title: 'Atualizar?',
+			text: 'Esse lançamento possui parcelas futuras. Deseja atualizar?',
+			type: 'question',
+			backdrop: true,
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Confirmar',
+			cancelButtonText: 'Cancelar',
+			allowOutsideClick: false,
+			input: 'radio',
+			inputOptions: {
+				'um': 'Somente este',
+				'todos': 'Todos a partir deste'
+			},
+			showCloseButton: true
+		};
+	}
+
+	public confirmarAtualizacao($event) {
+
+		let formValue = this.lancamentoForm.form.value;
+		console.log(' formValue', formValue);
+
+		let novoLancamento: Lancamento = new Lancamento();
+		Object.assign(novoLancamento, formValue);
+
+		// Parse form values
+		novoLancamento.data = moment(formValue.data, 'DD/MM/YYYY').toDate();
+		novoLancamento.valor = Util.parseCurrency(formValue.valor);
+		console.debug('novoLancamento = ', novoLancamento);
+
+		if ($event == 'um') {
+			this.lancamentosService.update(this.lancamento._id, { lancamento: novoLancamento });
+		} else if ($event == 'todos') {
+			this.lancamentosService.updateLancamentoParcelado(this.lancamento._id, { lancamento: novoLancamento });
 		}
 		this.voltar();
 	}

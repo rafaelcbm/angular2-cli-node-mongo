@@ -71,6 +71,20 @@ lancamentoRouter.put("/:idLancamento", function (request: Request & { userName: 
 		.catch((e: Error) => handleError(e, response));
 });
 
+lancamentoRouter.put("/parcelados/:idLancamento", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
+
+	let userName = request.userName;
+	let idLancamento = request.params.idLancamento;
+	let lancamento = request.body.lancamento;
+
+	lancamentoService.updateLancamentosParcelados(userName, idLancamento, lancamento)
+		.then(lancamentoAlterado =>
+			response.json({
+				"status": "sucesso"
+			}))
+		.catch((e: Error) => handleError(e, response));
+});
+
 lancamentoRouter.get("/:competencia", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 
 	let userName = request.userName;

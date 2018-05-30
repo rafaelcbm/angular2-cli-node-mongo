@@ -102,7 +102,6 @@ export class LancamentoService {
 						this.corrigirSaldo(c, lancamento, null, false);
 
 						let query: any = { $and: [{ _idUser: idUsuario }, { competencia: c.competencia }] };
-						logger.info('** updateCompetencia competencia: %j | saldo: %j', c.competencia, c.saldo);
 						return this.lancamentoDAO.updateCompetencia(query, { $set: { saldo: c.saldo } });
 					});
 
@@ -210,9 +209,7 @@ export class LancamentoService {
 
 	bindInsertLancamentoIndividual(userName, lancamento) {
 		return function () {
-			return Promise.resolve(this.insertLancamentoIndividual(userName, lancamento));
-			//OU
-			//return new Promise((resolve) => { resolve(this.insertLancamentoIndividual(userName, lancamento)); });
+			return this.insertLancamentoIndividual(userName, lancamento);
 		}.bind(this); // bind ou usar arrow function ()=>{}
 	}
 
@@ -239,7 +236,7 @@ export class LancamentoService {
 
 	bindRemoveLancamentoIndividual(userName, idLancamento) {
 		return function () {
-			return Promise.resolve(this.removeLancamento(userName, idLancamento));
+			return this.removeLancamento(userName, idLancamento);
 		}.bind(this); // bind ou usar arrow function ()=>{}
 	}
 
@@ -396,6 +393,42 @@ export class LancamentoService {
 			});
 	}
 
+
+	public updateLancamentosParcelados(userName: string, idLancamento: any, lancamento: any) {
+
+		return this.lancamentoDAO.getLancamentoById(idLancamento)
+			.then(lancamentoAnterior => {
+				if (!lancamentoAnterior)
+					return Promise.reject(new BusinessError('Lancamento não encontrado!'))
+				else {
+					if (lancamentoAnterior.periodicidade) {
+						if (lancamento.parcelaAtual) {
+							return this.removeLancamentosParcelados(userName, idLancamento)
+								.then(result => {
+									return this.insertLancamentoPeriodico(userName, lancamento);
+								});
+						} else {
+							return this.removeLancamentosParcelados(userName, idLancamento)
+								.then(result => {
+									return this.insertLancamento(userName, lancamento);
+								});
+						}
+					} else {
+						return this.removeLancamento(userName, idLancamento)
+							.then(result => {
+								return this.insertLancamentoPeriodico(userName, lancamento);
+							});
+					}
+				}
+			});
+	}
+
+	bindUpdateLancamentoIndividual(userName, idLancamento, lancamento) {
+		return function () {
+			return this.updateLancamento(userName, idLancamento, lancamento);
+		}.bind(this); // bind ou usar arrow function ()=>{}
+	}
+
 	public corrigirSaldo(competencia, lancamentoAtual, lancamentoAnterior, isRemocao) {
 		// usado no Update
 		if (lancamentoAnterior) {
@@ -419,7 +452,6 @@ export class LancamentoService {
 				competencia.saldo -= lancamentoAtual.valor;
 			}
 		}
-
 	}
 
 	public consolidarLancamento(userName: string, idLancamento: any, lancamentoPago: any) {
