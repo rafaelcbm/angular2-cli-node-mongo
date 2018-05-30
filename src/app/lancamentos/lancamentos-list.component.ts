@@ -1,4 +1,3 @@
-import { length } from './../../../server/config';
 import { Categoria } from './../models/categoria.model';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
