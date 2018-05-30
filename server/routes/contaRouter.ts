@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
-import { Container } from 'typedi';
 import * as logger from 'logops';
 
 import { ContaService } from './../services/contaService';
@@ -8,7 +7,7 @@ import { handleError } from "../commons/businessError";
 
 export const contaRouter: Router = Router();
 
-const contaService: ContaService = Container.get(ContaService);
+const contaService: ContaService = new ContaService();
 
 
 contaRouter.get("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {

@@ -1,14 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
-import { Container } from 'typedi';
 import * as logger from 'logops';
 
 import { CategoriaService } from '../services/categoriaService';
 import { handleError } from '../commons/businessError';
 
-const categoriaService: CategoriaService = Container.get(CategoriaService);
-
 export const categoriaRouter: Router = Router();
+
+const categoriaService = new CategoriaService();
 
 categoriaRouter.get("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 

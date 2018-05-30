@@ -1,14 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import * as assert from "assert";
-import { Container } from 'typedi';
 import * as logger from 'logops';
 
 import { LancamentoService } from './../services/lancamentoService';
 import { handleError } from "../commons/businessError";
 
-const lancamentoService: LancamentoService = Container.get(LancamentoService);
-
 export const lancamentoRouter: Router = Router();
+
+const lancamentoService: LancamentoService = new LancamentoService();
 
 lancamentoRouter.get("/", function (request: Request & { userName: string }, response: Response, next: NextFunction) {
 

@@ -11,9 +11,9 @@
   },
   "scripts": {
     "lint": "tslint \"src/**/*.ts\"",
-    "conc:example": "concurrently \"npm run build:server\" \"nodemon ./server/dist/app.js\" ",
+    "conc:example": "concurrently \"npm run build:server\" \"nodemon ./server/dist/server.js\" ",
     "start": "npm run build:client && npm run server",
-    "server": "tsc-watch -p ./server --onSuccess \"nodemon ./server/dist/app.js\" ",
+    "server": "tsc-watch -p ./server --onSuccess \"nodemon ./server/dist/server.js\" ",
     "build:server": "tsc -p ./server",
     "build:server:watch": "tsc -w -p ./server",
     "build:client": "ng build",

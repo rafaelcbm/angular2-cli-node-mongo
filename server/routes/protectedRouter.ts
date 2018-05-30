@@ -2,9 +2,9 @@ import { Router, Response, Request, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 import * as logger from 'logops';
 
-import { secret } from "../config";
+import { secret } from '../config/constants';
 
-const protectedRouter: Router = Router();
+export const protectedRouter: Router = Router();
 
 protectedRouter.use((request: Request & { headers: { authorization: string }, userName }, response: Response, next: NextFunction) => {
     const token = request.headers.authorization;
@@ -34,10 +34,3 @@ protectedRouter.get("/", (request: Request, response: Response) => {
         title: "Protected call"
     });
 });
-
-export { protectedRouter }
-
-
-
-
-

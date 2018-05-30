@@ -2,14 +2,14 @@ import { Router, Request, Response, NextFunction } from "express";
 import { randomBytes, pbkdf2 } from "crypto";
 import * as assert from "assert";
 import { sign } from "jsonwebtoken";
-import { Container } from 'typedi';
 import * as logger from 'logops';
 
-import { secret, length, digest } from "../config";
+import { secret, length, digest } from '../config/constants';
 import { UserDAO } from "../dal/userDAO";
 
-const loginRouter: Router = Router();
-const userDAO: UserDAO = Container.get(UserDAO);
+export const loginRouter: Router = Router();
+
+const userDAO: UserDAO = new UserDAO();
 
 loginRouter.post("/signup", function(request: Request, response: Response, next: NextFunction) {
 
@@ -105,5 +105,3 @@ loginRouter.post("/login", function(request: Request, response: Response, next: 
         });
     });
 });
-
-export { loginRouter }

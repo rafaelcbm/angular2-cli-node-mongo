@@ -1,20 +1,17 @@
 import { randomBytes } from 'crypto';
-import { length } from './../config';
 import { ObjectID } from "mongodb";
-import { Service } from 'typedi';
 import * as logger from 'logops';
-import { Container } from 'typedi';
 import * as assert from "assert";
 import * as moment from 'moment';
 
+import { length } from '../config/constants';
 import { BusinessError } from './../commons/businessError';
 import { UserDAO, LancamentoDAO } from '../dal/DAOs';
 
-@Service()
 export class LancamentoService {
 
-	lancamentoDAO = Container.get(LancamentoDAO);
-	userDAO = Container.get(UserDAO);
+	lancamentoDAO = new LancamentoDAO();
+	userDAO = new UserDAO();
 
 	public getLancamentos(userName: string) {
 
@@ -462,11 +459,9 @@ export class LancamentoService {
 		return this.userDAO.getUser(userName)
 			.then(user => {
 				assert.ok(user);
-				logger.info("** Obtendo ANTES ANTERIOR Competencia = %s", +competencia);
 				return this.lancamentoDAO.obterUltimaCompetenciaAnterior(user._id.toString(), +competencia);
 			})
 			.then(comp => {
-				logger.info("** Obtendo ANTERIOR Competencia = %s", comp);
 				if (!comp) {
 					return { competencia: 0, saldo: 0.0 };
 				}
@@ -478,7 +473,6 @@ export class LancamentoService {
 		return this.userDAO.getUser(userName)
 			.then(user => {
 				assert.ok(user);
-				logger.info("** Obtendo Competencia = %s", competencia);
 				return this.lancamentoDAO.getCompetencia(user._id.toString(), +competencia);
 			})
 			.then(competencia => {

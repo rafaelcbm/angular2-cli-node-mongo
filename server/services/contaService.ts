@@ -1,17 +1,14 @@
 import { ObjectID } from "mongodb";
-import { Service } from 'typedi';
 import * as logger from 'logops';
-import { Container } from 'typedi';
 import * as assert from "assert";
 
 import { BusinessError } from './../commons/businessError';
 import { ContaDAO, UserDAO } from '../dal/DAOs';
 
-@Service()
 export class ContaService {
 
-	contaDAO = Container.get(ContaDAO);
-	userDAO = Container.get(UserDAO);
+	contaDAO = new ContaDAO();
+	userDAO = new UserDAO();
 
 	errMessages = {
 		usuarioSemContas: 'Usuário sem contas.'

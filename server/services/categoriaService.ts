@@ -1,5 +1,4 @@
 import { ObjectID } from "mongodb";
-import { Service } from 'typedi';
 import * as logger from 'logops';
 import { Container } from 'typedi';
 import * as assert from "assert";
@@ -7,12 +6,11 @@ import * as assert from "assert";
 import { BusinessError } from './../commons/businessError';
 import { UserDAO, CategoriaDAO, LancamentoDAO } from '../dal/DAOs';
 
-@Service()
 export class CategoriaService {
 
-	categoriaDAO = Container.get(CategoriaDAO);
-	userDAO = Container.get(UserDAO);
-	lancamentoDAO = Container.get(LancamentoDAO);
+	categoriaDAO = new CategoriaDAO();
+	userDAO = new UserDAO();
+	lancamentoDAO = new LancamentoDAO();
 
 	public async getArvoreCategorias(userName: string) {
 
