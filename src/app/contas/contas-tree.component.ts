@@ -1,4 +1,3 @@
-import { length } from './../../../server/config';
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 
 import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from "angular-tree-component/dist/angular-tree-component";
