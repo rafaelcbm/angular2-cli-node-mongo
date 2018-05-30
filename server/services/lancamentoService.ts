@@ -364,14 +364,30 @@ export class LancamentoService {
 			.then(resultadosUpdateCompentecias => {
 				let query = { _id: new ObjectID(idLancamento) }
 
-				let lancamentoAtualizado = {
+				let lancamentoAtualizado: any = {
 					data: moment(lancamento.data, 'YYYY-MM-DD').toDate(),
 					descricao: lancamento.descricao,
 					valor: lancamento.valor,
 					conta: lancamento.conta,
 					categoria: { _id: lancamento.categoria._id, nome: lancamento.categoria.nome },
-					isDebito: lancamento.isDebito
+					isDebito: lancamento.isDebito,
+					nota: lancamento.nota,
 				}
+
+				//TODO: Implementar a possível atualização de periodicidade em lançamentos que não a tinha anteriormente.
+				lancamentoAtualizado.periodicidade = undefined;
+				logger.info('lancamento.parcelaAtual = %j', lancamento.parcelaAtual);
+				if (lancamento.parcelaAtual) {
+					lancamentoAtualizado.periodicidade = {
+						//idParcelamento: idParcelamento,
+						parcelaInicial: lancamento.parcelaAtual,
+						parcelaAtual: lancamento.parcelaAtual,
+						qtdParcelas: lancamento.qtdParcelas,
+						tipoPeriodo: lancamento.tipoPeriodo,
+						valorPeriodo: lancamento.valorPeriodo
+					}
+				}
+				logger.info('lancamentoAtualizado = %j', lancamentoAtualizado);
 
 				return this.lancamentoDAO.updateLancamento(query, { $set: lancamentoAtualizado });
 			})
