@@ -3,7 +3,7 @@ import { ObjectID } from "mongodb";
 import * as logger from 'logops';
 
 import { MongoDB } from '../config/mongo-db';
-import { BaseDAO } from './abstractDAO';
+import { BaseDAO } from './baseDAO';
 
 export class CategoriaDAO  extends BaseDAO {
 

@@ -2,9 +2,8 @@ import { MongoClient, ObjectID, Db } from "mongodb";
 import * as logger from 'logops';
 
 import { MongoDB } from '../config/mongo-db';
-//import { Service } from 'typedi';
 
-//@Service()
+
 export class BaseDAO {
 
 	// Insert a new document in the collection.
