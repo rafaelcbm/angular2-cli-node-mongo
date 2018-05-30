@@ -144,6 +144,7 @@ export class LancamentoService {
 			data: lancamento.data,
 			descricao: lancamento.descricao.concat(` (${lancamento.parcelaAtual} - ${lancamento.qtdParcelas})`),
 			valor: lancamento.valor,
+			nota: lancamento.nota,
 			isDebito: lancamento.isDebito,
 			periodicidade: {
 				idParcelamento: idParcelamento,
@@ -166,6 +167,7 @@ export class LancamentoService {
 				descricao: lancamento.descricao.concat(` (${parcelaAtual} - ${lancamentoBase.periodicidade.qtdParcelas})`),
 				valor: lancamentoBase.valor,
 				isDebito: lancamentoBase.isDebito,
+				nota: lancamentoBase.nota,
 				periodicidade: {
 					idParcelamento: idParcelamento,
 					parcelaInicial: lancamentoBase.periodicidade.parcelaAtual,
