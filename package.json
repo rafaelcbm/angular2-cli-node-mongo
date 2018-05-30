@@ -6,6 +6,9 @@
   "config": {
     "port": "3001"
   },
+  "engines": {
+    "node": "8.11.1"
+  },
   "scripts": {
     "lint": "tslint \"src/**/*.ts\"",
     "conc:example": "concurrently \"npm run build:server\" \"nodemon ./server/dist/app.js\" ",
