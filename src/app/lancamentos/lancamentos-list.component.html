@@ -30,7 +30,11 @@
 			<div class="lancamentos-list-checks-item2">
 				<input type="checkbox" [value]="lancamento._id" (click)="clickCheck($event)">
 			</div>
-			<div (click)="onSelect(lancamento)" class="content-descricao-field">{{lancamento.descricao}}</div>
+			<div class="lancamento-description">
+				<div (click)="onSelect(lancamento)" class="content-descricao-field">{{lancamento.descricao}}</div>
+				<div [hidden]="!lancamento.periodicidade" tooltip="{{lancamento.periodicidade?.parcelaAtual}} - {{lancamento.periodicidade?.qtdParcelas}}" placement="top" class="lancamento-pariodico-icon fa fa-history"></div>
+				<div [hidden]="!lancamento.nota" tooltip="{{lancamento.nota}}" placement="top" class="lancamento-note-icon fa fa-edit"></div>
+			</div>
 			<div (click)="onSelect(lancamento)" class="content-conta-field">{{lancamento.conta.nome}}</div>
 			<div (click)="onSelect(lancamento)" class="content-categoria-field">{{lancamento.categoria.nome}}</div>
 			<section (click)="onSelect(lancamento)" class="content-valor-field">

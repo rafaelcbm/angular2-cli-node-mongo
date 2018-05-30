@@ -55,6 +55,23 @@ $color-lancamento-pago: #4dbd74;
                     color: lighten($color-lancamento-pago, 15%);
                 }
             }
+            .lancamento-description {
+                display: grid;
+                grid-template-columns: 20fr 1fr 1fr;
+                justify-self: start;
+                width: 100%;
+                .lancamento-pariodico-icon,
+                .lancamento-note-icon {
+                    align-self: center;
+                    justify-self: start;
+                }
+                .lancamento-pariodico-icon {
+                    color: #2d72da;
+				}
+				.lancamento-note-icon {
+                    color: #c3c717;
+                }
+            }
         }
         .lancamentos-list-content-data {
             margin-top: 2em;
@@ -104,7 +121,7 @@ $color-lancamento-pago: #4dbd74;
 .content-conta-field:hover,
 .content-categoria-field:hover,
 .content-valor-field:hover {
-	cursor: pointer;
+    cursor: pointer;
     text-decoration: underline;
     color: #b10e0eb5;
     font-weight: 900;

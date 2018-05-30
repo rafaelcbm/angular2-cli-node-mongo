@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TreeModule } from 'angular-tree-component';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
@@ -40,6 +41,7 @@ import { ContasTreeComponent } from "../contas/contas-tree.component";
 		SharedDirectivesModule,
         TabsModule.forRoot(),
 		DatepickerModule.forRoot(),
+		TooltipModule.forRoot(),
 		TreeModule,
 		SweetAlert2Module
     ],
