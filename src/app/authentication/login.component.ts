@@ -46,5 +46,10 @@ export class LoginComponent implements OnInit {
 
     logout(): void {
         this.authService.logout();
-    }
+	}
+
+	spotifySignIn(){
+		console.log('spotifySignIn clicked');
+		this.authService.loginSpotify();
+	}
 }

@@ -10,7 +10,7 @@ startServer();
 async function startServer() {
 	logger.info('Iniciando server ............');
 
-	await connectDB();
+	//await connectDB();
 
 	// PARAMETRO PASSADO ATRAVES DO NOMEMON, exemplo.
 	//logger.info(`## FROM NOMEMON, process.env.NODE_ENV = ${process.env.NODE_ENV}`);
