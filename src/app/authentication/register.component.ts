@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
 import "rxjs/add/operator/map";
@@ -10,47 +10,59 @@ import { AuthService } from './auth.service';
 
 
 @Component({
-    templateUrl: './register.component.html'
+	templateUrl: './register.component.html'
 })
 export class RegisterComponent implements OnInit {
 
-    registerObservable$: Observable<any>;
+	registerObservable$: Observable<any>;
 
-    constructor(private authService: AuthService, private router: Router, private http: Http, private categoriasService: CategoriasService) { }
+	constructor(private authService: AuthService, private router: Router, private http: Http, private categoriasService: CategoriasService, private route: ActivatedRoute) { }
 
-    ngOnInit() {
-        // subscribe to the observable
-        this.registerObservable$ = this.authService.registerObservable$;
-        this.registerObservable$.subscribe((data) => this.signupHandler(data));
-    }
+	ngOnInit() {
+		// subscribe to the observable
+		this.registerObservable$ = this.authService.registerObservable$;
+		this.registerObservable$.subscribe((data) => this.signupHandler(data));
 
-    signup(formValue) {
-        this.authService.signup(formValue);
-    }
+		//TODO: REMOVER DAQUI E CRIAR UM NOVO COMPONENTE COM LOADING PARA ISSO
+		//TESTE DE LOGIN COM SPOTIFY
+		this.route.queryParams.subscribe(params => {
+			console.log('Obtendo params....');
+			console.log(params);
+			if (params.token) {
+				this.authService.adicionarTokenSpotifyUser(params.token);
+				this.router.navigate(['main/contas']);
+				this.criarCategoriasPadrao();
+			}
+		})
+	}
 
-    signupHandler(data) {
+	signup(formValue) {
+		this.authService.signup(formValue);
+	}
 
-        console.log("DADOS DO NOVO USER =", data);
+	signupHandler(data) {
 
-        if (data.status === "erro") {
-            console.log("Mensagem de erro =", data.message);
-            return;
-        }
+		console.log("DADOS DO NOVO USER =", data);
 
-        if (this.authService.isLoggedIn()) {
+		if (data.status === "erro") {
+			console.log("Mensagem de erro =", data.message);
+			return;
+		}
 
-            this.criarCategoriasPadrao();
+		if (this.authService.isLoggedIn()) {
 
-            // Get the redirect URL from our auth service
-            // If no redirect has been set, use the default
-            let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'main/contas';
-            // Redirect the user
-            this.router.navigate([redirect]);
-        }
-    }
+			this.criarCategoriasPadrao();
 
-    criarCategoriasPadrao() {
-        this.categoriasService.create({ novaCategoria: { nome: "Sem Categoria", ancestrais: null, pai: null } });
-        this.categoriasService.create({ novaCategoria: { nome: "Todas", ancestrais: null, pai: null } });
-    }
+			// Get the redirect URL from our auth service
+			// If no redirect has been set, use the default
+			let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'main/contas';
+			// Redirect the user
+			this.router.navigate([redirect]);
+		}
+	}
+
+	criarCategoriasPadrao() {
+		this.categoriasService.create({ novaCategoria: { nome: "Sem Categoria", ancestrais: null, pai: null } });
+		this.categoriasService.create({ novaCategoria: { nome: "Todas", ancestrais: null, pai: null } });
+	}
 }

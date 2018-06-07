@@ -28,7 +28,7 @@ export class AuthService {
 	// store the URL so we can redirect after logging in
 	redirectUrl: string;
 
-	constructor(private http: Http,private router: Router) {
+	constructor(private http: Http, private router: Router) {
 		this.loginObservable$ = new Observable(observer => this.loginObserver = observer).share();
 		this.registerObservable$ = new Observable(observer => this.registerObserver = observer).share();
 	}
@@ -166,31 +166,9 @@ export class AuthService {
 					})
 				}
 			);
-
 	}
 
-	callback() {
-		this.http.get(`http://localhost:3001/callback`, new RequestOptions({
-			headers: new Headers({ "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*' })
-		}))
-			.map((res: Response) => {
-				console.log("Resposta ", res);
-				res.json()
-			})
-			.subscribe(
-				(data: any) => {
-					console.log("Resposta /callback:", data);
-
-				},
-				(error: Error) => {
-					console.log(error);
-					// put data into observavle
-					this.loginObserver.next({
-						status: 'erro',
-						message: 'Erro ao autenticar usuário Spotify!',
-					})
-				}
-			);
-
+	adicionarTokenSpotifyUser(token) {
+		localStorage.setItem("id_token", token);
 	}
 }
