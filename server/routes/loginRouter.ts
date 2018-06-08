@@ -1,3 +1,4 @@
+import * as util from 'util';
 import { parse } from 'date-fns';
 import { Router, Request, Response, NextFunction } from "express";
 import { randomBytes, pbkdf2 } from "crypto";
@@ -22,6 +23,7 @@ var agent = new HttpsProxyAgent(proxy);
 export const loginRouter: Router = Router();
 
 const userDAO: UserDAO = new UserDAO();
+
 
 loginRouter.post("/signup", function (req: Request, response: Response, next: NextFunction) {
 
@@ -186,6 +188,7 @@ loginRouter.get('/callback', function (req, res) {
 		.then((usuarioObtido) => {
 			console.log('** usuarioObtido=', usuarioObtido);
 
+
 			if (!usuarioObtido) {
 				let user: any = {};
 				user.userName = userName;
@@ -203,12 +206,30 @@ loginRouter.get('/callback', function (req, res) {
 							.then((savedUser) => {
 								console.log('** USUARIO CRIADO =', savedUser);
 
-								const token = sign({ "userName": savedUser.userName, permissions: [] }, secret, { expiresIn: "7d" });
+								const tokenJWT = sign({ "userName": savedUser.userName, permissions: [] }, secret, { expiresIn: "7d" });
 
 								let uri = process.env.FRONTEND_URI || 'http://localhost:4200/register';
-								res.redirect(uri + '?token=' + token);
+								res.redirect(uri + '?token=' + tokenJWT + '&newUser=true');
 							})
 					});
+				});
+			} else {
+				const pbkdf2Promisified = util.promisify(pbkdf2);
+
+				pbkdf2Promisified(usuarioObtido.password, usuarioObtido.salt, 10000, length, digest).then(function (hash) {
+					logger.info("** NO pbkdf2 hash = %s ", hash);
+					// check if password is active
+					if (hash.toString("hex") === usuarioObtido.hash) {
+						const tokenJWT = sign({ "userName": usuarioObtido.userName, permissions: [] }, secret, { expiresIn: "7d" });
+						logger.info("** tokenJWT = %s ", tokenJWT);
+						let uri = process.env.FRONTEND_URI || 'http://localhost:4200/register';
+						res.redirect(uri + '?token=' + tokenJWT);
+					} else {
+						return res.json({
+							"status": "erro",
+							"message": "Password incorreto!"
+						});
+					}
 				});
 			}
 		})

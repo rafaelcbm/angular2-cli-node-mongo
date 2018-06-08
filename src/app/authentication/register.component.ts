@@ -26,11 +26,11 @@ export class RegisterComponent implements OnInit {
 		//TODO: REMOVER DAQUI E CRIAR UM NOVO COMPONENTE COM LOADING PARA ISSO
 		//TESTE DE LOGIN COM SPOTIFY
 		this.route.queryParams.subscribe(params => {
-			console.log('Obtendo params....');
-			console.log(params);
 			if (params.token) {
 				this.authService.adicionarTokenSpotifyUser(params.token);
 				this.router.navigate(['main/contas']);
+			}
+			if ('newUser' in params) {
 				this.criarCategoriasPadrao();
 			}
 		})
@@ -41,8 +41,6 @@ export class RegisterComponent implements OnInit {
 	}
 
 	signupHandler(data) {
-
-		console.log("DADOS DO NOVO USER =", data);
 
 		if (data.status === "erro") {
 			console.log("Mensagem de erro =", data.message);

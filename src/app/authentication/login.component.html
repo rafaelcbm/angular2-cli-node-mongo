@@ -10,13 +10,15 @@
 									<h1>Login</h1>
 									<p class="text-muted">Sign In to your account</p>
 									<div class="input-group mb-1">
-										<span class="input-group-addon"><i class="icon-user"></i>
-                                </span>
+										<span class="input-group-addon">
+											<i class="icon-user"></i>
+										</span>
 										<input type="text" name="userName" [(ngModel)]="userName" class="form-control" placeholder="Username" [focus]="true">
 									</div>
 									<div class="input-group mb-2">
-										<span class="input-group-addon"><i class="icon-lock"></i>
-                                </span>
+										<span class="input-group-addon">
+											<i class="icon-lock"></i>
+										</span>
 										<input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="Password">
 									</div>
 									<div class="row">
@@ -25,10 +27,9 @@
 										</div>
 									</div>
 									or
-									<div class="row">
-										<div class="col-xs-3">
-											<img alt="Avatar" style="width: 300px;" src="assets/img/log-in-spotify.png" (click)="spotifySignIn()">
-											<!-- <a type="submit" class="btn btn-primary p-x-2" style="background-image: 'assets/img/log-in-spotify.png'">Login with Spotify</a> -->
+									<div style="cursor: pointer;font-size: 1em;line-height: 1;border-radius: 500px;padding: 11px 32px 9px;color: #fff;background-color: #1db954;text-align: center;font-weight: 800;">
+										<div>
+											<a (click)="spotifySignIn()">Log in to Spotify</a>
 										</div>
 									</div>
 									<div class="row">

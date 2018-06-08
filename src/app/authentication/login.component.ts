@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     username: string;
     password: string;
 
-    constructor(private authService: AuthService, private router: Router) {  }
+    constructor(private authService: AuthService, private router: Router) { }
 
     ngOnInit() {
         // subscribe to the observable
@@ -46,10 +46,9 @@ export class LoginComponent implements OnInit {
 
     logout(): void {
         this.authService.logout();
-	}
+    }
 
-	spotifySignIn(){
-		console.log('spotifySignIn clicked');
-		this.authService.loginSpotify();
-	}
+    spotifySignIn() {
+        this.authService.loginSpotify();
+    }
 }

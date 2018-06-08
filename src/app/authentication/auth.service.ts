@@ -147,16 +147,8 @@ export class AuthService {
 		this.http.get(`${ENV.HOST_URI}login-spotify`, new RequestOptions({
 			headers: new Headers({ "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*' })
 		}))
-			// .map((res: Response) => {
-			// 	console.log("Resposta ", res);
-			// 	res.json()
-			// })
 			.subscribe(
-				(res: Response) => {
-					console.log("Resposta /login-spotify:", res);
-					window.open(res.url, '_self');
-					//this.router.navigate([res.url]);
-				},
+				(res: Response) => window.open(res.url, '_self'),
 				(error: Error) => {
 					console.log(error);
 					// put data into observavle
