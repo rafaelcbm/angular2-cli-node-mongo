@@ -2,6 +2,7 @@
 ---
 ## *GERAL*
 ```
+-  Atualizar para Angular 6
 ```
 ## *SERVER*
 ```
