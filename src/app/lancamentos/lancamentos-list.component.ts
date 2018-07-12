@@ -1,7 +1,8 @@
 import { Categoria } from './../models/categoria.model';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { LancamentosService } from '../services/lancamentos.service';
@@ -65,9 +66,9 @@ export class LancamentosListComponent implements OnInit  {
 	}
 
 	observarFiltroCompetencia() {
-		this.filtroLancamentoService.competenciaLancamento$
-			.debounceTime(500) // Caso o usuário altere rapidamente as competencia (nas setas), evita várias requisições.
-			.distinctUntilChanged()
+		this.filtroLancamentoService.competenciaLancamento$.pipe
+			(debounceTime(500), // Caso o usuário altere rapidamente as competencia (nas setas), evita várias requisições.
+			distinctUntilChanged())
 			.subscribe(novaCompetencia => {
 				this.competenciaAtual = novaCompetencia;
 				this.lancamentosService.getByCompetencia(novaCompetencia);

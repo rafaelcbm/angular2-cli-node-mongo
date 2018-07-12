@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import 'rxjs/add/operator/map';
+
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { NotificationsService } from "angular2-notifications";

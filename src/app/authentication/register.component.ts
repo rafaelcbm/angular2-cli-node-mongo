@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Http, Headers, RequestOptions, Response } from "@angular/http";
 
 import "rxjs/add/operator/map";
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { CategoriasService } from './../services/categorias.service';
 import { AuthService } from './auth.service';
@@ -16,7 +15,7 @@ export class RegisterComponent implements OnInit {
 
 	registerObservable$: Observable<any>;
 
-	constructor(private authService: AuthService, private router: Router, private http: Http, private categoriasService: CategoriasService, private route: ActivatedRoute) { }
+	constructor(private authService: AuthService, private router: Router, private categoriasService: CategoriasService, private route: ActivatedRoute) { }
 
 	ngOnInit() {
 		// subscribe to the observable

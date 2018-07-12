@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { NotificationsService } from 'angular2-notifications';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 
 import { ENV } from './env-config';
 import { MessagesService } from './messages.service';
@@ -36,7 +35,7 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.post(this.apiBaseUrl, payLoad)
 			.subscribe(
-				jsonData => {
+				(jsonData:any) => {
 					if (jsonData.status === "sucesso") {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
@@ -57,7 +56,7 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.delete(`${this.apiBaseUrl}/${modelId}`)
 			.subscribe(
-				jsonData => {
+				(jsonData:any) => {
 					if (jsonData.status === "sucesso") {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
@@ -78,7 +77,7 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.put(`${this.apiBaseUrl}/${modelId}`, payLoad)
 			.subscribe(
-				jsonData => {
+				(jsonData:any) => {
 					if (jsonData.status === "sucesso") {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
@@ -99,7 +98,7 @@ export class CategoriasService extends DataService<Categoria> {
 
 		this._apiHttp.get(`${this.apiBaseUrl}/flat`)
 			.subscribe(
-				jsonData => {
+				(jsonData:any) => {
 					if (jsonData.status === "sucesso") {
 
 						return this.flatCategoriasSource.next(jsonData.data);

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import { Log } from './../util/log';
 import { Lancamento } from "../models/models.module";
@@ -31,8 +32,8 @@ export class LancamentosFiltroComponent implements OnInit {
 		this.setCategoryClass();
 		this.setContasClass();
 
-		this.filtroLancamentoService.competenciaLancamento$
-			.distinctUntilChanged()
+		this.filtroLancamentoService.competenciaLancamento$.pipe(
+			distinctUntilChanged())
 			.subscribe(
 				novaCompetencia => {
 					this.mesCompetencia = moment(novaCompetencia, 'YYYYMM').toDate();

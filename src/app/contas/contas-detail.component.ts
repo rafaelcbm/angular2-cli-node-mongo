@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import 'rxjs/add/operator/map';
+import { switchMap, map } from 'rxjs/operators';
 //Possivel importar assim devido ao @types/jquery.
 //import * as $ from 'jquery';
 // Não é possivel importar essã lib dessa forma, pois não é um modulo js. Tem q ser através do "declare".
 //import * as toastr from 'toastr';
 //declare var toastr: any;
 
-import { Conta } from "../models/models.module";
 import { ContasService } from '../services/contas.service';
 
 
@@ -26,11 +25,11 @@ export class ContasDetailComponent implements OnInit {
 	ngOnInit() {
 
 		this.route.params
-			.switchMap((params: Params) => this.contasService.dataObservable$.map(contas => {
+			.pipe(switchMap((params: Params) => this.contasService.dataObservable$.pipe(map(contas => {
 				if (contas) {
 					return contas.find(c => c._id === params['id'])
 				}
-			}))
+			}))))
 			.subscribe((conta: any) => {
 				this.conta = conta
 

@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from "@angular/http";
+import { HttpHeaders, HttpResponse, HttpClient } from '@angular/common/http';
 
-import { tokenNotExpired, JwtHelper } from 'angular2-jwt';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { ENV } from '../services/env-config';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/map';
+import { Observable ,  Observer } from 'rxjs';
 import 'rxjs/Rx';
+
 import { Router } from '@angular/router';
+import { share } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -28,13 +23,13 @@ export class AuthService {
 	// store the URL so we can redirect after logging in
 	redirectUrl: string;
 
-	constructor(private http: Http, private router: Router) {
-		this.loginObservable$ = new Observable(observer => this.loginObserver = observer).share();
-		this.registerObservable$ = new Observable(observer => this.registerObserver = observer).share();
+	constructor(private http: HttpClient, private router: Router, public jwtHelper: JwtHelperService) {
+		this.loginObservable$ = new Observable(observer => this.loginObserver = observer).pipe(share());
+		this.registerObservable$ = new Observable(observer => this.registerObserver = observer).pipe(share());
 	}
 
 	isLoggedIn() {
-		return tokenNotExpired();
+		return this.jwtHelper.isTokenExpired();
 	}
 
 	getToken() {
@@ -42,19 +37,18 @@ export class AuthService {
 	}
 
 	getUserName() {
-		let jwtHelper: JwtHelper = new JwtHelper();
 
 		var token = localStorage.getItem('id_token');
 
 		if (token) {
 			console.log("* Token utils:");
 			console.log(
-				jwtHelper.decodeToken(token),
-				jwtHelper.getTokenExpirationDate(token),
-				jwtHelper.isTokenExpired(token)
+				this.jwtHelper.decodeToken(token),
+				this.jwtHelper.getTokenExpirationDate(token),
+				this.jwtHelper.isTokenExpired(token)
 			);
 
-			let userName = jwtHelper.decodeToken(token).userName;
+			let userName = this.jwtHelper.decodeToken(token).userName;
 			return userName;
 		}
 
@@ -65,10 +59,7 @@ export class AuthService {
 		//return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
 		//this.isLoggedIn = true;
 
-		this.http.post(`${ENV.HOST_URI}login`, JSON.stringify(userCredential), new RequestOptions({
-			headers: new Headers({ "Content-Type": "application/json" })
-		}))
-			.map((res: Response) => res.json())
+		this.http.post(`${ENV.HOST_URI}login`, JSON.stringify(userCredential),this.getHttpOptions())
 			.subscribe(
 				(data: any) => {
 					console.log("Resposta /login:", data);
@@ -104,10 +95,7 @@ export class AuthService {
 		//return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
 		//this.isLoggedIn = true;
 
-		this.http.post(`${ENV.HOST_URI}signup`, JSON.stringify(userCredential), new RequestOptions({
-			headers: new Headers({ "Content-Type": "application/json" })
-		}))
-			.map((res: Response) => res.json())
+		this.http.post(`${ENV.HOST_URI}signup`, JSON.stringify(userCredential), this.getHttpOptions())
 			.subscribe(
 				(data: any) => {
 					console.log("Resposta / register:", data);
@@ -144,11 +132,18 @@ export class AuthService {
 	}
 
 	loginSpotify() {
-		this.http.get(`${ENV.HOST_URI}login-spotify`, new RequestOptions({
-			headers: new Headers({ "Content-Type": "application/json", 'Access-Control-Allow-Origin': '*' })
-		}))
+
+		let httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*'
+			})
+		};
+
+
+		this.http.get(`${ENV.HOST_URI}login-spotify`, httpOptions)
 			.subscribe(
-				(res: Response) => window.open(res.url, '_self'),
+				(res: HttpResponse<any>) => window.open(res.url, '_self'),
 				(error: Error) => {
 					console.log(error);
 					// put data into observavle
@@ -162,5 +157,14 @@ export class AuthService {
 
 	adicionarTokenSpotifyUser(token) {
 		localStorage.setItem("id_token", token);
+	}
+
+	getHttpOptions() {
+		return {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*'
+			})
+		};
 	}
 }

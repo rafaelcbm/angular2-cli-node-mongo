@@ -2,10 +2,8 @@ import { Log } from './../util/log';
 import { Injectable } from '@angular/core';
 import { Headers, RequestOptions, Response } from "@angular/http";
 
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
+import { Observable ,  BehaviorSubject ,  Subject } from 'rxjs';
+
 import { NotificationsService } from 'angular2-notifications';
 
 import { ApiHttpService } from './api-http.service';
@@ -38,7 +36,7 @@ export class DataService<T extends Model> {
 
 		this._apiHttp.get(this.apiBaseUrl)
 			.subscribe(
-			jsonData => {
+				(jsonData:any) => {
 				if (jsonData.status === "sucesso") {
 					this._dataStore.dataList = jsonData.data;
 					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
@@ -56,7 +54,7 @@ export class DataService<T extends Model> {
 		this._apiHttp
 			.post(this.apiBaseUrl, payLoad)
 			.subscribe(
-			jsonData => {
+			(jsonData:any) => {
 				if (jsonData.status === "sucesso") {
 					this._dataStore.dataList.push(jsonData.data);
 					this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
@@ -76,7 +74,7 @@ export class DataService<T extends Model> {
 		this._apiHttp
 			.delete(`${this.apiBaseUrl}/${modelId}`)
 			.subscribe(
-			jsonData => {
+			(jsonData:any) => {
 				if (jsonData.status === "sucesso") {
 					this._dataStore.dataList.forEach((dataItem, i) => {
 						if (dataItem._id === modelId) {
@@ -100,7 +98,7 @@ export class DataService<T extends Model> {
 		this._apiHttp
 			.put(`${this.apiBaseUrl}/${modelId}`, payLoad)
 			.subscribe(
-			jsonData => {
+			(jsonData:any) => {
 				if (jsonData.status === "sucesso") {
 					this._dataStore.dataList.forEach((dataItem, i) => {
 						if (dataItem._id === jsonData.data._id) {

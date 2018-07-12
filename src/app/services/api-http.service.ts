@@ -1,52 +1,51 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response } from "@angular/http";
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
 import { AuthService } from '../authentication/auth.service';
 
 @Injectable()
 export class ApiHttpService {
 
-	constructor(private http: Http, private authService: AuthService) { }
+	constructor(private http: HttpClient, private authService: AuthService) { }
 
-	get(url: string, requestOptions?: RequestOptions): Observable<any> {
+	get(url: string, requestOptions?: any): Observable<any> {
 
 		if (this.authService.isLoggedIn()) {
-			return this.http.get(url, requestOptions ? requestOptions : this.getRequestOptionsPadrao())
-				.map((res: Response) => res.json());
+			return this.http.get(url, requestOptions ? requestOptions : this.getRequestOptionsPadrao());
 		}
 	}
 
-	post(url: string, payLoad: any, requestOptions?: RequestOptions) {
+	post(url: string, payLoad: any, requestOptions?: any) {
 
 		if (this.authService.isLoggedIn()) {
-			return this.http.post(url, JSON.stringify(payLoad), requestOptions ? requestOptions : this.getRequestOptionsPadrao())
-				.map((res: Response) => res.json());
+			return this.http.post(url, JSON.stringify(payLoad), requestOptions ? requestOptions : this.getRequestOptionsPadrao());
 		}
 	}
 
-	delete(url: string, requestOptions?: RequestOptions) {
+	delete(url: string, requestOptions?: any) {
 
 		if (this.authService.isLoggedIn()) {
-			return this.http.delete(url, requestOptions ? requestOptions : this.getRequestOptionsPadrao()).map((res: Response) => res.json());
+			return this.http.delete(url, requestOptions ? requestOptions : this.getRequestOptionsPadrao());
 		}
 	}
 
-	put(url: string, payLoad: any, requestOptions?: RequestOptions) {
+	put(url: string, payLoad: any, requestOptions?: any) {
 
 		if (this.authService.isLoggedIn()) {
-			return this.http.put(url, JSON.stringify(payLoad), requestOptions ? requestOptions : this.getRequestOptionsPadrao())
-				.map((res: Response) => res.json());
+			return this.http.put(url, JSON.stringify(payLoad), requestOptions ? requestOptions : this.getRequestOptionsPadrao());
 		}
 	}
 
 	getRequestOptionsPadrao() {
-		let requestOptions = new RequestOptions({
-			headers: new Headers({ "Content-Type": "application/json", "authorization": this.authService.getToken() })
-		});
 
-		return requestOptions;
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+				"authorization": this.authService.getToken()
+			})
+		};
+
+		return httpOptions;
 	}
 }
