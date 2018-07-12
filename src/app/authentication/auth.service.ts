@@ -1,9 +1,11 @@
+import { ContasModule } from './../contas/contas.module';
+
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpResponse, HttpClient } from '@angular/common/http';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ENV } from '../services/env-config';
-import { Observable ,  Observer } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import 'rxjs/Rx';
 
 import { Router } from '@angular/router';
@@ -18,18 +20,22 @@ export class AuthService {
 
 	private loginObserver: Observer<any>;
 	private registerObserver: Observer<any>;
+	private jwtHelper: JwtHelperService;
 
 
 	// store the URL so we can redirect after logging in
 	redirectUrl: string;
 
-	constructor(private http: HttpClient, private router: Router, public jwtHelper: JwtHelperService) {
-		this.loginObservable$ = new Observable(observer => this.loginObserver = observer).pipe(share());
+	constructor(private http: HttpClient, private router: Router) {
+		this.loginObservable$ = new Observable(observer => this.loginObserver = observer);
 		this.registerObservable$ = new Observable(observer => this.registerObserver = observer).pipe(share());
+		this.jwtHelper = new JwtHelperService();
 	}
 
 	isLoggedIn() {
-		return this.jwtHelper.isTokenExpired();
+		if (this.getToken()) {
+			return !this.jwtHelper.isTokenExpired(this.getToken());
+		}
 	}
 
 	getToken() {
@@ -38,7 +44,7 @@ export class AuthService {
 
 	getUserName() {
 
-		var token = localStorage.getItem('id_token');
+		var token = this.getToken();
 
 		if (token) {
 			console.log("* Token utils:");
@@ -59,7 +65,7 @@ export class AuthService {
 		//return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
 		//this.isLoggedIn = true;
 
-		this.http.post(`${ENV.HOST_URI}login`, JSON.stringify(userCredential),this.getHttpOptions())
+		this.http.post(`${ENV.HOST_URI}login`, JSON.stringify(userCredential), this.getHttpOptions())
 			.subscribe(
 				(data: any) => {
 					console.log("Resposta /login:", data);
@@ -99,7 +105,6 @@ export class AuthService {
 			.subscribe(
 				(data: any) => {
 					console.log("Resposta / register:", data);
-
 					if (data.status === "erro") {
 						// put data into observavle
 						this.registerObserver.next({

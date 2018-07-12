@@ -8,7 +8,7 @@ import { MongoDB } from './config/mongo-db';
 startServer();
 
 async function startServer() {
-	logger.info('Iniciando server ............');
+	logger.info('* Iniciando server ............');
 
 	await connectDB();
 
@@ -22,7 +22,7 @@ async function startServer() {
 	//const port = process.env.npm_package_config_port || 3001;
 
 	http.createServer(app).listen(port, function () {
-		logger.info('Servidor escutando na porta: ' + this.address().port);
+		logger.info('* Servidor escutando na porta: ' + this.address().port);
 	});
 }
 

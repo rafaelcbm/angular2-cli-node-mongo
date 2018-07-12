@@ -5,46 +5,49 @@ import { mongoUrl } from './constants';
 
 export class MongoDB {
 
-	private static dbConnection: Db = null;
+	private static mongoClient: MongoClient = null;
+	private static mongoDbConnection: Db = null;
 
 	public static getConnection(): Db {
 		try {
-			if (MongoDB.dbConnection) {
-				//logger.info('## Conexão existente retornada');
-				return MongoDB.dbConnection;
+			if (MongoDB.mongoDbConnection) {
+				//logger.info('* Conexão existente retornada');
+				return MongoDB.mongoDbConnection;
 			} else {
-				MongoDB.connect().then(conn => {
-					//logger.error('## Obtendo nova conexão', MongoDB.dbConnection);
-
-					MongoDB.dbConnection = conn
-					return MongoDB.dbConnection;
+				MongoDB.connect().then(db => {
+					logger.error('* Obtendo nova conexão');
+					MongoDB.mongoDbConnection = db
+					return MongoDB.mongoDbConnection;
 				});
 			}
 		} catch (err) {
-			logger.error('## Erro ao obter conexão com MongoBD: %j', err);
+			logger.error('* Erro ao obter conexão com MongoBD: %j', err);
 			throw err;
 		}
 	}
 
 	public static async connect() {
+
 		try {
-			if (!MongoDB.dbConnection) {
-				MongoDB.dbConnection = await MongoClient.connect(mongoUrl);
-				//logger.info('## Conectado com sucesso com o MongoBD', MongoDB.dbConnection);
+			if (!MongoDB.mongoDbConnection) {
+				MongoDB.mongoClient = await MongoClient.connect(mongoUrl, { useNewUrlParser: true });
+				MongoDB.mongoDbConnection = MongoDB.mongoClient.db();
+				logger.info('* Conectado com sucesso com o MongoBD.');
 			}
 
-			return MongoDB.dbConnection;
+			return MongoDB.mongoDbConnection;
 		} catch (err) {
-			logger.error('## Erro ao tentar se conectar com MongoBD: %j', err);
+			logger.error('* Erro ao tentar se conectar com MongoBD !');
+			logger.error(err);
 			throw err;
 		}
 	}
 
 	// Close the existing connection.
 	public closeDbConnection() {
-		if (MongoDB.dbConnection) {
-			MongoDB.dbConnection.close();
-			MongoDB.dbConnection = null;
+		if (MongoDB.mongoClient) {
+			MongoDB.mongoClient.close();
+			MongoDB.mongoClient = null;
 		}
 	}
 }

@@ -18,7 +18,7 @@ export const app: express.Application = express();
 
 // Log config - express-logging
 app.use(expressLogging(logger));
-logger.info('** LOGGER INICIALIZADO');
+logger.info('* Logger inicializado.');
 
 // Disable header: X-Powered-By:Express
 app.disable('x-powered-by');

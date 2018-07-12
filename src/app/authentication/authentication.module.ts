@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
-
 import { SharedDirectivesModule } from './../directives/shared-directives.module';
 import { AuthenticationRoutingModule } from './authentication.routing';
 import { CategoriasService } from './../services/categorias.service';
@@ -16,7 +14,6 @@ import { LoginComponent } from './login.component';
         RegisterComponent, LoginComponent
     ],
     imports: [
-		JwtModule,
         CommonModule,
         FormsModule,
         HttpClientModule,
@@ -24,8 +21,7 @@ import { LoginComponent } from './login.component';
 		SharedDirectivesModule,
     ],
     providers: [
-		CategoriasService,
-		JwtHelperService
+		CategoriasService
     ]
 })
 export class AuthenticationModule { }
