@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 
 @Component({
     //selector: 'home', // Também não necessita, já que é acessado pelo router.
-    templateUrl: './home.component.html',
+	templateUrl: './home.component.html',
+	styleUrls:['./home.component.scss']
 })
 export class HomeComponent {
 

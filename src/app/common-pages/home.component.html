@@ -1,14 +1,58 @@
-<nav class="navbar navbar-flex-row navbar-fixed-top navbar-dark bg-inverse">
-    <a class="navbar-brand" href="#">MEAN</a>   
-    <div>
-        <button class="btn btn-outline-success" [routerLink]="['/register']">Register</button>
-        <button class="btn btn-outline-primary" [routerLink]="['/login']">Login</button>        
-    </div>
-</nav>
-<div class="container home">
-    <div class="row">
+<div class="bg">
+</div>
+<div class="bg2"></div>
+<div class="bg3"></div>
+
+<div class="body-container">
+
+	<nav class="navbar navbar-flex-row navbar-fixed-top navbar-dark bg-inverse">
+		<a class="navbar-brand" href="#"></a>
+		<div>
+			<button class="btn btn-outline-success" [routerLink]="['/register']">Register</button>
+			<button class="btn btn-outline-primary" [routerLink]="['/login']">Login</button>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<div class="left">
+			<h1>MEAN Stack Technologies</h1>
+			<p>The MEAN stack is MongoDB, Express.js, AngularJS (or Angular), and Node.js. Because all components of the MEAN stack support
+				programs are written in JavaScript, MEAN applications can be written in one language for both server-side and client-side
+				execution environments.</p>
+		</div>
+
+		<div class="right">
+			<ul class="home-list">
+				<li>
+					<img class="home-logos" src="assets/img/logos/angular-icon-1.svg" alt="">
+					<span>
+						<strong>Angular</strong>
+						<p>Learn one way to build applications with Angular and reuse your code and abilities to build apps.</p>
+					</span>
+				</li>
+
+				<li>
+					<img class="home-logos" src="assets/img/logos/nodejs-icon.svg" alt="">
+					<span>
+						<strong>NodeJS</strong>
+						<p>Node.js (Node) is an open source development platform for executing JavaScript code server-side. </p>
+					</span>
+				</li>
+
+				<li>
+					<img class="home-logos" src="assets/img/logos/mongodb.svg" alt="">
+					<span>
+						<strong>MongoDB</strong>
+						<p>MongoDB is a cross-platform and open-source document-oriented database, a kind of NoSQL database.</p>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- <div class="row">
         <div class="center">
             <img src='assets/img/mean-architecture.jpg'>
         </div>
-    </div>
-</div>
+    </div> -->
