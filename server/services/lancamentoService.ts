@@ -79,9 +79,13 @@ export class LancamentoService {
 						saldo: 0,
 						_idUser: idUsuario
 					};
+
+					this.corrigirSaldo(novaCompetencia, lancamento, null, false);
+
 					if (compAnterior) {
-						novaCompetencia.saldo = compAnterior.saldo + lancamento.valor
+						novaCompetencia.saldo = novaCompetencia.saldo + (compAnterior.saldo);
 					}
+
 					logger.info('** novaCompetencia %j', novaCompetencia);
 					return this.lancamentoDAO.insertCompetencia(novaCompetencia);
 				}
