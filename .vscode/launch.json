@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug Server - Node in Typescript Program",            
-            "program": "${workspaceRoot}\\server\\app.ts",
+            "name": "Debug Server - Node in Typescript Program",
+            "program": "${workspaceRoot}\\server\\server.ts",
             "outFiles": [
                 "${workspaceRoot}\\server\\dist\\**\\*.js"
             ]
@@ -33,14 +33,14 @@
                 "run-script",
                 "debug"
             ],
-            "port": 3002
+            "port": 3001
         },
         {
             "type": "node",
             "request": "attach",
             "name": "Attach to Process",
             "address": "localhost",
-            "port": 3002,
+            "port": 3001,
             "outFiles": [
                 "${workspaceRoot}\\server\\dist\\**\\*.js"
             ]
