@@ -129,7 +129,7 @@
 								<span class="label">Repetir a cada</span>
 								<input type="number" min="0" max="999" [ngModel]="lancamento.periodicidade?.valorPeriodo" class="small-input form-control form-control-sm default-padding default-font"
 								 id="valorPeriodo" name="valorPeriodo" placeholder="0">
-								<select [ngModel]="lancamento.periodicidade?.tipo || 'mes'" class="medium-select form-control form-control-sm default-padding default-font default-height"
+								<select [ngModel]="lancamento.periodicidade?.tipoPeriodo || 'mes'" class="medium-select form-control form-control-sm default-padding default-font default-height"
 								 id="tipoPeriodo" name="tipoPeriodo">
 									<option value="dia">dia</option>
 									<option value="mes">mês</option>

@@ -427,12 +427,6 @@ export class LancamentoService {
 			});
 	}
 
-	bindUpdateLancamentoIndividual(userName, idLancamento, lancamento) {
-		return function () {
-			return this.updateLancamento(userName, idLancamento, lancamento);
-		}.bind(this); // bind ou usar arrow function ()=>{}
-	}
-
 	public corrigirSaldo(competencia, lancamentoAtual, lancamentoAnterior, isRemocao) {
 		// usado no Update
 		if (lancamentoAnterior) {

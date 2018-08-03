@@ -197,7 +197,7 @@ export class LancamentosService extends DataService<Lancamento> {
 
 						this.getByCompetencia(competenciaLancamento);
 
-						this._notificationsService.success('Sucesso', this.successDeleteMessage);
+						this._notificationsService.success('Sucesso', this.successPutMessage);
 
 						this.filtroLancamentoService.novaCompetencia(competenciaLancamento);
 
