@@ -19,6 +19,7 @@ $color-lancamento-pago: #4dbd74;
         .lancamentos-list-content {
             display: grid;
             grid-template-columns: 1fr 10fr 3fr 3fr 2fr 1fr;
+             /* autoprefixer: off */
             grid-auto-rows: 2em; // grid-column: 1/5;
             // grid-row: 1;
             align-items: center;

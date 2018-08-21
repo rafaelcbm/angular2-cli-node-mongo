@@ -36,6 +36,7 @@ select:focus {
             }
             display: grid;
             grid-column-gap: 0.4em;
+            /* autoprefixer: off */
             grid-template-columns: repeat( auto-fit,minmax(20px, max-content));
         }
         input {
