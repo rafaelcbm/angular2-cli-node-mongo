@@ -9,7 +9,7 @@ export class MaskPipe implements PipeTransform {
 
 	transform(value: any, pattern: string): string {
 
-		let input = $("<input>");
+		let input = $('<input>');
 
 		input.val(value);
 		input.mask(pattern);

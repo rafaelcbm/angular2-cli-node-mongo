@@ -28,7 +28,7 @@ import { AuthGuard } from '../authentication/auth-guard.service';
                 },
                 {
                     path: '',
-                    pathMatch:'full',
+                    pathMatch: 'full',
                     redirectTo: 'contas',
                 },
             ]

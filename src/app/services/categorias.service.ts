@@ -7,7 +7,7 @@ import { ENV } from './env-config';
 import { MessagesService } from './messages.service';
 import { DataService } from './data.service';
 import { ApiHttpService } from './api-http.service';
-import { Categoria } from "../models/models.module";
+import { Categoria } from '../models/models.module';
 
 
 @Injectable()
@@ -35,8 +35,8 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.post(this.apiBaseUrl, payLoad)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
@@ -44,7 +44,7 @@ export class CategoriasService extends DataService<Categoria> {
 						this.getAll();
 
 						this._notificationsService.success('Sucesso', this.successPostMessage);
-					} else if (jsonData.status === "erro") {
+					} else if (jsonData.status === 'erro') {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
@@ -56,8 +56,8 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.delete(`${this.apiBaseUrl}/${modelId}`)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
@@ -65,7 +65,7 @@ export class CategoriasService extends DataService<Categoria> {
 						this.getAll();
 
 						this._notificationsService.success('Sucesso', this.successDeleteMessage);
-					} else if (jsonData.status === "erro") {
+					} else if (jsonData.status === 'erro') {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
@@ -77,8 +77,8 @@ export class CategoriasService extends DataService<Categoria> {
 		this._apiHttp
 			.put(`${this.apiBaseUrl}/${modelId}`, payLoad)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
@@ -87,7 +87,7 @@ export class CategoriasService extends DataService<Categoria> {
 
 						this._notificationsService.success('Sucesso', this.successPutMessage);
 
-					} else if (jsonData.status === "erro") {
+					} else if (jsonData.status === 'erro') {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
@@ -98,12 +98,12 @@ export class CategoriasService extends DataService<Categoria> {
 
 		this._apiHttp.get(`${this.apiBaseUrl}/flat`)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 
 						return this.flatCategoriasSource.next(jsonData.data);
 
-					} else if (jsonData.status === "erro") {
+					} else if (jsonData.status === 'erro') {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},

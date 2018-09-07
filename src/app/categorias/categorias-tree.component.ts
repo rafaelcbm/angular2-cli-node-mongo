@@ -1,10 +1,10 @@
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 
-import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from "angular-tree-component/dist/angular-tree-component";
+import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from 'angular-tree-component/dist/angular-tree-component';
 
 import { LancamentosService } from '../services/lancamentos.service';
 import { CategoriasService } from './../services/categorias.service';
-import { FiltroLancamentoService } from "../lancamentos/filtro-lancamento.service";
+import { FiltroLancamentoService } from '../lancamentos/filtro-lancamento.service';
 
 @Component({
 	selector: 'categorias-tree',
@@ -106,8 +106,7 @@ export class CategoriasTreeComponent implements OnInit {
 
 		if ($event.node.data.nome == 'Sem Categoria') {
 			this.limparSelecao();
-		}
-		else {
+		} else {
 			$event.node.data.showBars = true;
 			$event.node.data.showOptions = false;
 

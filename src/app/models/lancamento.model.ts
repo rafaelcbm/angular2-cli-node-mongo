@@ -1,6 +1,6 @@
 import { Categoria } from './categoria.model';
 import { Model } from './generic-model.model';
-import { Conta } from "./conta.model";
+import { Conta } from './conta.model';
 
 export class Lancamento extends Model {
 

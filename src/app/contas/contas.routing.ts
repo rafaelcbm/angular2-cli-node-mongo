@@ -18,7 +18,7 @@ import { ContasDetailComponent } from './contas-detail.component';
                 {
                     path: 'new',
                     component: ContasDetailComponent
-                }, 
+                },
                 {
                     path: ':id',
                     component: ContasDetailComponent

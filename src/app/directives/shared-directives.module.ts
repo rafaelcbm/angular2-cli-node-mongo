@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
-import { FocusDirective } from "./focus.directive";
-import { InputMaskDirective } from "./input.mask.directive";
+import { FocusDirective } from './focus.directive';
+import { InputMaskDirective } from './input.mask.directive';
 import { FocusBlurDirective } from './focus-blur.directive';
 
 

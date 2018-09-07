@@ -10,7 +10,7 @@ import { Log } from './../util/log';
 import { MessagesService } from './messages.service';
 import { DataService } from './data.service';
 import { ApiHttpService } from './api-http.service';
-import { Lancamento } from "../models/models.module";
+import { Lancamento } from '../models/models.module';
 import { FiltroLancamentoService } from '../lancamentos/filtro-lancamento.service';
 import { ENV } from './env-config';
 
@@ -29,8 +29,8 @@ export class LancamentosService extends DataService<Lancamento> {
 	getByCompetencia(competencia: string) {
 		this._apiHttp.get(`${LancamentosService.baseUrl}/${competencia}`)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 					}
@@ -45,8 +45,8 @@ export class LancamentosService extends DataService<Lancamento> {
 		this._apiHttp
 			.post(this.apiBaseUrl, payLoad)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 						// this._dataStore.dataList.push(jsonData.data);
 						// this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
@@ -58,7 +58,7 @@ export class LancamentosService extends DataService<Lancamento> {
 
 						this._notificationsService.success('Sucesso', this.successPostMessage);
 
-					} else if (jsonData.status === "erro") {
+					} else if (jsonData.status === 'erro') {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
@@ -72,8 +72,8 @@ export class LancamentosService extends DataService<Lancamento> {
 		this._apiHttp
 			.put(`${this.apiBaseUrl}/${modelId}`, payLoad)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 						this._dataStore.dataList.forEach((dataItem, i) => {
 							if (dataItem._id === jsonData.data._id) {
 								this._dataStore.dataList[i] = jsonData.data;
@@ -86,7 +86,7 @@ export class LancamentosService extends DataService<Lancamento> {
 
 						this._notificationsService.success('Sucesso', this.successPutMessage);
 
-					} else if (jsonData.status === "erro") {
+					} else if (jsonData.status === 'erro') {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
@@ -101,8 +101,8 @@ export class LancamentosService extends DataService<Lancamento> {
 			this._apiHttp
 				.put(`${this.apiBaseUrl}consolidar/${lancamento._id}/${!lancamento.pago}`, {})
 				.subscribe(
-					(jsonData:any) => {
-						if (jsonData.status === "sucesso") {
+					(jsonData: any) => {
+						if (jsonData.status === 'sucesso') {
 							let lancamentoPago = jsonData.data.pago;
 							this._notificationsService.success('Sucesso', `Lançamento '${lancamento.descricao}' ${lancamentoPago ? 'pago' : 'não pago'} !`);
 							observer.next({ id: lancamento._id, pago: lancamentoPago });
@@ -119,8 +119,8 @@ export class LancamentosService extends DataService<Lancamento> {
 		return Observable.create((observer: Observer<any>) => {
 			this._apiHttp.get(`${LancamentosService.baseUrl}competencia/${competencia}`)
 				.subscribe(
-					(jsonData:any) => {
-						if (jsonData.status === "sucesso") {
+					(jsonData: any) => {
+						if (jsonData.status === 'sucesso') {
 							let competencia = {
 								competencia: jsonData.data.competencia,
 								saldo: jsonData.data.saldo
@@ -139,8 +139,8 @@ export class LancamentosService extends DataService<Lancamento> {
 		return Observable.create((observer: Observer<any>) => {
 			this._apiHttp.get(`${LancamentosService.baseUrl}competencia/anterior/${competencia}`)
 				.subscribe(
-					(jsonData:any) => {
-						if (jsonData.status === "sucesso") {
+					(jsonData: any) => {
+						if (jsonData.status === 'sucesso') {
 							let competencia = {
 								competencia: jsonData.data.competencia,
 								saldo: jsonData.data.saldo
@@ -159,8 +159,8 @@ export class LancamentosService extends DataService<Lancamento> {
 		this._apiHttp
 			.delete(`${this.apiBaseUrl}/parcelados/${lancamento._id}/`)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 
 						// Busca novamente os lançamentos da competência e atualiza a lista de lançamentos
 						let competenciaLancamento = moment(lancamento.data).format('YYYYMM');
@@ -174,7 +174,7 @@ export class LancamentosService extends DataService<Lancamento> {
 						// 	}
 						// });
 						// this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
-					} else if (jsonData.status === "erro") {
+					} else if (jsonData.status === 'erro') {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
@@ -188,8 +188,8 @@ export class LancamentosService extends DataService<Lancamento> {
 		this._apiHttp
 			.put(`${this.apiBaseUrl}/parcelados/${modelId}/`, payLoad)
 			.subscribe(
-				(jsonData:any) => {
-					if (jsonData.status === "sucesso") {
+				(jsonData: any) => {
+					if (jsonData.status === 'sucesso') {
 
 						// Busca novamente os lançamentos da competência e atualiza a lista de lançamentos
 						let dataLancamento = payLoad.lancamento.data;
@@ -207,7 +207,7 @@ export class LancamentosService extends DataService<Lancamento> {
 						// 	}
 						// });
 						// this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
-					} else if (jsonData.status === "erro") {
+					} else if (jsonData.status === 'erro') {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},

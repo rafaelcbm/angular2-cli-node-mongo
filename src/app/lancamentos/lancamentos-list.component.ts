@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import { LancamentosService } from '../services/lancamentos.service';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
-import { Lancamento } from "../models/models.module";
+import { Lancamento } from '../models/models.module';
 import { CategoriasService } from '../services/categorias.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { CategoriasService } from '../services/categorias.service';
 	templateUrl: './lancamentos-list.component.html',
 	styleUrls: ['./lancamentos-list.component.scss']
 })
-export class LancamentosListComponent implements OnInit  {
+export class LancamentosListComponent implements OnInit {
 
 	saldoAnterior;
 	saldoAtual;
@@ -23,7 +23,8 @@ export class LancamentosListComponent implements OnInit  {
 
 	lancamentos: any[];
 
-	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService, private categoriasService: CategoriasService) { }
+	constructor(private lancamentosService: LancamentosService, private filtroLancamentoService: FiltroLancamentoService,
+		private categoriasService: CategoriasService) { }
 
 	ngOnInit() {
 
@@ -60,9 +61,10 @@ export class LancamentosListComponent implements OnInit  {
 	}
 
 	convertToString(lancamento) {
-		//Conversão somente devido a problema com a máscara.
-		if (!lancamento.valor.toString().includes('.'))
+		// Conversão somente devido a problema com a máscara.
+		if (!lancamento.valor.toString().includes('.')) {
 			lancamento.valor = lancamento.valor.toString().concat('.00');
+		}
 	}
 
 	observarFiltroCompetencia() {
@@ -90,7 +92,7 @@ export class LancamentosListComponent implements OnInit  {
 			this.lancamentos.forEach((lancamento: any) => {
 				lancamento.showByConta = false;
 
-				if (contasSelecionadas.some(contasSelecionada => contasSelecionada == lancamento.conta.nome)) {
+				if (contasSelecionadas.some(contasSelecionada => contasSelecionada === lancamento.conta.nome)) {
 					lancamento.showByConta = true;
 				}
 			});
@@ -103,7 +105,7 @@ export class LancamentosListComponent implements OnInit  {
 
 	atualizarCategorias(categoriasSelecionadas) {
 
-		if (categoriasSelecionadas.length == 0) {
+		if (categoriasSelecionadas.length === 0) {
 			this.lancamentos.forEach((lancamento: any) => lancamento.showByLancamento = true);
 		}
 
@@ -111,7 +113,7 @@ export class LancamentosListComponent implements OnInit  {
 			this.lancamentos.forEach((lancamento: any) => {
 				lancamento.showByLancamento = false;
 
-				if (categoriasSelecionadas.some(categoriaSelecionada => categoriaSelecionada == lancamento.categoria.nome)) {
+				if (categoriasSelecionadas.some(categoriaSelecionada => categoriaSelecionada === lancamento.categoria.nome)) {
 					lancamento.showByLancamento = true;
 				}
 			});
@@ -124,7 +126,7 @@ export class LancamentosListComponent implements OnInit  {
 
 	consolidarLancamento(lancamento) {
 		this.lancamentosService.consolidar(lancamento).subscribe(dadosLancamento => {
-			let lancLista = this.lancamentos.find(l => l._id == dadosLancamento.id);
+			const lancLista = this.lancamentos.find(l => l._id === dadosLancamento.id);
 			if (lancLista) {
 				lancLista.pago = dadosLancamento.pago;
 			}
@@ -149,7 +151,7 @@ export class LancamentosListComponent implements OnInit  {
 	}
 
 	atualizarSaldoAtual() {
-		let saldoAtualizado = this.lancamentos.reduce((acum, lancAtual) => {
+		const saldoAtualizado = this.lancamentos.reduce((acum, lancAtual) => {
 			if (lancAtual.isDebito) {
 				acum -= parseFloat(lancAtual.valor);
 			} else {
@@ -161,15 +163,15 @@ export class LancamentosListComponent implements OnInit  {
 		this.saldoAtual = saldoAtualizado;
 	}
 
-	//TODO: todos checks
-	lancSelected = [];
-	clickCheck($event) {
-		let lancamentoSelected = $event.target.value;
+	// TODO: todos checks
+	// lancSelected = [];
+	// clickCheck($event) {
+	// 	const lancamentoSelected = $event.target.value;
 
-		if ($event.target.checked) {
-			this.lancSelected.push(lancamentoSelected);
-		} else {
-			this.lancSelected = this.lancSelected.filter(l => l !== lancamentoSelected);
-		}
-	}
+	// 	if ($event.target.checked) {
+	// 		this.lancSelected.push(lancamentoSelected);
+	// 	} else {
+	// 		this.lancSelected = this.lancSelected.filter(l => l !== lancamentoSelected);
+	// 	}
+	// }
 }

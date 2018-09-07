@@ -44,10 +44,10 @@ export class AuthService {
 
 	getUserName() {
 
-		var token = this.getToken();
+		let token = this.getToken();
 
 		if (token) {
-			console.log("* Token utils:");
+			console.log('* Token utils:');
 			console.log(
 				this.jwtHelper.decodeToken(token),
 				this.jwtHelper.getTokenExpirationDate(token),
@@ -68,16 +68,16 @@ export class AuthService {
 		this.http.post(`${ENV.HOST_URI}login`, JSON.stringify(userCredential), this.getHttpOptions())
 			.subscribe(
 				(data: any) => {
-					console.log("Resposta /login:", data);
+					console.log('Resposta /login:', data);
 
-					if (data.status === "erro") {
+					if (data.status === 'erro') {
 						// put data into observavle
 						this.loginObserver.next({
 							status: data.status,
 							message: data.message,
 						});
 					} else {
-						localStorage.setItem("id_token", data.jwt);
+						localStorage.setItem('id_token', data.jwt);
 
 						// put data into observavle
 						this.loginObserver.next({
@@ -104,15 +104,15 @@ export class AuthService {
 		this.http.post(`${ENV.HOST_URI}signup`, JSON.stringify(userCredential), this.getHttpOptions())
 			.subscribe(
 				(data: any) => {
-					console.log("Resposta / register:", data);
-					if (data.status === "erro") {
+					console.log('Resposta / register:', data);
+					if (data.status === 'erro') {
 						// put data into observavle
 						this.registerObserver.next({
 							status: data.status,
 							message: data.message,
 						});
 					} else {
-						localStorage.setItem("id_token", data.jwt);
+						localStorage.setItem('id_token', data.jwt);
 
 						// put data into observavle
 						this.registerObserver.next({
@@ -133,7 +133,7 @@ export class AuthService {
 	}
 
 	logout() {
-		localStorage.removeItem("id_token");
+		localStorage.removeItem('id_token');
 	}
 
 	loginSpotify() {
@@ -161,7 +161,7 @@ export class AuthService {
 	}
 
 	adicionarTokenSpotifyUser(token) {
-		localStorage.setItem("id_token", token);
+		localStorage.setItem('id_token', token);
 	}
 
 	getHttpOptions() {

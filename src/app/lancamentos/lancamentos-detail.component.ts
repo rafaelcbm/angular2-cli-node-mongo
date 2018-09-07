@@ -4,12 +4,10 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { NotificationsService } from "angular2-notifications";
 
-import { Log } from './../util/log';
 import { Util } from './../util/util';
 import { Categoria } from './../models/categoria.model';
-import { Lancamento, Conta } from "../models/models.module";
+import { Lancamento, Conta } from '../models/models.module';
 import { CategoriasService } from './../services/categorias.service';
 import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from '../services/contas.service';
@@ -22,13 +20,8 @@ import { FiltroLancamentoService } from './filtro-lancamento.service';
 })
 export class LancamentosDetailComponent implements OnInit {
 
-	@ViewChild("lancamentoForm") lancamentoForm;
+	@ViewChild('lancamentoForm') lancamentoForm;
 	@ViewChild('updateSwal') public updateSwal;
-
-	public obterSWAL() {
-		console.log('this.updateSwal = ', this.updateSwal);
-		return this.updateSwal;
-	}
 
 	@Input()
 	lancamento: any;
@@ -41,7 +34,7 @@ export class LancamentosDetailComponent implements OnInit {
 	categorias: Categoria[];
 	dataLancamento = new Date().toISOString();
 
-	//Apenas para testar o drop de contas
+	// Apenas para testar o drop de contas
 	contaSelectionada = new Conta();
 
 	@ViewChild('inputDebitoSwitch')
@@ -94,17 +87,17 @@ export class LancamentosDetailComponent implements OnInit {
 		if (!this.lancamento._id) {
 			this.dataLancamento = moment().format('YYYY-MM-DD');
 			this.lancamento.isDebito = false;
-			//this.lancamento.periodicidade = {};
+			// this.lancamento.periodicidade = {};
 			// this.lancamento.periodicidade.tipo = 'mes';
 			// this.lancamento.tipoPeriodo = 'mes';
 
 		} else {
-			//Para funcionar com o input [type=date] é necessário converter o obj Date para uma string no formato YYYY-MM-DD,
+			// Para funcionar com o input [type=date] é necessário converter o obj Date para uma string no formato YYYY-MM-DD,
 			// seja usando new Date().toISOString().substring(0, 10) ou moment().format('YYYY-MM-DD').
 			// O pipe de date funciona somente se o input for [type=text], não date. :(
-			//this.dataTeste = moment().toDate().toISOString().substring(0, 10);
+			// this.dataTeste = moment().toDate().toISOString().substring(0, 10);
 
-			//this.dataLancamento = moment(this.lancamento.data, 'DD/MM/YYYY').format('YYYY-MM-DD');
+			// this.dataLancamento = moment(this.lancamento.data, 'DD/MM/YYYY').format('YYYY-MM-DD');
 			this.dataLancamento = moment(this.lancamento.data).format('YYYY-MM-DD');
 
 			// NOTA: Essa funcao eh chamada antes do "this.contas" ser carregado no OnInit, por isso a checagem antes.
@@ -119,7 +112,7 @@ export class LancamentosDetailComponent implements OnInit {
 
 	associaContaDoLancamento() {
 		if (this.lancamento && this.lancamento.conta) {
-			let contaEncontrada = this.contas.find(conta => conta._id === this.lancamento.conta._id);
+			const contaEncontrada = this.contas.find(conta => conta._id === this.lancamento.conta._id);
 
 			if (contaEncontrada) {
 				this.lancamento.conta = contaEncontrada;
@@ -129,7 +122,7 @@ export class LancamentosDetailComponent implements OnInit {
 
 	associaCategoriaDoLancamento() {
 		if (this.lancamento && this.lancamento.categoria) {
-			let categoriaEncontrada = this.categorias.find(categoria => categoria._id === this.lancamento.categoria._id);
+			const categoriaEncontrada = this.categorias.find(categoria => categoria._id === this.lancamento.categoria._id);
 
 			if (categoriaEncontrada) {
 				this.lancamento.categoria = categoriaEncontrada;
@@ -140,8 +133,8 @@ export class LancamentosDetailComponent implements OnInit {
 	salvarLancamento(formValue) {
 
 		console.debug('formValue = ', formValue);
-		//Clona e atribui os dados do formulario no obj que sera enviado ao server
-		let novoLancamento: any = new Lancamento();
+		// Clona e atribui os dados do formulario no obj que sera enviado ao server
+		const novoLancamento: any = new Lancamento();
 		Object.assign(novoLancamento, formValue);
 
 		// Parse form values
@@ -185,17 +178,17 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	focusSwitch($event) {
-		//console.log('changeSwitch event = ',$event);
-		this.renderer.setElementStyle(this.debitoSwitch.nativeElement, 'borderColor', "#8ad4ee");
+		// console.log('changeSwitch event = ',$event);
+		this.renderer.setElementStyle(this.debitoSwitch.nativeElement, 'borderColor', '#8ad4ee');
 	}
 
 	blurSwitch($event) {
-		this.renderer.setElementStyle(this.debitoSwitch.nativeElement, 'borderColor', "#d1d4d7");
+		this.renderer.setElementStyle(this.debitoSwitch.nativeElement, 'borderColor', '#d1d4d7');
 	}
 
 	obterValorTotalParcelas(formValue) {
 		if (formValue.valor) {
-			let valorLancamentoParsed = parseFloat(formValue.valor.replace(',', '.'));
+			const valorLancamentoParsed = parseFloat(formValue.valor.replace(',', '.'));
 			if (formValue.qtdParcelas && formValue.parcelaAtual) {
 				return valorLancamentoParsed * (formValue.qtdParcelas - formValue.parcelaAtual + 1);
 			}
@@ -203,9 +196,9 @@ export class LancamentosDetailComponent implements OnInit {
 		}
 	}
 
-	//Apenas teste de como obter o valor do select através ngModelChange
+	// Apenas teste de como obter o valor do select através ngModelChange
 	contasChanged(contaChanged) {
-		//Log.log("contaChanged = ", contaChanged);
+		// Log.log("contaChanged = ", contaChanged);
 		this.contaSelectionada = contaChanged;
 	}
 
@@ -231,9 +224,9 @@ export class LancamentosDetailComponent implements OnInit {
 	}
 
 	public confirmarRemocao($event) {
-		if ($event == 'um') {
+		if ($event === 'um') {
 			this.removerLancamento();
-		} else if ($event == 'todos') {
+		} else if ($event === 'todos') {
 			this.lancamentosService.removerLancamentoParcelado(this.lancamento);
 		}
 		this.voltar();
@@ -262,10 +255,10 @@ export class LancamentosDetailComponent implements OnInit {
 
 	public confirmarAtualizacao($event) {
 
-		let formValue = this.lancamentoForm.form.value;
+		const formValue = this.lancamentoForm.form.value;
 		console.log(' formValue', formValue);
 
-		let novoLancamento: Lancamento = new Lancamento();
+		const novoLancamento: Lancamento = new Lancamento();
 		Object.assign(novoLancamento, formValue);
 
 		// Parse form values
@@ -273,11 +266,16 @@ export class LancamentosDetailComponent implements OnInit {
 		novoLancamento.valor = Util.parseCurrency(formValue.valor);
 		console.debug('novoLancamento = ', novoLancamento);
 
-		if ($event == 'um') {
+		if ($event === 'um') {
 			this.lancamentosService.update(this.lancamento._id, { lancamento: novoLancamento });
-		} else if ($event == 'todos') {
+		} else if ($event === 'todos') {
 			this.lancamentosService.updateLancamentoParcelado(this.lancamento._id, { lancamento: novoLancamento });
 		}
 		this.voltar();
+	}
+
+	public obterSWAL() {
+		console.log('this.updateSwal = ', this.updateSwal);
+		return this.updateSwal;
 	}
 }

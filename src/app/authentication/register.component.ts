@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import "rxjs/add/operator/map";
+import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs';
 
 import { CategoriasService } from './../services/categorias.service';
@@ -41,8 +41,8 @@ export class RegisterComponent implements OnInit {
 
 	signupHandler(data) {
 
-		if (data.status === "erro") {
-			console.log("Mensagem de erro =", data.message);
+		if (data.status === 'erro') {
+			console.log('Mensagem de erro =', data.message);
 			return;
 		}
 
@@ -59,7 +59,7 @@ export class RegisterComponent implements OnInit {
 	}
 
 	criarCategoriasPadrao() {
-		this.categoriasService.create({ novaCategoria: { nome: "Sem Categoria", ancestrais: null, pai: null } });
-		this.categoriasService.create({ novaCategoria: { nome: "Todas", ancestrais: null, pai: null } });
+		this.categoriasService.create({ novaCategoria: { nome: 'Sem Categoria', ancestrais: null, pai: null } });
+		this.categoriasService.create({ novaCategoria: { nome: 'Todas', ancestrais: null, pai: null } });
 	}
 }

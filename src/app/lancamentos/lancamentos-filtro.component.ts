@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 import { Log } from './../util/log';
-import { Lancamento } from "../models/models.module";
+import { Lancamento } from '../models/models.module';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
 
 
@@ -87,9 +87,9 @@ export class LancamentosFiltroComponent implements OnInit {
 
 	setCategoryClass() {
 		this.categoryClass = {
-			"btn": true,
-			"btn-secondary": !this.showCategorias,
-			"btn-show-categoria-on": this.showCategorias
+			'btn': true,
+			'btn-secondary': !this.showCategorias,
+			'btn-show-categoria-on': this.showCategorias
 		}
 	}
 
@@ -103,9 +103,9 @@ export class LancamentosFiltroComponent implements OnInit {
 
 	setContasClass() {
 		this.contasClass = {
-			"btn": true,
-			"btn-secondary": !this.showContas,
-			"btn-show-contas-on": this.showContas
+			'btn': true,
+			'btn-secondary': !this.showContas,
+			'btn-show-contas-on': this.showContas
 		}
 	}
 }

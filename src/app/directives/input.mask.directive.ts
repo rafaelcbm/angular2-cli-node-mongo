@@ -1,14 +1,14 @@
 import { Log } from './../util/log';
 import { Directive, Input, ElementRef, SimpleChanges } from '@angular/core';
-import { NgControl } from "@angular/forms";
+import { NgControl } from '@angular/forms';
 
 declare let $: any;
 
 @Directive({
 	selector: '[input-mask]',
 	host: {
-		"(blur)": "change()",
-		"(keyup)": "change()"
+		'(blur)': 'change()',
+		'(keyup)': 'change()'
 	}
 })
 export class InputMaskDirective {

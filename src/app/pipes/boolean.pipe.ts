@@ -6,12 +6,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BooleanPipe implements PipeTransform {
 
 	transform(value: any, args?: any): any {
-		if (value && value !== "false") {
-			return "Sim";
+		if (value && value !== 'false') {
+			return 'Sim';
 		} else if (!value) {
-			return "Não";
+			return 'Não';
 		} else {
-			return "-";
+			return '-';
 		}
 	}
 }
