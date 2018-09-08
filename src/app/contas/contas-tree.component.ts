@@ -2,7 +2,6 @@ import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 
 import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from 'angular-tree-component/dist/angular-tree-component';
 
-import { LancamentosService } from '../services/lancamentos.service';
 import { ContasService } from './../services/contas.service';
 import { FiltroLancamentoService } from '../lancamentos/filtro-lancamento.service';
 
@@ -21,7 +20,7 @@ export class ContasTreeComponent implements OnInit {
 			click: null,
 			dblClick: TREE_ACTIONS.TOGGLE_ACTIVE_MULTI
 		}
-	}
+	};
 
 	options = {
 		actionMapping: this.actionMapping,
@@ -34,7 +33,7 @@ export class ContasTreeComponent implements OnInit {
 	constructor(private contasService: ContasService, private filtroLancamentoService: FiltroLancamentoService) { }
 
 	ngOnInit() {
-		//Atualiza as contas do serviço
+		// Atualiza as contas do serviço
 		this.contasService.dataObservable$.subscribe(contas => {
 			this.contas = contas;
 			this.tree.treeModel.update();

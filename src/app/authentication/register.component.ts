@@ -15,15 +15,16 @@ export class RegisterComponent implements OnInit {
 
 	registerObservable$: Observable<any>;
 
-	constructor(private authService: AuthService, private router: Router, private categoriasService: CategoriasService, private route: ActivatedRoute) { }
+	constructor(private authService: AuthService, private router: Router,
+		private categoriasService: CategoriasService, private route: ActivatedRoute) { }
 
 	ngOnInit() {
 		// subscribe to the observable
 		this.registerObservable$ = this.authService.registerObservable$;
 		this.registerObservable$.subscribe((data) => this.signupHandler(data));
 
-		//TODO: REMOVER DAQUI E CRIAR UM NOVO COMPONENTE COM LOADING PARA ISSO
-		//TESTE DE LOGIN COM SPOTIFY
+		// TODO: REMOVER DAQUI E CRIAR UM NOVO COMPONENTE COM LOADING PARA ISSO
+		// TESTE DE LOGIN COM SPOTIFY
 		this.route.queryParams.subscribe(params => {
 			if (params.token) {
 				this.authService.adicionarTokenSpotifyUser(params.token);
@@ -32,7 +33,7 @@ export class RegisterComponent implements OnInit {
 			if ('newUser' in params) {
 				this.criarCategoriasPadrao();
 			}
-		})
+		});
 	}
 
 	signup(formValue) {
@@ -52,7 +53,7 @@ export class RegisterComponent implements OnInit {
 
 			// Get the redirect URL from our auth service
 			// If no redirect has been set, use the default
-			let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'main/contas';
+			const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'main/contas';
 			// Redirect the user
 			this.router.navigate([redirect]);
 		}

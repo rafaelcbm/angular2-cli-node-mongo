@@ -4,30 +4,30 @@ import { Router } from '@angular/router';
 import { AuthService } from '../authentication/auth.service';
 
 @Component({
-    //Nao precisa de selector, já que é acessado pelo router.
-    templateUrl: './main.component.html'
+	// Nao precisa de selector, já que é acessado pelo router.
+	templateUrl: './main.component.html'
 })
 export class MainComponent implements OnInit {
 
-    constructor(private authService: AuthService, private router: Router) {}
+	constructor(private authService: AuthService, private router: Router) { }
 
-    public disabled: boolean = false;
-    public status: { isopen: boolean } = { isopen: false };
+	public disabled = false;
+	public status: { isopen: boolean } = { isopen: false };
 
-    public toggled(open: boolean): void {
-        console.log('Dropdown is now: ', open);
-    }
+	public toggled(open: boolean): void {
+		console.log('Dropdown is now: ', open);
+	}
 
-    public toggleDropdown($event: MouseEvent): void {
-        $event.preventDefault();
-        $event.stopPropagation();
-        this.status.isopen = !this.status.isopen;
-    }
+	public toggleDropdown($event: MouseEvent): void {
+		$event.preventDefault();
+		$event.stopPropagation();
+		this.status.isopen = !this.status.isopen;
+	}
 
-    ngOnInit(): void {}
+	ngOnInit(): void { }
 
-    public logout() {
-        this.authService.logout();
-        this.router.navigate(['/home']);
-    }
+	public logout() {
+		this.authService.logout();
+		this.router.navigate(['/home']);
+	}
 }

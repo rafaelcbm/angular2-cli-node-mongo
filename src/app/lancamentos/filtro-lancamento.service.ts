@@ -36,12 +36,12 @@ export class FiltroLancamentoService {
 
 		let clearSelection = false;
 
-		if (!this.categorias.find(cat => cat == categoria)) {
+		if (!this.categorias.find(cat => cat === categoria)) {
 			this.categorias = [];
-			this.selectedCategoriasSource.next(this.categorias)
+			this.selectedCategoriasSource.next(this.categorias);
 			clearSelection = true;
 		} else {
-			this.categorias = this.categorias.filter(cat => cat != categoria);
+			this.categorias = this.categorias.filter(cat => cat !== categoria);
 		}
 
 		this.selectedCategoriasSource.next(this.categorias);

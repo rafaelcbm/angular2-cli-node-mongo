@@ -1,8 +1,5 @@
-import { Log } from './../util/log';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
-import { Lancamento } from '../models/models.module';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
 
 @Component({

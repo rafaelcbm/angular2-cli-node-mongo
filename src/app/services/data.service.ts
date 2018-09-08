@@ -12,9 +12,9 @@ import { Model } from '../models/generic-model.model';
 
 export class DataService<T extends Model> {
 
-	protected successPostMessage: string = 'Objeto criado com sucesso.';
-	protected successPutMessage: string = 'Objeto alterado com sucesso.';
-	protected successDeleteMessage: string = 'Objeto deletado com sucesso.';
+	protected successPostMessage = 'Objeto criado com sucesso.';
+	protected successPutMessage = 'Objeto alterado com sucesso.';
+	protected successDeleteMessage = 'Objeto deletado com sucesso.';
 
 	dataObservable$: Observable<Model[]>;
 	protected _dataBehaviorSubject: BehaviorSubject<Model[]>;

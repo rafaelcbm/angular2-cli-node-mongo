@@ -15,8 +15,8 @@
                     <tbody>
                         <!-- Async pipe is used to bind an observable directly in our template -->
                         <tr *ngFor="let conta of contas$ | async" (click)="onSelect(conta)">
-                            <td>{{conta._id}}</td>
-                            <td>{{conta.nome}}</td>
+                            <td>{{ conta._id }}</td>
+                            <td>{{ conta.nome }}</td>
                         </tr>
                     </tbody>
                 </table>

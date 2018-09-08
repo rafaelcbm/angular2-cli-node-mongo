@@ -58,7 +58,7 @@ export class LancamentosFiltroComponent implements OnInit {
 	}
 
 	onCompetenciaChanged(competencia: string) {
-		let pattern = new RegExp(/\d\d\/\d\d\d\d/);
+		const pattern = new RegExp(/\d\d\/\d\d\d\d/);
 
 		if (pattern.test(competencia)) {
 			this.mesCompetencia = moment(competencia, 'MM/YYYY').toDate();
@@ -90,7 +90,7 @@ export class LancamentosFiltroComponent implements OnInit {
 			'btn': true,
 			'btn-secondary': !this.showCategorias,
 			'btn-show-categoria-on': this.showCategorias
-		}
+		};
 	}
 
 	contasChange() {
@@ -106,6 +106,6 @@ export class LancamentosFiltroComponent implements OnInit {
 			'btn': true,
 			'btn-secondary': !this.showContas,
 			'btn-show-contas-on': this.showContas
-		}
+		};
 	}
 }

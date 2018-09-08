@@ -6,9 +6,9 @@ export class Util {
 
 		let result;
 		if (value.toString().includes(',')) {
-			let partes = value.split(',');
-			let parteInteira = partes[0].replace('.', '');
-			let parteDecimal = partes[1];
+			const partes = value.split(',');
+			const parteInteira = partes[0].replace('.', '');
+			const parteDecimal = partes[1];
 
 			result = Number.parseFloat(parteInteira.concat('.').concat(parteDecimal));
 		} else {

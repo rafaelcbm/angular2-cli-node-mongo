@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { NotificationsService } from 'angular2-notifications';
-import { Observable ,  Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ENV } from './env-config';
 import { MessagesService } from './messages.service';
@@ -27,7 +27,7 @@ export class CategoriasService extends DataService<Categoria> {
 		this.successDeleteMessage = this.msgService.getMessage(this.msgService.SUCCESS_DELETE_CATEGORIA);
 		this.successPutMessage = this.msgService.getMessage(this.msgService.SUCCESS_UPDATE_CATEGORIA);
 
-		//this.flatCategorias$ = new Observable(observer => this.flatCategoriasObserver = observer).share();
+		// this.flatCategorias$ = new Observable(observer => this.flatCategoriasObserver = observer).share();
 	}
 
 	create(payLoad) {
@@ -40,7 +40,7 @@ export class CategoriasService extends DataService<Categoria> {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
-						//Atualiza a fonte de dados do dropdown de categorias
+						// Atualiza a fonte de dados do dropdown de categorias
 						this.getAll();
 
 						this._notificationsService.success('Sucesso', this.successPostMessage);
@@ -48,7 +48,7 @@ export class CategoriasService extends DataService<Categoria> {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
-				error => { console.log(error) });
+				error => { console.log(error); });
 	}
 
 	remove(modelId) {
@@ -61,7 +61,7 @@ export class CategoriasService extends DataService<Categoria> {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
-						//Atualiza a fonte de dados do dropdown de categorias
+						// Atualiza a fonte de dados do dropdown de categorias
 						this.getAll();
 
 						this._notificationsService.success('Sucesso', this.successDeleteMessage);
@@ -69,7 +69,7 @@ export class CategoriasService extends DataService<Categoria> {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
-				error => { console.log(error) });
+				error => { console.log(error); });
 	}
 
 	update(modelId, payLoad) {
@@ -82,7 +82,7 @@ export class CategoriasService extends DataService<Categoria> {
 						this._dataStore.dataList = jsonData.data;
 						this._dataBehaviorSubject.next(Object.assign({}, this._dataStore).dataList);
 
-						//Atualiza a fonte de dados do dropdown de categorias
+						// Atualiza a fonte de dados do dropdown de categorias
 						this.getAll();
 
 						this._notificationsService.success('Sucesso', this.successPutMessage);
@@ -91,7 +91,7 @@ export class CategoriasService extends DataService<Categoria> {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
-				error => { console.log(error) });
+				error => { console.log(error); });
 	}
 
 	getAll(): any {
@@ -107,6 +107,6 @@ export class CategoriasService extends DataService<Categoria> {
 						this._notificationsService.error('Erro', jsonData.message);
 					}
 				},
-				error => { console.log(error) });
+				error => { console.log(error); });
 	}
 }

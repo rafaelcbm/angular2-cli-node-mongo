@@ -22,7 +22,7 @@ export class InputMaskDirective {
 	ngAfterContentInit() {
 		$(this.el.nativeElement).mask(this.pattern, this.options);
 		setTimeout(() => {
-			let value = $(this.el.nativeElement).data('mask').getMaskedVal(this.control.control.value);
+			const value = $(this.el.nativeElement).data('mask').getMaskedVal(this.control.control.value);
 			if (this.control.control.value != value) {
 				this.control.control.setValue(value);
 			}
@@ -40,7 +40,7 @@ export class InputMaskDirective {
 	}
 
 	change() {
-		let value = $(this.el.nativeElement).data('mask').getMaskedVal($(this.el.nativeElement).val());
+		const value = $(this.el.nativeElement).data('mask').getMaskedVal($(this.el.nativeElement).val());
 		if (this.control.control.value != value) {
 			this.control.control.setValue(value);
 		}

@@ -5,15 +5,15 @@ export class MessagesService {
 
 	constructor() { }
 
-	SUCCESS_CREATE_CONTA: string = 'SUCCESS_CREATE_CONTA';
-	SUCCESS_DELETE_CONTA: string = 'SUCCESS_DELETE_CONTA';
-	SUCCESS_UPDATE_CONTA: string = 'SUCCESS_UPDATE_CONTA';
-	SUCCESS_CREATE_LANCAMENTO: string = 'SUCCESS_CREATE_LANCAMENTO';
-	SUCCESS_DELETE_LANCAMENTO: string = 'SUCCESS_DELETE_LANCAMENTO';
-	SUCCESS_UPDATE_LANCAMENTO: string = 'SUCCESS_UPDATE_LANCAMENTO';
-	SUCCESS_CREATE_CATEGORIA: string = 'SUCCESS_CREATE_CATEGORIA';
-	SUCCESS_DELETE_CATEGORIA: string = 'SUCCESS_DELETE_CATEGORIA';
-	SUCCESS_UPDATE_CATEGORIA: string = 'SUCCESS_UPDATE_CATEGORIA';
+	SUCCESS_CREATE_CONTA = 'SUCCESS_CREATE_CONTA';
+	SUCCESS_DELETE_CONTA = 'SUCCESS_DELETE_CONTA';
+	SUCCESS_UPDATE_CONTA = 'SUCCESS_UPDATE_CONTA';
+	SUCCESS_CREATE_LANCAMENTO = 'SUCCESS_CREATE_LANCAMENTO';
+	SUCCESS_DELETE_LANCAMENTO = 'SUCCESS_DELETE_LANCAMENTO';
+	SUCCESS_UPDATE_LANCAMENTO = 'SUCCESS_UPDATE_LANCAMENTO';
+	SUCCESS_CREATE_CATEGORIA = 'SUCCESS_CREATE_CATEGORIA';
+	SUCCESS_DELETE_CATEGORIA = 'SUCCESS_DELETE_CATEGORIA';
+	SUCCESS_UPDATE_CATEGORIA = 'SUCCESS_UPDATE_CATEGORIA';
 
 
 	public getMessage(key: string, ...argumentos): string {
@@ -24,7 +24,7 @@ export class MessagesService {
 			[param1 = '', param2 = '', param3 = ''] = argumentos;
 		}
 
-		let messages = {
+		const messages = {
 			SUCCESS_CREATE_CONTA: `Conta <${param1}> criada com sucesso.`,
 			SUCCESS_DELETE_CONTA: `Conta apagada com sucesso.`,
 			SUCCESS_UPDATE_CONTA: `Conta <${param1}> atualizada com sucesso.`,
@@ -36,7 +36,7 @@ export class MessagesService {
 			SUCCESS_CREATE_CATEGORIA: `Categoria criada com sucesso.`,
 			SUCCESS_DELETE_CATEGORIA: `Categoria apagada com sucesso.`,
 			SUCCESS_UPDATE_CATEGORIA: `Categoria atualizada com sucesso.`
-		}
+		};
 
 		return messages.hasOwnProperty(key) ? messages[key] : key;
 	}
