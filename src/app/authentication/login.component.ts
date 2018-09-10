@@ -8,7 +8,8 @@ import "rxjs/add/operator/map";
 import { AuthService } from './auth.service';
 
 @Component({
-    templateUrl: './login.component.html'
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 

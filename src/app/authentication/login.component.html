@@ -1,57 +1,41 @@
-<div class="app flex-row align-items-center">
-	<div class="container d-table">
-		<div class="d-100vh-va-middle">
-			<div class="row">
-				<div class="col-md-8 offset-md-2">
-					<div class="card-group">
-						<div class="card p-2">
-							<div class="card-block">
-								<form #formRef="ngForm" (ngSubmit)="login(formRef.value)">
-									<h1>Login</h1>
-									<p class="text-muted">Sign In to your account</p>
-									<div class="input-group mb-1">
-										<span class="input-group-addon">
-											<i class="icon-user"></i>
-										</span>
-										<input type="text" name="userName" [(ngModel)]="userName" class="form-control" placeholder="Username" [focus]="true">
-									</div>
-									<div class="input-group mb-2">
-										<span class="input-group-addon">
-											<i class="icon-lock"></i>
-										</span>
-										<input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="Password">
-									</div>
-									<div class="row">
-										<div class="col-xs-3">
-											<button type="submit" class="btn btn-primary p-x-2">Login</button>
-										</div>
-									</div>
-									or
-									<div style="cursor: pointer;font-size: 1em;line-height: 1;border-radius: 500px;padding: 11px 32px 9px;color: #fff;background-color: #1db954;text-align: center;font-weight: 800;">
-										<div>
-											<a (click)="spotifySignIn()">Log in to Spotify</a>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-xs-6 offset-xs-6 text-xs-right">
-											<button type="submit" class="btn btn-link p-x-0">Forgot password?</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-						<div class="card card-inverse card-primary py-3 hidden-md-down" style="width:44%">
-							<div class="card-block text-xs-center">
-								<div>
-									<h2>Sign up</h2>
-									<p>"Conhecereis a verdade, e a verdade os libertará"" - João 8:32.</p>
-									<button type="button" class="btn btn-primary active mt-1" [routerLink]="['/register']">Register Now!</button>
-								</div>
+<section class="login-wrapper">
+	<div></div>
+	<div class="card-login card-group">
+		<div class="card p-2">
+			<div class="card-block">
+				<form #formRef="ngForm" (ngSubmit)="login(formRef.value)">
+					<h1>Login</h1>
+					<p class="text-muted">Sign In to your account</p>
+					<div class="input-group mb-1">
+						<span class="input-group-addon">
+							<i class="icon-user"></i>
+						</span>
+						<input type="text" name="userName" [(ngModel)]="userName" class="form-control" placeholder="Username" [focus]="true">
+					</div>
+					<div class="input-group mb-2">
+						<span class="input-group-addon">
+							<i class="icon-lock"></i>
+						</span>
+						<input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="Password">
+					</div>
+					<div class="login-buttons-wrapper">
+						<button type="submit" class="btn-login btn btn-primary">Login</button>
+						<p>or</p>
+						<div class="btn-spotify-login">
+							<div>
+								<a (click)="spotifySignIn()">Log in to Spotify</a>
 							</div>
 						</div>
 					</div>
-				</div>
+					<br>
+					<div class="row">
+						<div class="col-xs-6 offset-xs-6 text-xs-right">
+							<button type="submit" class="btn btn-link p-x-0">Forgot password?</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
-</div>
+	<div></div>
+</section>
