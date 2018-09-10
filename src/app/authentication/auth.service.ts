@@ -6,7 +6,6 @@ import { HttpHeaders, HttpResponse, HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ENV } from '../services/env-config';
 import { Observable, Observer } from 'rxjs';
-import 'rxjs/Rx';
 
 import { Router } from '@angular/router';
 import { share } from 'rxjs/operators';
@@ -44,17 +43,17 @@ export class AuthService {
 
 	getUserName() {
 
-		var token = this.getToken();
+		const token = this.getToken();
 
 		if (token) {
-			console.log("* Token utils:");
+			console.log('* Token utils:');
 			console.log(
 				this.jwtHelper.decodeToken(token),
 				this.jwtHelper.getTokenExpirationDate(token),
 				this.jwtHelper.isTokenExpired(token)
 			);
 
-			let userName = this.jwtHelper.decodeToken(token).userName;
+			const userName = this.jwtHelper.decodeToken(token).userName;
 			return userName;
 		}
 
@@ -62,22 +61,22 @@ export class AuthService {
 	}
 
 	login(userCredential) {
-		//return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
-		//this.isLoggedIn = true;
+		// return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
+		// this.isLoggedIn = true;
 
 		this.http.post(`${ENV.HOST_URI}login`, JSON.stringify(userCredential), this.getHttpOptions())
 			.subscribe(
 				(data: any) => {
-					console.log("Resposta /login:", data);
+					console.log('Resposta /login:', data);
 
-					if (data.status === "erro") {
+					if (data.status === 'erro') {
 						// put data into observavle
 						this.loginObserver.next({
 							status: data.status,
 							message: data.message,
 						});
 					} else {
-						localStorage.setItem("id_token", data.jwt);
+						localStorage.setItem('id_token', data.jwt);
 
 						// put data into observavle
 						this.loginObserver.next({
@@ -92,27 +91,27 @@ export class AuthService {
 					this.loginObserver.next({
 						status: 'erro',
 						message: 'Erro ao autenticar usuário!',
-					})
+					});
 				}
 			);
 	}
 
 	signup(userCredential) {
-		//return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
-		//this.isLoggedIn = true;
+		// return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
+		// this.isLoggedIn = true;
 
 		this.http.post(`${ENV.HOST_URI}signup`, JSON.stringify(userCredential), this.getHttpOptions())
 			.subscribe(
 				(data: any) => {
-					console.log("Resposta / register:", data);
-					if (data.status === "erro") {
+					console.log('Resposta / register:', data);
+					if (data.status === 'erro') {
 						// put data into observavle
 						this.registerObserver.next({
 							status: data.status,
 							message: data.message,
 						});
 					} else {
-						localStorage.setItem("id_token", data.jwt);
+						localStorage.setItem('id_token', data.jwt);
 
 						// put data into observavle
 						this.registerObserver.next({
@@ -127,18 +126,18 @@ export class AuthService {
 					this.registerObserver.next({
 						status: 'erro',
 						message: 'Erro ao registrar novo usuário!',
-					})
+					});
 				}
 			);
 	}
 
 	logout() {
-		localStorage.removeItem("id_token");
+		localStorage.removeItem('id_token');
 	}
 
 	loginSpotify() {
 
-		let httpOptions = {
+		const httpOptions = {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
 				'Access-Control-Allow-Origin': '*'
@@ -155,13 +154,13 @@ export class AuthService {
 					this.loginObserver.next({
 						status: 'erro',
 						message: 'Erro ao autenticar usuário Spotify!',
-					})
+					});
 				}
 			);
 	}
 
 	adicionarTokenSpotifyUser(token) {
-		localStorage.setItem("id_token", token);
+		localStorage.setItem('id_token', token);
 	}
 
 	getHttpOptions() {

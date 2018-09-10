@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { switchMap, map } from 'rxjs/operators';
-//Possivel importar assim devido ao @types/jquery.
-//import * as $ from 'jquery';
+// Possivel importar assim devido ao @types/jquery.
+// import * as $ from 'jquery';
 // Não é possivel importar essã lib dessa forma, pois não é um modulo js. Tem q ser através do "declare".
-//import * as toastr from 'toastr';
-//declare var toastr: any;
+// import * as toastr from 'toastr';
+// declare var toastr: any;
 
 import { ContasService } from '../services/contas.service';
 
@@ -27,13 +27,13 @@ export class ContasDetailComponent implements OnInit {
 		this.route.params
 			.pipe(switchMap((params: Params) => this.contasService.dataObservable$.pipe(map(contas => {
 				if (contas) {
-					return contas.find(c => c._id === params['id'])
+					return contas.find(c => c._id === params['id']);
 				}
 			}))))
 			.subscribe((conta: any) => {
-				this.conta = conta
+				this.conta = conta;
 
-				//Se nova conta
+				// Se nova conta
 				if (!this.conta) {
 					this.novaConta = true;
 				}
@@ -66,11 +66,11 @@ export class ContasDetailComponent implements OnInit {
 
 		this.redirectToList();
 
-		//Exemplo de utilização de libs externas:
-		//JQuery
-		//$("#campoNome").addClass("text-danger");
-		//Toastr
-		//toastr.success("Orders downloaded.");
+		// Exemplo de utilização de libs externas:
+		// JQuery
+		// $("#campoNome").addClass("text-danger");
+		// Toastr
+		// toastr.success("Orders downloaded.");
 	}
 
 	removerConta() {
@@ -84,7 +84,7 @@ export class ContasDetailComponent implements OnInit {
 		if (this.novaConta) {
 			this.router.navigate(['/main/contas']);
 		} else {
-			let contaId = this.conta._id;
+			const contaId = this.conta._id;
 			// Pass along the conta id if available
 			// so that the contaList component can select that conta
 			// Include a junk 'foo' property for fun.

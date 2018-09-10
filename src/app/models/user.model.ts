@@ -1,4 +1,4 @@
-import { Conta } from "./conta.model";
+import { Conta } from './conta.model';
 
 export class User {
 

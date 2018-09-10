@@ -10,18 +10,18 @@ import { RegisterComponent } from './register.component';
 import { LoginComponent } from './login.component';
 
 @NgModule({
-    declarations: [
-        RegisterComponent, LoginComponent
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        HttpClientModule,
-        AuthenticationRoutingModule,
+	declarations: [
+		RegisterComponent, LoginComponent
+	],
+	imports: [
+		CommonModule,
+		FormsModule,
+		HttpClientModule,
+		AuthenticationRoutingModule,
 		SharedDirectivesModule,
-    ],
-    providers: [
+	],
+	providers: [
 		CategoriasService
-    ]
+	]
 })
 export class AuthenticationModule { }

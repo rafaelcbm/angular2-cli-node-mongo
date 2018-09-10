@@ -3,9 +3,8 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
-import { Log } from './../util/log';
 import { ContasService } from '../services/contas.service';
-import { Conta } from "../models/models.module";
+import { Conta } from '../models/models.module';
 
 @Component({
 	selector: 'contas-list',

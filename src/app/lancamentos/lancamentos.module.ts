@@ -21,35 +21,35 @@ import { ContasService } from '../services/contas.service';
 import { FiltroLancamentoService } from './filtro-lancamento.service';
 import { CategoriasService } from './../services/categorias.service';
 import { CategoriasTreeComponent } from '../categorias/categorias-tree.component';
-import { ContasTreeComponent } from "../contas/contas-tree.component";
+import { ContasTreeComponent } from '../contas/contas-tree.component';
 
 @NgModule({
-    declarations: [
-        ManageLancamentosComponent,
-        LancamentosListComponent,
-        LancamentosDetailComponent,
+	declarations: [
+		ManageLancamentosComponent,
+		LancamentosListComponent,
+		LancamentosDetailComponent,
 		LancamentosFiltroComponent,
 		CategoriasTreeComponent,
 		ContasTreeComponent
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        HttpClientModule,
-        LancamentosRoutingModule,
+	],
+	imports: [
+		CommonModule,
+		FormsModule,
+		HttpClientModule,
+		LancamentosRoutingModule,
 		SharedPipesModule,
 		SharedDirectivesModule,
-        TabsModule.forRoot(),
+		TabsModule.forRoot(),
 		DatepickerModule.forRoot(),
 		TooltipModule.forRoot(),
 		TreeModule,
 		SweetAlert2Module
-    ],
-    providers: [
-        LancamentosService,
-        ContasService,
+	],
+	providers: [
+		LancamentosService,
+		ContasService,
 		FiltroLancamentoService,
 		CategoriasService
-    ]
+	]
 })
-export class LancamentosModule {}
+export class LancamentosModule { }

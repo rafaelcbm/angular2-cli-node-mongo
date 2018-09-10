@@ -1,10 +1,9 @@
 import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 
-import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from "angular-tree-component/dist/angular-tree-component";
+import { TreeComponent, TREE_ACTIONS, IActionMapping, KEYS } from 'angular-tree-component/dist/angular-tree-component';
 
-import { LancamentosService } from '../services/lancamentos.service';
 import { CategoriasService } from './../services/categorias.service';
-import { FiltroLancamentoService } from "../lancamentos/filtro-lancamento.service";
+import { FiltroLancamentoService } from '../lancamentos/filtro-lancamento.service';
 
 @Component({
 	selector: 'categorias-tree',
@@ -21,7 +20,7 @@ export class CategoriasTreeComponent implements OnInit {
 			click: null,
 			dblClick: TREE_ACTIONS.TOGGLE_ACTIVE_MULTI
 		}
-	}
+	};
 
 	options = {
 		actionMapping: this.actionMapping,
@@ -34,7 +33,7 @@ export class CategoriasTreeComponent implements OnInit {
 	constructor(private categoriasService: CategoriasService, private filtroLancamentoService: FiltroLancamentoService) { }
 
 	ngOnInit() {
-		//Atualiza as categorias do serviço
+		// Atualiza as categorias do serviço
 		this.categoriasService.dataObservable$.subscribe(categorias => {
 			this.categorias = categorias;
 			this.tree.treeModel.update();
@@ -61,7 +60,7 @@ export class CategoriasTreeComponent implements OnInit {
 				node.data.children = [];
 			}
 
-			let newNode: any = { nome: node.data.novoNome, pai: node.data.nome };
+			const newNode: any = { nome: node.data.novoNome, pai: node.data.nome };
 			newNode.ancestrais = [];
 			let parent = node;
 			while (parent.data.nome) {
@@ -83,10 +82,10 @@ export class CategoriasTreeComponent implements OnInit {
 	remove(node, indexNode) {
 		this.categoriasService.remove(node.data._id);
 
-		let clearSelection = this.filtroLancamentoService.onDeselectCategoria(node.data.nome);
+		const clearSelection = this.filtroLancamentoService.onDeselectCategoria(node.data.nome);
 
 		if (clearSelection) {
-			this.tree.treeModel.activeNodes.forEach(node => node.setIsActive(false));
+			this.tree.treeModel.activeNodes.forEach(activeNode => activeNode.setIsActive(false));
 		}
 	}
 
@@ -104,10 +103,9 @@ export class CategoriasTreeComponent implements OnInit {
 
 	onActivate($event) {
 
-		if ($event.node.data.nome == 'Sem Categoria') {
+		if ($event.node.data.nome === 'Sem Categoria') {
 			this.limparSelecao();
-		}
-		else {
+		} else {
 			$event.node.data.showBars = true;
 			$event.node.data.showOptions = false;
 
@@ -119,7 +117,7 @@ export class CategoriasTreeComponent implements OnInit {
 		$event.node.data.showBars = false;
 		$event.node.data.showOptions = false;
 
-		let clearSelection = this.filtroLancamentoService.onDeselectCategoria($event.node.data.nome);
+		const clearSelection = this.filtroLancamentoService.onDeselectCategoria($event.node.data.nome);
 
 		if (clearSelection) {
 			this.limparSelecao();

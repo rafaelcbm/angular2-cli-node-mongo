@@ -12,21 +12,21 @@ import { ContasDetailComponent } from './contas-detail.component';
 import { ContasService } from '../services/contas.service';
 
 @NgModule({
-    declarations: [
-        ManageContasComponent,
-        DashboardComponent,
-        ContasListComponent,
-        ContasDetailComponent
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        HttpClientModule,
-        ContasRoutingModule,
+	declarations: [
+		ManageContasComponent,
+		DashboardComponent,
+		ContasListComponent,
+		ContasDetailComponent
+	],
+	imports: [
+		CommonModule,
+		FormsModule,
+		HttpClientModule,
+		ContasRoutingModule,
 		SharedDirectivesModule,
-    ],
-    providers: [
-        ContasService
-    ]
+	],
+	providers: [
+		ContasService
+	]
 })
-export class ContasModule {}
+export class ContasModule { }

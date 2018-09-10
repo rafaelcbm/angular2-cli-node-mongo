@@ -42,7 +42,7 @@ export class ApiHttpService {
 		const httpOptions = {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
-				"authorization": this.authService.getToken()
+				'authorization': this.authService.getToken()
 			})
 		};
 

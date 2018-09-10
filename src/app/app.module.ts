@@ -29,7 +29,7 @@ registerLocaleData(localePt);
 		SimpleNotificationsModule.forRoot(),
 		SweetAlert2Module.forRoot(),
 		CommonPagesModule,
-		//O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
+		// O módulo AppRoutingModule precisa ser o último devido à rota '**' definida nele.
 		AppRoutingModule
 	],
 	providers: [

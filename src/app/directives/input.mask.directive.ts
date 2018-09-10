@@ -1,14 +1,14 @@
 import { Log } from './../util/log';
 import { Directive, Input, ElementRef, SimpleChanges } from '@angular/core';
-import { NgControl } from "@angular/forms";
+import { NgControl } from '@angular/forms';
 
 declare let $: any;
 
 @Directive({
 	selector: '[input-mask]',
 	host: {
-		"(blur)": "change()",
-		"(keyup)": "change()"
+		'(blur)': 'change()',
+		'(keyup)': 'change()'
 	}
 })
 export class InputMaskDirective {
@@ -22,7 +22,7 @@ export class InputMaskDirective {
 	ngAfterContentInit() {
 		$(this.el.nativeElement).mask(this.pattern, this.options);
 		setTimeout(() => {
-			let value = $(this.el.nativeElement).data('mask').getMaskedVal(this.control.control.value);
+			const value = $(this.el.nativeElement).data('mask').getMaskedVal(this.control.control.value);
 			if (this.control.control.value != value) {
 				this.control.control.setValue(value);
 			}
@@ -40,7 +40,7 @@ export class InputMaskDirective {
 	}
 
 	change() {
-		let value = $(this.el.nativeElement).data('mask').getMaskedVal($(this.el.nativeElement).val());
+		const value = $(this.el.nativeElement).data('mask').getMaskedVal($(this.el.nativeElement).val());
 		if (this.control.control.value != value) {
 			this.control.control.setValue(value);
 		}

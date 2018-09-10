@@ -11,6 +11,7 @@
   },
   "scripts": {
     "lint": "tslint \"src/**/*.ts\"",
+    "lint-fix": "tslint --fix \"src/**/*.ts\"",
     "conc:example": "concurrently \"npm run build:server\" \"nodemon ./server/dist/server.js\" ",
     "start": "npm run build:client && npm run server",
     "server": "tsc-watch -p ./server --onSuccess \"node ./server/dist/server.js\" ",
@@ -110,10 +111,11 @@
     "karma-jasmine": "1.1.1",
     "karma-jasmine-html-reporter": "0.2.2",
     "nodemon": "^1.11.0",
-    "protractor": "^5.3.2",
+    "protractor": "^5.4.0",
     "ts-node": "4.1.0",
     "tsc-watch": "^1.0.21",
     "tslint": "5.9.1",
+    "tslint-angular": "^1.1.2",
     "typescript": "^2.7.2",
     "watch": "1.0.2"
   }

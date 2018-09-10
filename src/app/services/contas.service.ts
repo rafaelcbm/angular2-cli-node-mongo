@@ -6,7 +6,7 @@ import { ENV } from './env-config';
 import { MessagesService } from './messages.service';
 import { DataService } from './data.service';
 import { ApiHttpService } from './api-http.service';
-import { Conta } from "../models/models.module";
+import { Conta } from '../models/models.module';
 
 
 @Injectable()
