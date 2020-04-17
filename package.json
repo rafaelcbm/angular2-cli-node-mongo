@@ -57,7 +57,7 @@
     "express-logging": "^1.1.1",
     "flag-icon-css": "2.9.0",
     "font-awesome": "^4.7.0",
-    "https-proxy-agent": "^2.2.1",
+    "https-proxy-agent": "^2.2.3",
     "jquery": "^3.1.1",
     "jquery-mask-plugin": "^1.14.10",
     "jsonwebtoken": "^5.7.0",
