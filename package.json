@@ -58,7 +58,7 @@
     "flag-icon-css": "2.9.0",
     "font-awesome": "^4.7.0",
     "https-proxy-agent": "^2.2.1",
-    "jquery": "^3.1.1",
+    "jquery": "^3.5.0",
     "jquery-mask-plugin": "^1.14.10",
     "jsonwebtoken": "^5.7.0",
     "lodash": "^4.17.4",
