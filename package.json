@@ -70,7 +70,7 @@
     "ng2-select": "^2.0.0",
     "ngx-bootstrap": "3.0.1",
     "ngx-quill": "3.3.0",
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^2.6.1",
     "querystring": "^0.2.0",
     "reflect-metadata": "^0.1.10",
     "request": "^2.87.0",
